@@ -1,0 +1,34 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    @apply bg-canvas text-ink font-sans antialiased;
+    font-feature-settings: 'cv11', 'ss01';
+  }
+  :focus-visible { @apply outline-none ring-2 ring-brand ring-offset-2 ring-offset-canvas; }
+  ::selection { background: #D6E6FF; }
+  .tabular { font-variant-numeric: tabular-nums; }
+}
+
+@layer components {
+  .card { @apply rounded-card border border-line bg-surface shadow-card; }
+  .input {
+    @apply w-full rounded-xl border border-line bg-white px-4 py-3 text-base text-ink placeholder:text-ink-mute
+      transition-colors duration-150 hover:border-[#D0D5DD] focus:border-brand focus:outline-none focus:ring-4 focus:ring-brand-100;
+  }
+  .input[aria-invalid='true'] { @apply border-bad focus:ring-bad-50; }
+  .label { @apply mb-1.5 block text-sm font-semibold text-ink; }
+  .chip { @apply inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold; }
+}
+
+@keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+.anim-rise { animation: rise 220ms ease-out both; }
+@keyframes grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+.anim-grow { transform-origin: left; animation: grow 600ms cubic-bezier(.2,.7,.2,1) both; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 1ms !important; animation-iteration-count: 1 !important; transition-duration: 1ms !important; scroll-behavior: auto !important; }
+}
