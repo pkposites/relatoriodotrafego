@@ -16,11 +16,11 @@ import HeroDemo from '../components/HeroDemo';
 import { LinkButton, SectionTitle } from '../components/ui';
 
 const AREAS = [
-  { icon: Gauge, title: 'Mensuração', text: 'Se você consegue saber quais vendas vêm dos anúncios.' },
+  { icon: Gauge, title: 'Mensuração e sinal', text: 'Se você e as plataformas sabem quais vendas vêm dos anúncios (pixel, API de Conversões, CRM).' },
   { icon: Wallet, title: 'Rentabilidade', text: 'Se o custo por cliente cabe na margem do negócio.' },
-  { icon: Target, title: 'Estratégia de campanha', text: 'Para onde vai o clique e se o caminho faz sentido.' },
-  { icon: Lightbulb, title: 'Criativos e testes', text: 'Se há rotina de testes e aprendizado com os anúncios.' },
-  { icon: MessageCircle, title: 'Conversão e atendimento', text: 'Como os contatos são acompanhados até a venda.' },
+  { icon: Target, title: 'Estratégia de campanha', text: 'Objetivo de otimização, estrutura e rotina de análise.' },
+  { icon: Lightbulb, title: 'Criativos e oferta', text: 'Volume, formatos, testes e a força da oferta nos anúncios.' },
+  { icon: MessageCircle, title: 'Conversão e atendimento', text: 'Tempo de resposta e acompanhamento até a venda.' },
 ];
 
 const RECEIVE = [
@@ -53,7 +53,7 @@ export default function Landing() {
           </div>
           <ul className="mt-5 flex flex-wrap gap-x-5 gap-y-2 text-sm text-ink-soft">
             <li className="flex items-center gap-1.5"><ShieldCheck className="h-4 w-4 text-ok" aria-hidden /> Avaliação inicial gratuita</li>
-            <li className="flex items-center gap-1.5"><Clock className="h-4 w-4 text-brand" aria-hidden /> Cerca de 3 minutos</li>
+            <li className="flex items-center gap-1.5"><Clock className="h-4 w-4 text-brand" aria-hidden /> Cerca de 5 minutos</li>
             <li className="flex items-center gap-1.5"><Gauge className="h-4 w-4 text-brand" aria-hidden /> Sem acesso à sua conta</li>
           </ul>
         </div>
@@ -65,7 +65,7 @@ export default function Landing() {
       {/* Bloco 2 — O que analisaremos */}
       <section className="border-y border-line bg-white py-14">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <SectionTitle eyebrow="Cinco pilares" title="O que vamos analisar" subtitle="Doze perguntas rápidas sobre a sua operação, organizadas em cinco áreas." />
+          <SectionTitle eyebrow="Cinco pilares" title="O que vamos analisar" subtitle="Perguntas rápidas sobre a sua operação, organizadas nos cinco pilares que mais pesam no tráfego pago hoje." />
           <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
             {AREAS.map(({ icon: Icon, title, text }) => (
               <li key={title} className="rounded-card border border-line bg-canvas/50 p-4 transition-colors hover:border-brand-100 hover:bg-brand-50/40">

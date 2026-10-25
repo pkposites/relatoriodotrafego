@@ -1,4 +1,4 @@
-import type { Answers, LeadRecord, OptionalMetricsInput } from '../types';
+import type { Answers, FreeContext, LeadRecord, OptionalMetricsInput } from '../types';
 import type { MetricField } from './metrics';
 
 /**
@@ -6,17 +6,19 @@ import type { MetricField } from './metrics';
  * Nada é enviado a servidores. Todas as leituras/escritas toleram falhas
  * (modo privado, armazenamento bloqueado) e o app funciona sem elas.
  */
-const QUIZ_KEY = 'rdt:quiz:v1';
-const LEADS_KEY = 'rdt:local-leads:v1';
+// v2: novo questionário (23 perguntas). Dados v1 são ignorados.
+const QUIZ_KEY = 'rdt:quiz:v2';
+const LEADS_KEY = 'rdt:local-leads:v2';
 
 export interface QuizState {
   sessionId: string;
   answers: Answers;
-  /** 0–11 perguntas; 12 = dados opcionais. */
+  /** 0..N-1 perguntas; N = dados opcionais. */
   step: number;
   metricsRaw: Record<MetricField, string>;
   metrics?: OptionalMetricsInput;
   metricsSkipped?: boolean;
+  context?: FreeContext;
   completedAt?: string;
   startedAt: string;
 }

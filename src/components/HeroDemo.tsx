@@ -1,5 +1,6 @@
 import { Check, FileText, Lightbulb, Loader2, Target } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
+import { TOTAL_QUESTIONS } from '../data/questions';
 
 /**
  * Demonstração animada (≈10 s, em loop) do produto: parte do quiz sendo
@@ -8,22 +9,22 @@ import { useEffect, useRef, useState } from 'react';
 
 const DEMO_QUESTIONS = [
   {
-    n: 5,
+    n: 11,
     title: 'Você sabe quantas vendas vieram dos anúncios no último mês?',
     options: ['Sim, com números confiáveis', 'Tenho uma estimativa', 'Acompanho leads, não vendas'],
     pick: 2,
   },
   {
-    n: 9,
-    title: 'Como você acompanha os contatos até a venda?',
-    options: ['CRM com etapas e status', 'Planilha manual', 'Só pelo WhatsApp, sem organização'],
+    n: 15,
+    title: 'Para qual resultado as campanhas são otimizadas?',
+    options: ['Vendas no site', 'Mensagens no WhatsApp', 'Cliques ou engajamento'],
     pick: 2,
   },
   {
-    n: 11,
-    title: 'Você sabe seu custo por cliente e se cabe na margem?',
-    options: ['Sim, acompanho ambos', 'Sei o custo, sem comparar', 'Tenho só uma estimativa'],
-    pick: 1,
+    n: 22,
+    title: 'Quanto tempo leva para responder um novo contato?',
+    options: ['Até 5 minutos', 'Até 1 hora', 'No mesmo dia'],
+    pick: 2,
   },
 ];
 
@@ -195,7 +196,7 @@ function QuizFrame({ q, picked }: { q: number; picked: boolean }) {
   const d = DEMO_QUESTIONS[q];
   return (
     <div className="anim-rise">
-      <p className="tabular text-xs font-semibold text-ink-mute">Pergunta {d.n} de 12</p>
+      <p className="tabular text-xs font-semibold text-ink-mute">Pergunta {d.n} de {TOTAL_QUESTIONS}</p>
       <p className="mt-1 text-lg font-bold leading-snug">{d.title}</p>
       <ul className="mt-4 space-y-2">
         {d.options.map((o, i) => {

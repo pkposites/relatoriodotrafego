@@ -21,7 +21,7 @@ Requer Node 18+.
 | Rota | Conteúdo |
 |---|---|
 | `/` | Landing page |
-| `/diagnostico` | Quiz (12 perguntas em 4 etapas + dados opcionais). `?q=5` abre a pergunta 5 para edição |
+| `/diagnostico` | Quiz (23 perguntas em 5 etapas + números e contexto opcionais). `?q=5` abre a pergunta 5 para edição |
 | `/resultado` | Pré-diagnóstico gratuito (índice, pilares, prioridades, indicadores) |
 | `/planos` | Três ofertas + comparação |
 | `/diagnostico-especialista` | Página explicativa do Diagnóstico com Especialista (WhatsApp, sem chamada, sem acesso às contas) |
@@ -49,11 +49,13 @@ docs/screenshots/          capturas em 390px e 1280px
 
 ## Motor de pontuação (resumo)
 
-- Somente Q5, Q8, Q9, Q10 e Q11 pontuam. Segmento, orçamento, responsável, dores, plataforma e objetivo **não** alteram a nota.
-- Cada opção contribui com `{ valor 0–100, peso de evidência }` para um ou mais pilares. Nota do pilar = média ponderada.
-- Evidência do pilar = pesos obtidos ÷ pesos possíveis. Respostas "não sei" reduzem a evidência → "evidência limitada".
-- Índice geral = média dos pilares ponderada por **peso estratégico × evidência** (Mensuração 25, Rentabilidade 25, Estratégia 20, Criativos 15, Conversão 15).
-- Confiança = 85% evidência dos pilares + 15% contexto (orçamento informado, dados numéricos informados).
-- Três prioridades = pilares de menor nota (empate → maior peso).
+- **23 perguntas em 5 etapas** (negócio · investimento e objetivos · mensuração e sinal · campanhas e criativos · conversão e atendimento). Duas são de múltipla escolha (rastreamento e formatos de criativo).
+- **Pilares (pesos):** Mensuração e sinal 25 · Eficiência e rentabilidade 25 · Estratégia de campanha 20 · Criativos e oferta 15 · Conversão e atendimento 15.
+- Segmento, ticket, ciclo, orçamento, gestor, plataformas, tempo de conta, dor e objetivo **não** alteram a nota — servem para personalizar o texto, os alertas e a qualificação comercial.
+- Cada opção contribui com `{ valor 0–100, peso de evidência }`; múltipla escolha soma `points` (máx. 100). "Não sei" reduz a evidência → "evidência limitada".
+- **Travas realistas** (`RULES` em `src/lib/scoring.ts`): otimizar para cliques/engajamento → estratégia ≤ 35; "Impulsionar" → ≤ 40; criativos iguais há meses → ≤ 35; resposta em mais de um dia → conversão ≤ 30; custo por venda acima do lucro bruto → rentabilidade ≤ 25; sem identificar vendas e sem pixel/CAPI → índice ≤ 45; sem margem e sem custo por cliente → índice ≤ 55. **Piso:** números que comprovam folga → rentabilidade ≥ 75. Só aparecem para o usuário quando de fato mudam a nota.
+- **Economia da unidade** (`src/lib/economics.ts`): margem declarada → ROAS de equilíbrio; com ticket e vendas → lucro bruto por venda vs. custo por venda. Números implausíveis geram aviso e não alimentam travas.
+- **Personalização** (`src/lib/report.ts`): leitura do cenário, dica por segmento, até 4 alertas que cruzam respostas, 3 prioridades com várias variantes de hipótese/ação por pilar e primeiro passo alinhado ao objetivo declarado.
+- **Pacote para a IA** (`src/lib/aiContext.ts`): JSON com todas as respostas legíveis, números, economia da unidade, notas, travas, alertas, prioridades, contexto livre e instruções. Visível em `/admin-demo` → detalhe do lead.
 
-Os pesos são iniciais e ajustáveis em `src/data/questions.ts`; os testes cobrem extremos, respostas ausentes, determinismo e independência das perguntas de contexto.
+Pesos e regras são iniciais e ajustáveis; os testes cobrem extremos, respostas ausentes, determinismo, travas, piso, personalização e o pacote da IA.

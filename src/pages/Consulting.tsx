@@ -2,12 +2,12 @@ import { ArrowLeft, CheckCircle2 } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button, Card, DemoBanner, LinkButton } from '../components/ui';
-import { getQuestion } from '../data/questions';
+import { getQuestion, single } from '../data/questions';
 import { loadQuiz, newId, upsertLocalLead } from '../lib/storage';
 import type { ConsultingRequest } from '../types';
 
-const BUDGETS = getQuestion('q2')!.options;
-const DIFFICULTIES = getQuestion('q4')!.options;
+const BUDGETS = getQuestion('orcamento')!.options;
+const DIFFICULTIES = getQuestion('dor')!.options;
 const CHANNELS = ['WhatsApp', 'E-mail', 'Ligação'];
 
 type Errors = Partial<Record<keyof ConsultingRequest, string>>;
@@ -17,8 +17,8 @@ export default function Consulting() {
   const [form, setForm] = useState<ConsultingRequest>({
     name: '',
     company: '',
-    budget: quiz?.answers.q2 ?? '',
-    difficulty: quiz?.answers.q4 ?? '',
+    budget: (quiz && single(quiz.answers, 'orcamento')) ?? '',
+    difficulty: (quiz && single(quiz.answers, 'dor')) ?? '',
     channel: '',
     message: '',
     marketingOptIn: false,
@@ -49,7 +49,7 @@ export default function Consulting() {
     upsertLocalLead({
       id: quiz?.completedAt ? quiz.sessionId : newId('sim'),
       company: form.company.trim(),
-      answers: { ...answers, q2: form.budget, q4: form.difficulty },
+      answers: { ...answers, orcamento: form.budget, dor: form.difficulty },
       metrics: quiz?.completedAt ? quiz.metrics : undefined,
       plan: 'consultoria',
       consulting: { ...form, name: form.name.trim(), company: form.company.trim() },

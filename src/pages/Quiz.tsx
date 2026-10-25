@@ -2,11 +2,11 @@ import { ArrowLeft, ArrowRight, Check, Info, RotateCcw, Sparkles } from 'lucide-
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Button, ProgressBar } from '../components/ui';
-import { QUESTIONS, STAGES, TOTAL_QUESTIONS } from '../data/questions';
+import { QUESTIONS, STAGES, TOTAL_QUESTIONS, answerIds } from '../data/questions';
 import { validateMetrics, type MetricField } from '../lib/metrics';
-import { answeredCount, isComplete } from '../lib/scoring';
+import { answeredCount, isAnswered, isComplete } from '../lib/scoring';
 import { loadQuiz, newQuizState, saveQuiz, type QuizState } from '../lib/storage';
-import type { QuestionId } from '../types';
+import type { AnswerValue, FreeContext, Question } from '../types';
 
 const OPTIONAL_STEP = TOTAL_QUESTIONS;
 const AUTO_ADVANCE_MS = 320;
@@ -54,7 +54,7 @@ export default function Quiz() {
       window.clearTimeout(timer.current);
       const to = from + 1;
       if (to >= OPTIONAL_STEP) return goTo(OPTIONAL_STEP);
-      if (to % 3 === 0 && !editing) {
+      if (QUESTIONS[to].stage !== QUESTIONS[from].stage && !editing) {
         setScreen({ kind: 'transition', stage: QUESTIONS[to].stage, to });
         setState((s) => ({ ...s, step: to }));
         return;
@@ -82,12 +82,25 @@ export default function Quiz() {
     if (editing) setParams({}, { replace: true });
   };
 
-  const choose = (qid: QuestionId, optionId: string, hasNote: boolean) => {
+  const choose = (q: Question, optionId: string) => {
     window.clearTimeout(timer.current);
     setNotice(undefined);
     setShowResume(false);
-    setState((s) => ({ ...s, answers: { ...s.answers, [qid]: optionId }, completedAt: undefined }));
-    if (!hasNote) {
+    const option = q.options.find((o) => o.id === optionId)!;
+    if (q.multi) {
+      // Múltipla escolha: alterna a opção; opções exclusivas desmarcam as demais. Sem avanço automático.
+      setState((s) => {
+        const current = answerIds(q.id, s.answers[q.id]);
+        let next: string[];
+        if (current.includes(optionId)) next = current.filter((id) => id !== optionId);
+        else if (option.exclusive) next = [optionId];
+        else next = [...current.filter((id) => !q.options.find((o) => o.id === id)?.exclusive), optionId];
+        return { ...s, answers: { ...s.answers, [q.id]: next }, completedAt: undefined };
+      });
+      return;
+    }
+    setState((s) => ({ ...s, answers: { ...s.answers, [q.id]: optionId }, completedAt: undefined }));
+    if (!option.note) {
       const from = state.step;
       timer.current = window.setTimeout(() => goNext(from), AUTO_ADVANCE_MS);
     }
@@ -102,7 +115,7 @@ export default function Quiz() {
 
   const finish = (metrics?: QuizState['metrics'], skipped = false) => {
     if (!isComplete(state.answers)) {
-      const first = QUESTIONS.findIndex((q) => !state.answers[q.id]);
+      const first = QUESTIONS.findIndex((q) => !isAnswered(q, state.answers));
       setNotice('Falta responder algumas perguntas para gerar o resultado.');
       return goTo(Math.max(0, first));
     }
@@ -145,6 +158,7 @@ export default function Quiz() {
           state={state}
           headingRef={headingRef}
           onChange={(metricsRaw) => setState((s) => ({ ...s, metricsRaw }))}
+          onContextChange={(context) => setState((s) => ({ ...s, context }))}
           onBack={goBack}
           onFinish={finish}
         />
@@ -152,7 +166,7 @@ export default function Quiz() {
         <QuestionScreen
           key={state.step}
           step={state.step}
-          selected={state.answers[QUESTIONS[state.step].id]}
+          value={state.answers[QUESTIONS[state.step].id]}
           headingRef={headingRef}
           onChoose={choose}
           onBack={goBack}
@@ -165,7 +179,7 @@ export default function Quiz() {
 }
 
 function QuizTopBar({ step, progress, answered, onRestart }: { step: number; progress: number; answered: number; onRestart: () => void }) {
-  const stage = step < OPTIONAL_STEP ? QUESTIONS[step].stage : 4;
+  const stage = step < OPTIONAL_STEP ? QUESTIONS[step].stage : STAGES.length;
   return (
     <div className="mb-6">
       <div className="mb-3 flex items-center justify-between gap-3">
@@ -211,7 +225,7 @@ function StageTransition({
         <Sparkles className="h-6 w-6" aria-hidden />
       </span>
       <p className="mt-4 text-xs font-bold uppercase tracking-wider text-brand">
-        Etapa {s.id} de 4 · {s.name}
+        Etapa {s.id} de {STAGES.length} · {s.name}
       </p>
       <h1 ref={headingRef} tabIndex={-1} className="mx-auto mt-2 max-w-md text-2xl font-bold tracking-tight outline-none">
         {s.intro}
@@ -230,7 +244,7 @@ function StageTransition({
 
 function QuestionScreen({
   step,
-  selected,
+  value,
   headingRef,
   onChoose,
   onBack,
@@ -238,16 +252,18 @@ function QuestionScreen({
   showResult,
 }: {
   step: number;
-  selected?: string;
+  value?: AnswerValue;
   headingRef: React.RefObject<HTMLHeadingElement>;
-  onChoose: (qid: QuestionId, optionId: string, hasNote: boolean) => void;
+  onChoose: (q: Question, optionId: string) => void;
   onBack: () => void;
   onNext: () => void;
   showResult?: () => void;
 }) {
   const q = QUESTIONS[step];
   const stage = STAGES[q.stage - 1];
-  const note = q.options.find((o) => o.id === selected)?.note;
+  const chosen = answerIds(q.id, value);
+  const selected = chosen.length > 0;
+  const note = q.options.find((o) => chosen.includes(o.id))?.note;
   const headingId = `q-${q.id}`;
 
   return (
@@ -262,16 +278,17 @@ function QuestionScreen({
         {q.title}
       </h1>
       <p className="mt-2 text-ink-soft">{q.subtitle}</p>
+      {q.multi && <p className="mt-1 text-sm font-semibold text-brand">Marque uma ou mais opções.</p>}
 
       <div role="group" aria-labelledby={headingId} className="mt-6 space-y-2.5">
         {q.options.map((o) => {
-          const active = selected === o.id;
+          const active = chosen.includes(o.id);
           return (
             <button
               key={o.id}
               type="button"
               aria-pressed={active}
-              onClick={() => onChoose(q.id, o.id, !!o.note)}
+              onClick={() => onChoose(q, o.id)}
               className={`group flex min-h-[56px] w-full items-center gap-3 rounded-xl border bg-white px-4 py-3.5 text-left text-[15px] font-medium transition-all duration-150 sm:text-base ${
                 active
                   ? 'border-brand bg-brand-50/60 shadow-[0_0_0_3px_rgba(8,102,255,0.12)]'
@@ -279,7 +296,7 @@ function QuestionScreen({
               }`}
             >
               <span
-                className={`grid h-5 w-5 shrink-0 place-items-center rounded-full border-2 transition-colors ${
+                className={`grid h-5 w-5 shrink-0 place-items-center ${q.multi ? 'rounded-md' : 'rounded-full'} border-2 transition-colors ${
                   active ? 'border-brand bg-brand text-white' : 'border-[#D0D5DD] group-hover:border-brand/50'
                 }`}
                 aria-hidden
@@ -308,7 +325,7 @@ function QuestionScreen({
             Ver resultado atualizado <ArrowRight className="h-4 w-4" aria-hidden />
           </Button>
         ) : (
-          <Button onClick={onNext} disabled={!selected} className={`flex-[2] sm:ml-auto sm:flex-none ${note ? 'ring-4 ring-brand-100' : ''}`}>
+          <Button onClick={onNext} disabled={!selected} className={`flex-[2] sm:ml-auto sm:flex-none ${note || (q.multi && selected) ? 'ring-4 ring-brand-100' : ''}`}>
             Continuar <ArrowRight className="h-4 w-4" aria-hidden />
           </Button>
         )}
@@ -328,12 +345,14 @@ function OptionalMetrics({
   state,
   headingRef,
   onChange,
+  onContextChange,
   onBack,
   onFinish,
 }: {
   state: QuizState;
   headingRef: React.RefObject<HTMLHeadingElement>;
   onChange: (raw: QuizState['metricsRaw']) => void;
+  onContextChange: (context: FreeContext) => void;
   onBack: () => void;
   onFinish: (metrics?: QuizState['metrics'], skipped?: boolean) => void;
 }) {
@@ -390,6 +409,38 @@ function OptionalMetrics({
         ))}
       </div>
       <p className="mt-3 text-xs text-ink-mute">Os números ficam apenas neste navegador e servem para estimativas baseadas nos dados informados.</p>
+
+      <div className="card mt-5 grid gap-5 p-5 sm:p-6">
+        <div>
+          <p className="font-bold">Contexto para a análise (opcional)</p>
+          <p className="mt-0.5 text-sm text-ink-soft">Quanto mais contexto, mais personalizado fica o relatório completo.</p>
+        </div>
+        <div>
+          <label htmlFor="ctx-produto" className="label">O que você vende e para quem?</label>
+          <textarea
+            id="ctx-produto"
+            rows={2}
+            maxLength={300}
+            className="input resize-y"
+            placeholder="Ex.: harmonização facial para mulheres de 30 a 50 anos em Campinas"
+            value={state.context?.produto ?? ''}
+            onChange={(e) => onContextChange({ ...state.context, produto: e.target.value })}
+          />
+        </div>
+        <div>
+          <label htmlFor="ctx-obs" className="label">Algo mais que devemos saber?</label>
+          <textarea
+            id="ctx-obs"
+            rows={3}
+            maxLength={600}
+            className="input resize-y"
+            placeholder="Ex.: os resultados caíram depois de março; o melhor mês foi dezembro; vendemos mais pelo WhatsApp"
+            value={state.context?.observacoes ?? ''}
+            onChange={(e) => onContextChange({ ...state.context, observacoes: e.target.value })}
+          />
+          <p className="mt-1.5 text-xs text-ink-mute">Não inclua dados pessoais de clientes (nomes, telefones, documentos).</p>
+        </div>
+      </div>
 
       <div className="mt-8 flex flex-col-reverse gap-3 sm:flex-row sm:items-center">
         <Button variant="secondary" onClick={onBack}>

@@ -1,13 +1,13 @@
-import { AlertTriangle, ArrowRight, Check, CheckCircle2, ChevronDown, ClipboardList, Lightbulb, Pencil, RotateCcw, ShieldAlert, Sparkles, Target } from 'lucide-react';
+import { AlertTriangle, ArrowRight, Check, CheckCircle2, ChevronDown, ClipboardList, Compass, Lightbulb, Lock, Pencil, RotateCcw, Scale, ShieldAlert, Sparkles, Target, TrendingUp } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { PillarBars, ScoreGauge } from '../components/charts';
 import { Badge, Button, Card, LinkButton } from '../components/ui';
-import { PILLARS, QUESTIONS } from '../data/questions';
+import { PILLARS, QUESTIONS, TOTAL_QUESTIONS, getOptionLabel } from '../data/questions';
 import { formatBRL, formatDec, formatPct } from '../lib/format';
 import { buildReport } from '../lib/report';
 import { clearQuiz, loadQuiz, upsertLocalLead } from '../lib/storage';
-import type { ComputedMetrics, ConfidenceLevel } from '../types';
+import type { Alert, ComputedMetrics, ConfidenceLevel, ScoreAdjustment, UnitEconomics } from '../types';
 
 const CONFIDENCE: Record<ConfidenceLevel, { label: string; tone: 'ok' | 'brand' | 'warn'; text: string }> = {
   alta: { label: 'Confiança alta', tone: 'ok', text: 'Você respondeu com segurança às perguntas que compõem o índice.' },
@@ -23,7 +23,7 @@ export default function Result() {
   const [showAnswers, setShowAnswers] = useState(false);
 
   useEffect(() => {
-    if (quiz && ready) upsertLocalLead({ id: quiz.sessionId, answers: quiz.answers, metrics: quiz.metrics });
+    if (quiz && ready) upsertLocalLead({ id: quiz.sessionId, answers: quiz.answers, metrics: quiz.metrics, context: quiz.context });
   }, [quiz, ready]);
 
   if (!quiz || !report) {
@@ -36,7 +36,7 @@ export default function Result() {
         <p className="mt-2 text-ink-soft">
           {quiz && Object.keys(quiz.answers).length
             ? 'Seu diagnóstico está incompleto. Continue de onde parou para ver o resultado.'
-            : 'Responda às 12 perguntas do diagnóstico para ver seu Relatório do Tráfego.'}
+            : `Responda às ${TOTAL_QUESTIONS} perguntas do diagnóstico para ver seu Relatório do Tráfego.`}
         </p>
         <LinkButton to="/diagnostico" size="lg" className="mt-6">
           {quiz && Object.keys(quiz.answers).length ? 'Continuar diagnóstico' : 'Começar diagnóstico'} <ArrowRight className="h-5 w-5" aria-hidden />
@@ -45,7 +45,7 @@ export default function Result() {
     );
   }
 
-  const { score, mainGap, gaps, strength, firstStep, painContext, metrics } = report;
+  const { score, mainGap, gaps, strength, firstStep, painContext, metrics, profile, segmentTip, alerts, economics } = report;
   const conf = CONFIDENCE[score.confidenceLevel];
 
   const redo = () => {
@@ -88,6 +88,8 @@ export default function Result() {
         </Card>
       </div>
 
+      {score.adjustments.length > 0 && <Adjustments items={score.adjustments} />}
+
       {/* Destaques */}
       <div className="mt-4 grid gap-4 md:grid-cols-3">
         <Card className="anim-rise border-l-4 border-l-bad p-5 [animation-delay:120ms]">
@@ -112,9 +114,20 @@ export default function Result() {
         </Card>
       </div>
 
-      {painContext && (
-        <p className="mt-4 rounded-xl border border-line bg-white p-4 text-sm text-ink-soft">{painContext}</p>
-      )}
+      {/* Leitura do cenário */}
+      <Card className="mt-4 p-5 sm:p-6">
+        <div className="flex items-center gap-2 text-sm font-bold text-ink">
+          <Compass className="h-4 w-4 text-brand" aria-hidden /> Leitura do seu cenário
+        </div>
+        <p className="mt-2 text-ink">{profile}</p>
+        {painContext && <p className="mt-2 text-sm text-ink-soft">{painContext}</p>}
+        <p className="mt-3 rounded-lg bg-canvas p-3 text-sm text-ink-soft">
+          <strong className="text-ink">No seu segmento: </strong>
+          {segmentTip}
+        </p>
+      </Card>
+
+      {alerts.length > 0 && <AlertList alerts={alerts} />}
 
       {/* Lacunas */}
       <section className="mt-8" aria-labelledby="gaps-title">
@@ -183,6 +196,8 @@ export default function Result() {
         </div>
       </section>
 
+      {economics.breakevenRoas && <EconomicsCard e={economics} />}
+
       {metrics.hasAny && <MetricsCard metrics={metrics} />}
 
       <Card className="mt-4 p-5">
@@ -211,7 +226,7 @@ export default function Result() {
               <div key={q.id} className="flex items-start justify-between gap-4 p-4">
                 <div className="min-w-0">
                   <p className="text-xs font-semibold text-ink-mute">{i + 1}. {q.title}</p>
-                  <p className="mt-0.5 text-sm font-semibold">{q.options.find((o) => o.id === quiz.answers[q.id])?.label ?? '—'}</p>
+                  <p className="mt-0.5 text-sm font-semibold">{getOptionLabel(q.id, quiz.answers[q.id]) ?? '—'}</p>
                 </div>
                 <Link to={`/diagnostico?q=${i + 1}`} className="flex shrink-0 items-center gap-1 rounded-lg px-2 py-1 text-sm font-semibold text-brand hover:bg-brand-50">
                   <Pencil className="h-3.5 w-3.5" aria-hidden /> Editar
@@ -272,6 +287,102 @@ function MetricsCard({ metrics }: { metrics: ComputedMetrics }) {
           <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" aria-hidden /> {w}
         </p>
       ))}
+    </section>
+  );
+}
+
+function Adjustments({ items }: { items: ScoreAdjustment[] }) {
+  const caps = items.filter((i) => i.kind === 'cap');
+  const floors = items.filter((i) => i.kind === 'floor');
+  return (
+    <Card className="mt-4 p-5 sm:p-6">
+      {caps.length > 0 && (
+        <>
+          <div className="flex items-center gap-2 text-sm font-bold text-ink">
+            <Lock className="h-4 w-4 text-warn-700" aria-hidden /> Por que sua nota não é maior
+          </div>
+          <p className="mt-1 text-xs text-ink-mute">Algumas situações limitam a nota, mesmo que o restante esteja bem.</p>
+          <ul className="mt-3 space-y-2 text-sm">
+            {caps.map((c) => (
+              <li key={c.reason} className="flex gap-3 rounded-lg bg-warn-50 p-3">
+                <span className="tabular shrink-0 font-bold text-warn-700">
+                  {c.scope === 'geral' ? 'Índice' : PILLARS[c.scope].name}: máx. {c.limit}
+                </span>
+                <span className="text-ink-soft">{c.reason}</span>
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
+      {floors.map((f) => (
+        <p key={f.reason} className={`flex gap-2 rounded-lg bg-ok-50 p-3 text-sm text-[#067647] ${caps.length ? 'mt-3' : ''}`}>
+          <TrendingUp className="mt-0.5 h-4 w-4 shrink-0" aria-hidden /> {f.reason}
+        </p>
+      ))}
+    </Card>
+  );
+}
+
+const SEVERITY_STYLE: Record<Alert['severity'], { label: string; cls: string }> = {
+  alta: { label: 'Atenção alta', cls: 'border-l-bad bg-white' },
+  media: { label: 'Atenção média', cls: 'border-l-warn bg-white' },
+  baixa: { label: 'Observação', cls: 'border-l-brand bg-white' },
+};
+
+function AlertList({ alerts }: { alerts: Alert[] }) {
+  return (
+    <section className="mt-8" aria-labelledby="alerts-title">
+      <h2 id="alerts-title" className="text-xl font-bold">Alertas do seu cenário</h2>
+      <p className="mt-1 text-sm text-ink-soft">Combinações nas suas respostas que merecem atenção.</p>
+      <ul className="mt-4 grid gap-3 md:grid-cols-2">
+        {alerts.map((a) => (
+          <li key={a.id} className={`card border-l-4 p-4 ${SEVERITY_STYLE[a.severity].cls}`}>
+            <p className="text-[11px] font-bold uppercase tracking-wide text-ink-mute">{SEVERITY_STYLE[a.severity].label}</p>
+            <p className="mt-0.5 flex items-start gap-2 font-bold">
+              <AlertTriangle className={`mt-0.5 h-4 w-4 shrink-0 ${a.severity === 'alta' ? 'text-bad' : a.severity === 'media' ? 'text-warn' : 'text-brand'}`} aria-hidden />
+              {a.title}
+            </p>
+            <p className="mt-1 text-sm text-ink-soft">{a.text}</p>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
+const ECON_STATUS: Record<NonNullable<UnitEconomics['status']>, { label: string; cls: string }> = {
+  acima_da_margem: { label: 'Custo por venda acima da margem', cls: 'bg-bad-50 text-bad-700' },
+  apertado: { label: 'Margem apertada', cls: 'bg-warn-50 text-warn-700' },
+  saudavel: { label: 'Folga saudável', cls: 'bg-ok-50 text-[#067647]' },
+};
+
+function EconomicsCard({ e }: { e: UnitEconomics }) {
+  const tiles = [
+    { label: 'Margem estimada', value: e.marginRate !== undefined ? formatPct(e.marginRate) : undefined },
+    { label: 'ROAS de equilíbrio', value: e.breakevenRoas !== undefined ? `${formatDec(Math.round(e.breakevenRoas * 10) / 10)}x` : undefined },
+    { label: 'Lucro bruto por venda', value: e.grossProfitPerSale !== undefined ? formatBRL(e.grossProfitPerSale) : undefined },
+    { label: 'Seu custo por venda', value: e.cpa !== undefined ? formatBRL(e.cpa) : undefined },
+  ];
+  return (
+    <section className="mt-8" aria-labelledby="econ-title">
+      <h2 id="econ-title" className="flex items-center gap-2 text-xl font-bold">
+        <Scale className="h-5 w-5 text-brand" aria-hidden /> Sua conta de equilíbrio
+      </h2>
+      <p className="mt-1 text-sm text-ink-soft">
+        Com a margem informada, este é o retorno mínimo para os anúncios se pagarem. Estimativa baseada nos dados informados.
+      </p>
+      <div className="mt-4 grid grid-cols-2 gap-3 md:grid-cols-4">
+        {tiles.map((t) => (
+          <div key={t.label} className="card p-4">
+            <p className="text-xs font-semibold text-ink-mute">{t.label}</p>
+            <p className={`tabular mt-1 text-xl font-bold ${t.value ? '' : 'text-ink-mute'}`}>{t.value ?? '—'}</p>
+          </div>
+        ))}
+      </div>
+      {e.status && <p className={`mt-3 inline-flex rounded-full px-3 py-1 text-sm font-semibold ${ECON_STATUS[e.status].cls}`}>{ECON_STATUS[e.status].label}</p>}
+      {!e.grossProfitPerSale && (
+        <p className="mt-2 text-xs text-ink-mute">Informe o ticket médio e as vendas nos dados opcionais para comparar com o seu custo por venda.</p>
+      )}
     </section>
   );
 }

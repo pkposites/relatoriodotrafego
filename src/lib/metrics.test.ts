@@ -37,6 +37,11 @@ describe('computeMetrics', () => {
     expect(computeMetrics({ sales: 10, avgTicket: 100 }).revenue).toBe(1000);
   });
 
+  it('avisa quando os valores parecem incomuns', () => {
+    expect(computeMetrics({ investment: 4.5, leads: 150, sales: 12, avgTicket: 900 }).warnings.length).toBeGreaterThan(0);
+    expect(computeMetrics({ investment: 4500, leads: 150, sales: 12, avgTicket: 900 }).warnings).toHaveLength(0);
+  });
+
   it('ignora valores negativos', () => {
     const m = computeMetrics({ investment: -100, leads: 10 });
     expect(m.cpl).toBeUndefined();
@@ -47,6 +52,10 @@ describe('entrada numérica', () => {
   it('aceita formatos brasileiros', () => {
     expect(parseNumberInput('1.500,50')).toBe(1500.5);
     expect(parseNumberInput('R$ 2000')).toBe(2000);
+    expect(parseNumberInput('4.500')).toBe(4500);
+    expect(parseNumberInput('1.250.000')).toBe(1250000);
+    expect(parseNumberInput('4.5')).toBe(4.5);
+    expect(parseNumberInput('R$ 4.500,90')).toBe(4500.9);
     expect(parseNumberInput('')).toBeUndefined();
     expect(parseNumberInput('abc')).toBe('invalid');
   });

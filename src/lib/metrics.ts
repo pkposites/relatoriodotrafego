@@ -15,6 +15,8 @@ export function parseNumberInput(raw: string): number | undefined | 'invalid' {
   if (!t) return undefined;
   let normalized = t.replace(/\s|R\$/g, '');
   if (normalized.includes(',')) normalized = normalized.replace(/\./g, '').replace(',', '.');
+  // Ponto como separador de milhar no padrão brasileiro: "4.500" = 4500, "1.250.000" = 1250000.
+  else if (/^\d{1,3}(\.\d{3})+$/.test(normalized)) normalized = normalized.replace(/\./g, '');
   const n = Number(normalized);
   return Number.isFinite(n) ? n : 'invalid';
 }
@@ -74,6 +76,10 @@ export function computeMetrics(m?: OptionalMetricsInput): ComputedMetrics {
   if (sales !== undefined && sales > 0 && ticket !== undefined && ticket > 0) {
     out.revenue = sales * ticket;
     if (inv !== undefined && inv > 0) out.roas = out.revenue / inv;
+  }
+
+  if ((out.roas !== undefined && out.roas > 30) || (out.cpl !== undefined && out.cpl < 0.5)) {
+    out.warnings.push('Alguns valores parecem fora do comum. Confira se o investimento e as quantidades foram digitados corretamente.');
   }
 
   if (inv === 0 && ((leads ?? 0) > 0 || (sales ?? 0) > 0)) {

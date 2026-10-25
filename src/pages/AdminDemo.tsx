@@ -3,10 +3,11 @@ import { useMemo, useRef, useState } from 'react';
 import { DistributionList, toneForScore } from '../components/charts';
 import { Badge, Button, Card } from '../components/ui';
 import { getPlan } from '../data/plans';
-import { QUESTIONS, getOptionLabel, getQuestion } from '../data/questions';
+import { QUESTIONS, getOptionLabel, getQuestion, single } from '../data/questions';
 import { SAMPLE_LEADS } from '../data/sampleLeads';
 import { formatBRL, formatDate } from '../lib/format';
 import { TIER_LABEL, commercialScore } from '../lib/leadQualification';
+import { buildAiContext } from '../lib/aiContext';
 import { computeMetrics } from '../lib/metrics';
 import { computeScore } from '../lib/scoring';
 import { clearDemo, loadLocalLeads } from '../lib/storage';
@@ -35,7 +36,7 @@ function short(label?: string, max = 34) {
 function distribution(rows: Row[], qid: string) {
   const q = getQuestion(qid)!;
   return q.options
-    .map((o) => ({ label: o.label, count: rows.filter((r) => r.lead.answers[q.id] === o.id).length }))
+    .map((o) => ({ label: o.label, count: rows.filter((r) => single(r.lead.answers, q.id) === o.id).length }))
     .filter((d) => d.count > 0)
     .sort((a, b) => b.count - a.count);
 }
@@ -58,9 +59,9 @@ export default function AdminDemo() {
 
   const filtered = rows.filter(({ lead }) => {
     const a = lead.answers;
-    if (filters.budget && a.q2 !== filters.budget) return false;
-    if (filters.pain && a.q4 !== filters.pain) return false;
-    if (filters.manager && a.q3 !== filters.manager) return false;
+    if (filters.budget && single(a, 'orcamento') !== filters.budget) return false;
+    if (filters.pain && single(a, 'dor') !== filters.pain) return false;
+    if (filters.manager && single(a, 'gestor') !== filters.manager) return false;
     if (filters.plan === 'none' && lead.plan) return false;
     if (filters.plan && filters.plan !== 'none' && lead.plan !== filters.plan) return false;
     return true;
@@ -122,15 +123,15 @@ export default function AdminDemo() {
       <div className="mt-4 grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-4">
         <Card className="p-5">
           <h2 className="mb-4 text-sm font-bold">Por segmento</h2>
-          <DistributionList items={distribution(rows, 'q1')} total={rows.length} />
+          <DistributionList items={distribution(rows, 'segmento')} total={rows.length} />
         </Card>
         <Card className="p-5">
           <h2 className="mb-4 text-sm font-bold">Por orçamento</h2>
-          <DistributionList items={distribution(rows, 'q2')} total={rows.length} />
+          <DistributionList items={distribution(rows, 'orcamento')} total={rows.length} />
         </Card>
         <Card className="p-5">
           <h2 className="mb-4 text-sm font-bold">Por principal dor</h2>
-          <DistributionList items={distribution(rows, 'q4')} total={rows.length} />
+          <DistributionList items={distribution(rows, 'dor')} total={rows.length} />
         </Card>
         <Card className="p-5">
           <h2 className="mb-4 text-sm font-bold">Por plano selecionado</h2>
@@ -146,9 +147,9 @@ export default function AdminDemo() {
       {/* Filtros */}
       <Card className="mt-4 p-4">
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          <FilterSelect label="Orçamento" value={filters.budget} onChange={(v) => setFilters((f) => ({ ...f, budget: v }))} qid="q2" />
-          <FilterSelect label="Principal dor" value={filters.pain} onChange={(v) => setFilters((f) => ({ ...f, pain: v }))} qid="q4" />
-          <FilterSelect label="Gestão atual" value={filters.manager} onChange={(v) => setFilters((f) => ({ ...f, manager: v }))} qid="q3" />
+          <FilterSelect label="Orçamento" value={filters.budget} onChange={(v) => setFilters((f) => ({ ...f, budget: v }))} qid="orcamento" />
+          <FilterSelect label="Principal dor" value={filters.pain} onChange={(v) => setFilters((f) => ({ ...f, pain: v }))} qid="dor" />
+          <FilterSelect label="Gestão atual" value={filters.manager} onChange={(v) => setFilters((f) => ({ ...f, manager: v }))} qid="gestor" />
           <div>
             <label htmlFor="flt-plan" className="mb-1 block text-xs font-semibold text-ink-mute">Interesse em atendimento</label>
             <select id="flt-plan" className="input py-2 text-sm" value={filters.plan} onChange={(e) => setFilters((f) => ({ ...f, plan: e.target.value }))}>
@@ -197,9 +198,9 @@ export default function AdminDemo() {
                         <span className="text-xs text-ink-mute">{formatDate(r.lead.createdAt)}</span>
                       </div>
                     </td>
-                    <td className="px-4 py-3 text-ink-soft">{short(getOptionLabel('q2', r.lead.answers.q2), 22)}</td>
-                    <td className="px-4 py-3 text-ink-soft">{short(getOptionLabel('q7', r.lead.answers.q7), 26)}</td>
-                    <td className="px-4 py-3 text-ink-soft">{short(getOptionLabel('q4', r.lead.answers.q4), 30)}</td>
+                    <td className="px-4 py-3 text-ink-soft">{short(getOptionLabel('orcamento', r.lead.answers.orcamento), 22)}</td>
+                    <td className="px-4 py-3 text-ink-soft">{short(getOptionLabel('plataformas', r.lead.answers.plataformas), 26)}</td>
+                    <td className="px-4 py-3 text-ink-soft">{short(getOptionLabel('dor', r.lead.answers.dor), 30)}</td>
                     <td className="px-4 py-3">
                       {r.score.complete ? <Badge tone={toneForScore(r.score.overall)}>{r.score.overall}</Badge> : <span className="text-xs text-ink-mute">Incompleto</span>}
                     </td>
@@ -338,6 +339,16 @@ function LeadDetail({ row, onClose }: { row: Row; onClose: () => void }) {
         </ul>
       </div>
 
+      {(lead.context?.produto || lead.context?.observacoes) && (
+        <div className="mt-4 rounded-xl border border-line p-3 text-sm">
+          <h3 className="text-xs font-bold uppercase tracking-wide text-ink-mute">Contexto livre</h3>
+          {lead.context?.produto && <p className="mt-1"><span className="font-semibold">Produto/público:</span> {lead.context.produto}</p>}
+          {lead.context?.observacoes && <p className="mt-1 text-ink-soft">{lead.context.observacoes}</p>}
+        </div>
+      )}
+
+      <AiPayload lead={lead} />
+
       <details className="mt-4 rounded-xl border border-line">
         <summary className="cursor-pointer px-3 py-2 text-sm font-semibold">Respostas</summary>
         <ol className="space-y-2 px-3 pb-3 text-xs">
@@ -359,5 +370,31 @@ function Metric({ k, v }: { k: string; v: string }) {
       <dt className="text-[11px] text-ink-mute">{k}</dt>
       <dd className="tabular font-semibold">{v}</dd>
     </div>
+  );
+}
+
+function AiPayload({ lead }: { lead: LeadRecord }) {
+  const [copied, setCopied] = useState(false);
+  const json = useMemo(() => JSON.stringify(buildAiContext(lead.answers, lead.metrics, lead.context), null, 2), [lead]);
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(json);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 1500);
+    } catch {
+      /* área de transferência indisponível */
+    }
+  };
+  return (
+    <details className="mt-4 rounded-xl border border-brand-100 bg-brand-50/40">
+      <summary className="cursor-pointer px-3 py-2 text-sm font-semibold text-brand-700">Pacote de dados para a IA (JSON)</summary>
+      <div className="px-3 pb-3">
+        <p className="text-xs text-ink-mute">É isto que a futura geração do PDF receberá. Nada é enviado nesta fase.</p>
+        <button type="button" onClick={copy} className="mt-2 rounded-lg border border-line bg-white px-2.5 py-1 text-xs font-semibold hover:bg-canvas">
+          {copied ? 'Copiado!' : 'Copiar JSON'}
+        </button>
+        <pre className="mt-2 max-h-72 overflow-auto rounded-lg bg-ink p-3 text-[11px] leading-relaxed text-white">{json}</pre>
+      </div>
+    </details>
   );
 }

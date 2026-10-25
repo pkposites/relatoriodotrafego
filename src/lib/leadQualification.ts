@@ -1,3 +1,4 @@
+import { single } from '../data/questions';
 import type { Answers, CommercialFactor, CommercialScore, LeadRecord } from '../types';
 
 /**
@@ -6,30 +7,31 @@ import type { Answers, CommercialFactor, CommercialScore, LeadRecord } from '../
  */
 const BUDGET_POINTS: Record<string, [number, string]> = {
   ate_1k: [5, 'Investimento até R$ 1.000/mês'],
-  '1k_3k': [15, 'Investimento de R$ 1.001 a R$ 3.000/mês'],
-  '3k_10k': [25, 'Investimento de R$ 3.001 a R$ 10.000/mês'],
-  acima_10k: [30, 'Investimento acima de R$ 10.000/mês'],
+  '1k_3k': [12, 'Investimento de R$ 1.001 a R$ 3.000/mês'],
+  '3k_10k': [22, 'Investimento de R$ 3.001 a R$ 10.000/mês'],
+  '10k_30k': [28, 'Investimento de R$ 10.001 a R$ 30.000/mês'],
+  acima_30k: [30, 'Investimento acima de R$ 30.000/mês'],
   nao_informar: [8, 'Orçamento não informado'],
 };
 
 /** Dores que a Qvn Ads atende diretamente. */
-const ALIGNED_PAINS = new Set(['nao_sabe', 'custo_alto', 'inconsistente', 'poucos_leads']);
-const ALIGNED_DISCOMFORT = new Set(['vale_a_pena', 'relatorios', 'criativos', 'nao_sabe']);
+const ALIGNED_PAINS = new Set(['nao_sabe', 'custo_alto', 'inconsistente', 'poucos_leads', 'leads_ruins']);
 
 export function commercialScore(answers: Answers, lead?: Pick<LeadRecord, 'plan' | 'consulting'>): CommercialScore {
   const factors: CommercialFactor[] = [];
 
-  const budget = answers.q2 ? BUDGET_POINTS[answers.q2] : undefined;
+  const budget = BUDGET_POINTS[single(answers, 'orcamento') ?? ''];
   if (budget) factors.push({ label: budget[1], points: budget[0] });
 
   let need = 0;
-  if (answers.q4 && ALIGNED_PAINS.has(answers.q4)) need += 10;
-  if (answers.q6 && ALIGNED_DISCOMFORT.has(answers.q6)) need += 10;
+  if (ALIGNED_PAINS.has(single(answers, 'dor') ?? '')) need += 10;
+  if (['raramente', 'quando_erra', 'nao_sabe'].includes(single(answers, 'analise') ?? '')) need += 5;
+  if (['fragmentada', 'impulsionar', 'nao_sabe'].includes(single(answers, 'estrutura') ?? '')) need += 5;
   if (need > 0) factors.push({ label: 'Necessidade alinhada aos serviços de tráfego', points: need });
 
   let seeking = 0;
-  if (answers.q3 === 'eu' || answers.q3 === 'ninguem') seeking += 10;
-  if (answers.q12 === 'avaliar_gestao') seeking += 10;
+  if (['eu', 'ninguem'].includes(single(answers, 'gestor') ?? '')) seeking += 10;
+  if (['avaliar_gestao', 'escalar'].includes(single(answers, 'objetivo') ?? '')) seeking += 10;
   if (seeking > 0) factors.push({ label: 'Sinais de busca por apoio especializado', points: seeking });
 
   if (lead?.consulting || lead?.plan === 'consultoria') {

@@ -1,8 +1,16 @@
 export type PillarId = 'mensuracao' | 'rentabilidade' | 'estrategia' | 'criativos' | 'conversao';
 
 export type QuestionId =
-  | 'q1' | 'q2' | 'q3' | 'q4' | 'q5' | 'q6'
-  | 'q7' | 'q8' | 'q9' | 'q10' | 'q11' | 'q12';
+  // Etapa 1 — negócio
+  | 'segmento' | 'ticket' | 'margem' | 'ciclo'
+  // Etapa 2 — investimento, gestão e objetivos
+  | 'orcamento' | 'gestor' | 'plataformas' | 'tempo_anuncio' | 'dor' | 'objetivo'
+  // Etapa 3 — mensuração e sinal
+  | 'vendas_origem' | 'rastreamento' | 'cac' | 'analise'
+  // Etapa 4 — campanhas, criativos e oferta
+  | 'otimizacao' | 'estrutura' | 'criativos_volume' | 'formatos' | 'testes' | 'oferta'
+  // Etapa 5 — conversão e atendimento
+  | 'destino' | 'tempo_resposta' | 'acompanhamento';
 
 /** Contribuição de uma resposta para um pilar. */
 export interface PillarContribution {
@@ -21,27 +29,42 @@ export interface QuestionOption {
   uncertain?: boolean;
   /** Texto curto exibido após a seleção (empatia, sem diagnóstico). */
   note?: string;
+  /** Múltipla escolha: pontos que a opção soma no pilar da pergunta. */
+  points?: number;
+  /** Múltipla escolha: opção que desmarca as demais (ex.: "Não sei"). */
+  exclusive?: boolean;
 }
 
 export type QuestionRole = 'contexto' | 'qualificacao' | 'dor' | 'diagnostico' | 'objetivo';
 
 export interface Question {
   id: QuestionId;
-  stage: 1 | 2 | 3 | 4;
+  stage: 1 | 2 | 3 | 4 | 5;
   title: string;
   subtitle: string;
   role: QuestionRole;
   options: QuestionOption[];
+  /** Permite marcar várias opções. A nota é a soma de `points` (máx. 100). */
+  multi?: boolean;
+  /** Para perguntas `multi`: em quais pilares a soma entra e com que peso. */
+  multiWeights?: Partial<Record<PillarId, number>>;
 }
 
 export interface Stage {
-  id: 1 | 2 | 3 | 4;
+  id: 1 | 2 | 3 | 4 | 5;
   name: string;
   /** Frase de transição exibida ao entrar na etapa (exceto a primeira). */
   intro: string;
 }
 
-export type Answers = Partial<Record<QuestionId, string>>;
+export type AnswerValue = string | string[];
+export type Answers = Partial<Record<QuestionId, AnswerValue>>;
+
+/** Contexto livre e opcional para a análise com IA (sem dados pessoais). */
+export interface FreeContext {
+  produto?: string;
+  observacoes?: string;
+}
 
 /** Dados complementares opcionais — últimos 30 dias. */
 export interface OptionalMetricsInput {
@@ -85,8 +108,19 @@ export interface Band {
 
 export type ConfidenceLevel = 'alta' | 'media' | 'baixa';
 
+/** Ajuste realista aplicado à nota: trava (teto) ou piso justificado por dados. */
+export interface ScoreAdjustment {
+  kind: 'cap' | 'floor';
+  scope: PillarId | 'geral';
+  limit: number;
+  /** Nota antes do ajuste. */
+  before: number;
+  reason: string;
+}
+
 export interface ScoreResult {
   overall: number;
+  adjustments: ScoreAdjustment[];
   band: Band;
   pillars: PillarResult[];
   confidence: number;
@@ -102,7 +136,31 @@ export interface Insight {
   action: string;
 }
 
+export type AlertSeverity = 'alta' | 'media' | 'baixa';
+
+export interface Alert {
+  id: string;
+  severity: AlertSeverity;
+  title: string;
+  text: string;
+}
+
+export interface UnitEconomics {
+  ticket?: number;
+  marginRate?: number;
+  grossProfitPerSale?: number;
+  breakevenRoas?: number;
+  cpa?: number;
+  roas?: number;
+  /** CPA comparado ao lucro bruto por venda. */
+  status?: 'acima_da_margem' | 'apertado' | 'saudavel';
+}
+
 export interface Report {
+  profile: string;
+  segmentTip: string;
+  alerts: Alert[];
+  economics: UnitEconomics;
   score: ScoreResult;
   mainGap: Insight;
   gaps: Insight[];
@@ -148,6 +206,7 @@ export interface LeadRecord {
   company: string;
   answers: Answers;
   metrics?: OptionalMetricsInput;
+  context?: FreeContext;
   plan?: PlanId;
   consulting?: ConsultingRequest;
   status: LeadStatus;
