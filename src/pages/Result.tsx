@@ -1,4 +1,4 @@
-import { AlertTriangle, ArrowRight, CheckCircle2, ChevronDown, ClipboardList, Lightbulb, Pencil, RotateCcw, ShieldAlert, Target } from 'lucide-react';
+import { AlertTriangle, ArrowRight, Check, CheckCircle2, ChevronDown, ClipboardList, Lightbulb, Pencil, RotateCcw, ShieldAlert, Sparkles, Target } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { PillarBars, ScoreGauge } from '../components/charts';
@@ -147,6 +147,41 @@ export default function Result() {
         </ol>
       </section>
 
+
+      {/* Oferta Express */}
+      <section className="card relative mt-8 overflow-hidden border-2 border-brand shadow-lift" aria-labelledby="offer-title">
+        <div className="grid gap-6 p-6 sm:p-8 md:grid-cols-[1.4fr_1fr] md:items-center">
+          <div>
+            <span className="chip bg-brand text-white">
+              <Sparkles className="h-3.5 w-3.5" aria-hidden /> Próximo passo recomendado
+            </span>
+            <h2 id="offer-title" className="mt-3 text-2xl font-extrabold tracking-tight">Receba o diagnóstico completo em PDF</h2>
+            <p className="mt-2 text-ink-soft">
+              Seu principal ponto de atenção é <strong className="text-ink">{mainGap.title.toLowerCase()}</strong>. O relatório completo aprofunda
+              cada pilar e entrega um plano de ação de 7 dias para você aplicar sozinho.
+            </p>
+            <ul className="mt-4 space-y-2 text-sm">
+              {['Os cinco pilares analisados um a um', 'Três gargalos com causa provável e impacto', 'Plano de ação de 7 dias, passo a passo', 'IA configurada com a metodologia de um gestor com mais de 45 contas ativas'].map((f) => (
+                <li key={f} className="flex gap-2">
+                  <Check className="mt-0.5 h-4 w-4 shrink-0 text-ok" aria-hidden /> {f}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="rounded-2xl bg-canvas p-5 text-center">
+            <p className="text-sm font-semibold text-ink-soft">Diagnóstico Express com IA</p>
+            <p className="tabular mt-1 text-4xl font-extrabold tracking-tight">R$ 59,90</p>
+            <p className="text-xs text-ink-mute">pagamento único · entrega automática</p>
+            <LinkButton to="/checkout-demo?plano=express" size="lg" className="mt-4 w-full">
+              Quero meu PDF com IA <ArrowRight className="h-5 w-5" aria-hidden />
+            </LinkButton>
+            <Link to="/planos" className="mt-3 inline-block text-sm font-semibold text-brand hover:underline">
+              Ver todas as opções
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {metrics.hasAny && <MetricsCard metrics={metrics} />}
 
       <Card className="mt-4 p-5">
@@ -158,17 +193,6 @@ export default function Result() {
           Baseado nas respostas fornecidas; não substitui auditoria técnica das contas.
         </p>
       </Card>
-
-      {/* CTAs */}
-      <div className="card mt-6 flex flex-col gap-4 bg-gradient-to-br from-white to-brand-50/60 p-6 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h2 className="text-lg font-bold">Quer um plano de ação detalhado?</h2>
-          <p className="text-sm text-ink-soft">Veja as opções de diagnóstico completo, com escopo e preço claros.</p>
-        </div>
-        <LinkButton to="/planos" size="lg" className="w-full sm:w-auto">
-          Ver opções de diagnóstico completo <ArrowRight className="h-5 w-5" aria-hidden />
-        </LinkButton>
-      </div>
 
       <div className="mt-4 flex flex-col gap-3 sm:flex-row">
         <Button variant="secondary" onClick={() => setShowAnswers((v) => !v)} aria-expanded={showAnswers} aria-controls="answers">

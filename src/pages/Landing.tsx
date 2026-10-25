@@ -68,7 +68,7 @@ const RECEIVE = [
   { icon: BarChart3, title: 'Nota de maturidade', text: 'Um índice indicativo de 0 a 100, com a avaliação de cada pilar.', free: true },
   { icon: Target, title: 'Principal gargalo', text: 'A área que mais merece atenção, de acordo com as suas respostas.', free: true },
   { icon: ArrowRight, title: 'Primeiro próximo passo', text: 'Uma ação prática para começar, sem custo.', free: true },
-  { icon: FileText, title: 'Relatório aprofundado', text: 'PDF personalizado ou orientação profissional — opcional e pago.', free: false },
+  { icon: FileText, title: 'Relatório aprofundado', text: 'Plano de ação completo em PDF com IA por R$ 59,90 — opcional.', free: false },
 ];
 
 export default function Landing() {
