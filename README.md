@@ -24,6 +24,7 @@ Requer Node 18+.
 | `/diagnostico` | Quiz (12 perguntas em 4 etapas + dados opcionais). `?q=5` abre a pergunta 5 para edição |
 | `/resultado` | Pré-diagnóstico gratuito (índice, pilares, prioridades, indicadores) |
 | `/planos` | Três ofertas + comparação |
+| `/diagnostico-especialista` | Página explicativa do Diagnóstico com Especialista (WhatsApp, sem chamada, sem acesso às contas) |
 | `/checkout-demo?plano=express\|especialista` | Simulação de contratação, sem cobrança |
 | `/solicitar-consultoria` | Formulário demonstrativo da consultoria |
 | `/admin-demo` | Painel interno com registros EXEMPLO + simulações LOCAIS |

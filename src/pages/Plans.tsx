@@ -4,12 +4,13 @@ import { PLANS } from '../data/plans';
 
 const COMPARISON: { label: string; values: [string | boolean, string | boolean, string | boolean] }[] = [
   { label: 'Baseado nas respostas do diagnóstico', values: [true, true, true] },
+  { label: 'Análise por IA especializada em tráfego pago', values: [true, true, 'Conforme proposta'] },
   { label: 'PDF com 5 pilares e 3 gargalos priorizados', values: [true, true, 'Conforme proposta'] },
   { label: 'Plano de ação', values: ['7 dias', 'Personalizado por prioridade', 'Conforme proposta'] },
-  { label: 'Revisão humana', values: [false, true, true] },
-  { label: 'Análise de materiais e métricas enviados', values: [false, true, 'Conforme proposta'] },
-  { label: 'Conversa com especialista', values: [false, 'Por mensagens (WhatsApp)', 'Conversa inicial + após contratação'] },
-  { label: 'Videochamada', values: [false, false, 'Somente após contratação'] },
+  { label: 'Análise feita pessoalmente pelo Robson', values: [false, true, true] },
+  { label: 'Análise de prints e métricas enviados', values: [false, true, 'Conforme proposta'] },
+  { label: 'Conversa com Robson', values: [false, 'Pelo WhatsApp', 'Conversa inicial + após contratação'] },
+  { label: 'Chamada de vídeo', values: [false, false, 'Somente após contratação'] },
   { label: 'Acesso às contas de anúncio', values: [false, false, 'Se acordado na proposta'] },
 ];
 

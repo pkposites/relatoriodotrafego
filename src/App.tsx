@@ -5,6 +5,7 @@ import Landing from './pages/Landing';
 import Quiz from './pages/Quiz';
 import Result from './pages/Result';
 import Plans from './pages/Plans';
+import SpecialistPlan from './pages/SpecialistPlan';
 import CheckoutDemo from './pages/CheckoutDemo';
 import Consulting from './pages/Consulting';
 import AdminDemo from './pages/AdminDemo';
@@ -16,6 +17,7 @@ const TITLES: Record<string, string> = {
   '/diagnostico': 'Diagnóstico — Relatório do Tráfego',
   '/resultado': 'Seu resultado — Relatório do Tráfego',
   '/planos': 'Planos — Relatório do Tráfego',
+  '/diagnostico-especialista': 'Diagnóstico com Especialista — Relatório do Tráfego',
   '/checkout-demo': 'Checkout (demonstração) — Relatório do Tráfego',
   '/solicitar-consultoria': 'Solicitar consultoria — Relatório do Tráfego',
   '/admin-demo': 'Painel (demonstração) — Relatório do Tráfego',
@@ -41,6 +43,7 @@ export default function App() {
           <Route path="diagnostico" element={<Quiz />} />
           <Route path="resultado" element={<Result />} />
           <Route path="planos" element={<Plans />} />
+          <Route path="diagnostico-especialista" element={<SpecialistPlan />} />
           <Route path="checkout-demo" element={<CheckoutDemo />} />
           <Route path="solicitar-consultoria" element={<Consulting />} />
           <Route path="admin-demo" element={<AdminDemo />} />
