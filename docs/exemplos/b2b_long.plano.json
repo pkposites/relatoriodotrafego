@@ -1,0 +1,513 @@
+{
+  "executive_summary": {
+    "scenario": "Negócio de bem de alto valor, com campanhas ativas, formulário seguido de atendimento. Produto principal: Instalação de energia solar para proprietários de imóveis na região de Campinas. Investimento: R$ 3.001 a R$ 10.000; canais: Instagram / Facebook, Google — Pesquisa. Prioridade declarada: mais contatos qualificados. Maturidade declarada: 69/100 (operação em desenvolvimento).",
+    "main_hypothesis": "Sem critério registrado, não dá para saber se a campanha traz o perfil certo nem ensinar isso às plataformas.",
+    "structural_priority": "Definir e registrar o que é um contato qualificado",
+    "quick_win": "Revisar termos de pesquisa, negativas e área geográfica. A ação rápida (“Revisar termos de pesquisa, negativas e área geográfica”) pode começar antes da prioridade estrutural porque leva 1 hora por semana, não depende de “definir e registrar o que é um contato qualificado” e reduz uma perda que acontece agora, enquanto a estrutura é montada.",
+    "main_limitation": "Boa cobertura operacional; números financeiros informados com precisão."
+  },
+  "evidence_coverage": {
+    "operational": "boa",
+    "financial": "4 indicadores informados com precisão.",
+    "statement": "Boa cobertura operacional; números financeiros informados com precisão."
+  },
+  "limitations": [
+    "Análise baseada nas respostas e nos números informados; as contas de anúncio, o site e os criativos não foram acessados.",
+    "Boa cobertura operacional; números financeiros informados com precisão.",
+    "Informações não disponíveis: 2 campo(s) com “não sei” ou sem resposta."
+  ],
+  "conversion_map": [
+    {
+      "stage": "Anúncio",
+      "status": "medido",
+      "note": "Impressões e cliques são registrados pelas plataformas."
+    },
+    {
+      "stage": "Contato",
+      "status": "medido",
+      "note": "210 contatos informados no período."
+    },
+    {
+      "stage": "Atendimento",
+      "status": "estimado",
+      "note": "Tempo de resposta declarado: no mesmo dia."
+    },
+    {
+      "stage": "Venda",
+      "status": "medido",
+      "note": "Tenho uma estimativa"
+    }
+  ],
+  "indicators": [
+    {
+      "evidence_ref": "calc.cpl",
+      "label": "Custo por contato (CPL)",
+      "value": "R$ 56,19",
+      "formula": "investimento ÷ contatos",
+      "caveat": null
+    },
+    {
+      "evidence_ref": "calc.custo_midia_cliente",
+      "label": "Custo de mídia por cliente",
+      "value": "R$ 1.685,71",
+      "formula": "investimento em mídia ÷ vendas atribuídas",
+      "caveat": "Considera só a mídia. Não é o CAC completo: salários, comissões, ferramentas e agência ficam fora. Venda de ciclo longo: contatos e vendas do mesmo período podem pertencer a grupos diferentes; trate a taxa como aproximação."
+    },
+    {
+      "evidence_ref": "calc.conversao_contato_venda",
+      "label": "Conversão de contato em venda",
+      "value": "3,3%",
+      "formula": "vendas ÷ contatos",
+      "caveat": "Venda de ciclo longo: contatos e vendas do mesmo período podem pertencer a grupos diferentes; trate a taxa como aproximação."
+    },
+    {
+      "evidence_ref": "calc.taxa_qualificacao",
+      "label": "Contatos qualificados",
+      "value": "30,5% (estimado)",
+      "formula": "qualificados ÷ contatos",
+      "caveat": null
+    },
+    {
+      "evidence_ref": "calc.fechamento_propostas",
+      "label": "Fechamento de propostas",
+      "value": "18,4%",
+      "formula": "vendas ÷ propostas",
+      "caveat": "Venda de ciclo longo: contatos e vendas do mesmo período podem pertencer a grupos diferentes; trate a taxa como aproximação."
+    },
+    {
+      "evidence_ref": "calc.receita_estimada",
+      "label": "Receita atribuída (estimada)",
+      "value": "R$ 168.000,00 (estimado)",
+      "formula": "vendas × ticket médio",
+      "caveat": "Estimada a partir das vendas e do ticket médio, não informada diretamente."
+    },
+    {
+      "evidence_ref": "calc.roas",
+      "label": "ROAS",
+      "value": "14,2x (estimado)",
+      "formula": "receita atribuída ÷ investimento em mídia",
+      "caveat": "ROAS compara receita e mídia; não é lucro. Receita estimada. Venda de ciclo longo: contatos e vendas do mesmo período podem pertencer a grupos diferentes; trate a taxa como aproximação."
+    },
+    {
+      "evidence_ref": "calc.roas_equilibrio",
+      "label": "ROAS de equilíbrio (aproximado)",
+      "value": "3,3x (estimado)",
+      "formula": "1 ÷ margem",
+      "caveat": "A definição da margem não foi informada; trate como aproximação. Margem estimada pelo ponto médio da faixa declarada (30%)."
+    },
+    {
+      "evidence_ref": "calc.margem_por_venda",
+      "label": "Margem por venda (aproximada)",
+      "value": "R$ 7.200,00 (estimado)",
+      "formula": "ticket × margem",
+      "caveat": "A definição da margem não foi informada; trate como aproximação."
+    },
+    {
+      "evidence_ref": "calc.custo_sobre_margem",
+      "label": "Custo de mídia por cliente ÷ margem por venda",
+      "value": "23,4% (estimado)",
+      "formula": "custo de mídia por cliente ÷ margem por venda",
+      "caveat": "Acima de 100%: a primeira venda não paga a mídia. A margem é aproximada."
+    }
+  ],
+  "pillar_assessments": [
+    {
+      "pillar": "Medição de resultados",
+      "score": 52,
+      "evidence_refs": [
+        "resp.vendas_origem",
+        "resp.qualificacao"
+      ],
+      "interpretation": "Prática parcial: funciona em parte, sem registro ou rotina consistentes.",
+      "to_confirm": "Registre a origem de todas as vendas por duas semanas e compare com o que as plataformas reportam."
+    },
+    {
+      "pillar": "Atendimento e conversão",
+      "score": 52,
+      "evidence_refs": [
+        "resp.qualificacao",
+        "resp.tempo_primeiro_contato"
+      ],
+      "interpretation": "Prática parcial: funciona em parte, sem registro ou rotina consistentes.",
+      "to_confirm": "Durante uma semana, anote o horário de chegada e o da primeira resposta de cada contato e compare quem respondeu rápido com quem esperou."
+    },
+    {
+      "pillar": "Rotina de gestão",
+      "score": 80,
+      "evidence_refs": [
+        "resp.rotina_analise",
+        "resp.rotina_testes"
+      ],
+      "interpretation": "As respostas indicam uma prática estruturada.",
+      "to_confirm": "Veja quantas versões de anúncio rodaram no último mês e se há registro do que foi aprendido."
+    },
+    {
+      "pillar": "Clareza financeira",
+      "score": 100,
+      "evidence_refs": [
+        "resp.ticket_faixa",
+        "resp.margem_faixa"
+      ],
+      "interpretation": "As respostas indicam uma prática estruturada.",
+      "to_confirm": "Preencha o modelo de margem com o preço e os custos de uma venda típica."
+    },
+    {
+      "pillar": "Oferta",
+      "score": 100,
+      "evidence_refs": [
+        "resp.oferta"
+      ],
+      "interpretation": "As respostas indicam uma prática estruturada.",
+      "to_confirm": "Nada específico a confirmar com as informações atuais."
+    }
+  ],
+  "priorities": [
+    {
+      "id": "pesquisa_termos",
+      "title": "Revisar termos de pesquisa, negativas e área geográfica",
+      "kind": "rapida",
+      "fact": "Você informou — Termos de pesquisa (o que as pessoas digitaram): “Revisados de vez em quando”; Lista de palavras negativas: “Sim”; Região atendida: “Região ou estado”.",
+      "hypothesis": "Parte do investimento em Pesquisa pode estar indo para buscas sem relação com o negócio ou fora da região atendida.",
+      "possible_consequence": "Cliques pagos de pessoas que não podem comprar.",
+      "how_to_confirm": "Abra o relatório de termos de pesquisa dos últimos 30 dias e marque os que não têm relação com o que você vende.",
+      "evidence_refs": [
+        "resp.b_termos_pesquisa",
+        "resp.b_negativas",
+        "resp.regiao"
+      ],
+      "action": {
+        "what": "Revisar termos de pesquisa e montar lista de negativas",
+        "why": "Concentra o orçamento atual em buscas com intenção de compra, sem aumentar a verba.",
+        "how": [
+          "Abra o relatório de termos de pesquisa (últimos 30 dias).",
+          "Marque termos sem relação com o negócio e adicione-os como negativas.",
+          "Confirme se a área geográfica corresponde à região atendida.",
+          "Repita a revisão toda semana por um mês."
+        ],
+        "owner": "Gestor de tráfego",
+        "effort": "baixo",
+        "effort_estimate": "1 hora por semana",
+        "dependencies": [],
+        "done_criteria": "Lista de negativas criada e quatro revisões semanais registradas.",
+        "indicator": "Parte do investimento em termos sem relação com o negócio.",
+        "review_when": "Após quatro revisões semanais."
+      }
+    },
+    {
+      "id": "qualificacao",
+      "title": "Definir e registrar o que é um contato qualificado",
+      "kind": "estrutural",
+      "fact": "Você informou — Qualificação dos contatos: “Avaliamos caso a caso, sem registro”; Principal problema: “Contatos desqualificados”; Critérios para um contato ser qualificado: “Imóvel próprio e conta de luz acima de R$ 400”.",
+      "hypothesis": "Sem critério registrado, não dá para saber se a campanha traz o perfil certo nem ensinar isso às plataformas.",
+      "possible_consequence": "Tempo de atendimento gasto com contatos sem perfil e decisões de campanha baseadas em volume.",
+      "how_to_confirm": "Classifique os contatos de duas semanas como qualificado/não qualificado pelos critérios e veja a proporção por campanha.",
+      "evidence_refs": [
+        "resp.qualificacao",
+        "resp.dor",
+        "resp.b_criterios_qualificacao"
+      ],
+      "action": {
+        "what": "Definir 2 ou 3 critérios de qualificação e marcar cada contato",
+        "why": "Permite medir qualidade, não só quantidade.",
+        "how": [
+          "Escreva os critérios (ex.: região atendida, necessidade real, faixa de orçamento).",
+          "Se usar formulário, inclua uma ou duas perguntas ligadas aos critérios.",
+          "Marque cada contato como qualificado ou não no controle de contatos."
+        ],
+        "owner": "Quem atende os contatos",
+        "effort": "baixo",
+        "effort_estimate": "1 hora",
+        "dependencies": [],
+        "done_criteria": "Critérios escritos e duas semanas de contatos classificados.",
+        "indicator": "Percentual de contatos qualificados por campanha.",
+        "review_when": "Após duas semanas; depois, avaliar com quem gerencia as campanhas se dá para otimizar para contatos qualificados."
+      }
+    },
+    {
+      "id": "registrar_origem",
+      "title": "Registrar a origem de cada venda",
+      "kind": "estrutural",
+      "fact": "Você informou — Identificação das vendas: “Tenho uma estimativa”.",
+      "hypothesis": "É provável que as decisões sobre campanhas estejam sendo tomadas sem saber quais delas geram vendas.",
+      "possible_consequence": "Campanhas que vendem e campanhas que não vendem podem receber o mesmo tratamento; aumentar a verba nessas condições é uma aposta.",
+      "how_to_confirm": "Registre a origem de todas as vendas por duas semanas e compare com o que as plataformas reportam.",
+      "evidence_refs": [
+        "resp.vendas_origem"
+      ],
+      "action": {
+        "what": "Registrar a origem de cada venda",
+        "why": "É a base para saber se o anúncio vende e para decidir onde investir.",
+        "how": [
+          "Copie o modelo “Registro de origem das vendas”.",
+          "Em toda venda, pergunte “como você nos conheceu?” e anote na hora.",
+          "No fim da semana, some as vendas e o valor por origem."
+        ],
+        "owner": "Quem atende os contatos",
+        "effort": "baixo",
+        "effort_estimate": "30 minutos para montar + 1 a 2 minutos por venda",
+        "dependencies": [],
+        "done_criteria": "Duas semanas seguidas com a origem registrada em todas as vendas.",
+        "indicator": "Percentual de vendas com origem registrada; vendas vindas de anúncios por semana.",
+        "review_when": "Depois de duas semanas de registro, ou antes de qualquer mudança grande de investimento."
+      }
+    }
+  ],
+  "quick_win": {
+    "priority_id": "pesquisa_termos",
+    "rationale": "A ação rápida (“Revisar termos de pesquisa, negativas e área geográfica”) pode começar antes da prioridade estrutural porque leva 1 hora por semana, não depende de “definir e registrar o que é um contato qualificado” e reduz uma perda que acontece agora, enquanto a estrutura é montada."
+  },
+  "action_plan": [
+    {
+      "day": "Dia 1",
+      "task": "Revisar termos de pesquisa e montar lista de negativas: Abra o relatório de termos de pesquisa (últimos 30 dias).",
+      "owner": "Gestor de tráfego",
+      "minutes": 45,
+      "priority_id": "pesquisa_termos"
+    },
+    {
+      "day": "Dia 2",
+      "task": "Marque termos sem relação com o negócio e adicione-os como negativas; Confirme se a área geográfica corresponde à região atendida.",
+      "owner": "Gestor de tráfego",
+      "minutes": 20,
+      "priority_id": "pesquisa_termos"
+    },
+    {
+      "day": "Dia 3",
+      "task": "Definir 2 ou 3 critérios de qualificação e marcar cada contato: Escreva os critérios (ex.: região atendida, necessidade real, faixa de orçamento).",
+      "owner": "Quem atende os contatos",
+      "minutes": 45,
+      "priority_id": "qualificacao"
+    },
+    {
+      "day": "Dia 4",
+      "task": "Se usar formulário, inclua uma ou duas perguntas ligadas aos critérios; Marque cada contato como qualificado ou não no controle de contatos.",
+      "owner": "Quem atende os contatos",
+      "minutes": 20,
+      "priority_id": "qualificacao"
+    },
+    {
+      "day": "Dia 5",
+      "task": "Registrar a origem de cada venda: Copie o modelo “Registro de origem das vendas”.",
+      "owner": "Quem atende os contatos",
+      "minutes": 45,
+      "priority_id": "registrar_origem"
+    },
+    {
+      "day": "Dia 6",
+      "task": "Em toda venda, pergunte “como você nos conheceu?” e anote na hora; No fim da semana, some as vendas e o valor por origem.",
+      "owner": "Quem atende os contatos",
+      "minutes": 20,
+      "priority_id": "registrar_origem"
+    },
+    {
+      "day": "Dia 7",
+      "task": "Revisão da semana: o que foi concluído pelos critérios de conclusão e o que ficou pendente. Anote a decisão para a próxima semana.",
+      "owner": "Você",
+      "minutes": 30,
+      "priority_id": null
+    }
+  ],
+  "selected_templates": [
+    {
+      "template_id": "checklist_gestor",
+      "reason": "Apoia a prioridade “Revisar termos de pesquisa, negativas e área geográfica”."
+    },
+    {
+      "template_id": "controle_contatos",
+      "reason": "Apoia a prioridade “Definir e registrar o que é um contato qualificado”."
+    },
+    {
+      "template_id": "registro_origem",
+      "reason": "Apoia a prioridade “Registrar a origem de cada venda”."
+    },
+    {
+      "template_id": "rotina_semanal",
+      "reason": "Apoia a prioridade “Registrar a origem de cada venda”."
+    }
+  ],
+  "avoid_now": [
+    {
+      "decision": "Aumentar o orçamento antes de saber quais vendas vieram da mídia",
+      "why": "Sem essa informação, não há como saber se mais verba trará mais vendas."
+    },
+    {
+      "decision": "Buscar mais volume de contatos agora",
+      "why": "A capacidade de atender está limitada; mais contatos podem ficar sem resposta."
+    },
+    {
+      "decision": "Mudar público, oferta e orçamento ao mesmo tempo",
+      "why": "Com várias mudanças juntas não dá para saber qual delas funcionou."
+    }
+  ],
+  "measurement_plan": {
+    "review_in_days": 14,
+    "metrics": [
+      {
+        "name": "Parte do investimento em termos sem relação com o negócio.",
+        "how": "Após quatro revisões semanais."
+      },
+      {
+        "name": "Percentual de contatos qualificados por campanha.",
+        "how": "Após duas semanas; depois, avaliar com quem gerencia as campanhas se dá para otimizar para contatos qualificados."
+      },
+      {
+        "name": "Percentual de vendas com origem registrada",
+        "how": "Depois de duas semanas de registro, ou antes de qualquer mudança grande de investimento."
+      }
+    ],
+    "continue_if": "As tarefas foram concluídas pelos critérios de conclusão e os indicadores passaram a ser registrados toda semana.",
+    "adjust_if": "Uma tarefa não puder ser concluída com o tempo e a equipe disponíveis, ou os registros mostrarem que o problema está em outra etapa. Use o ROAS de equilíbrio aproximado (3,3x (estimado)) como referência mínima, não como meta.",
+    "execution_vs_results_note": "Executar as tarefas leva dias; ver efeito nos resultados pode levar semanas, conforme o volume de contatos e o ciclo de venda. Não avalie o plano só pelos números da primeira semana."
+  },
+  "assumptions": [
+    "Considera só a mídia. Não é o CAC completo: salários, comissões, ferramentas e agência ficam fora.",
+    "Venda de ciclo longo: contatos e vendas do mesmo período podem pertencer a grupos diferentes; trate a taxa como aproximação.",
+    "Estimada a partir das vendas e do ticket médio, não informada diretamente.",
+    "ROAS compara receita e mídia; não é lucro.",
+    "Receita estimada.",
+    "A definição da margem não foi informada; trate como aproximação.",
+    "Margem estimada pelo ponto médio da faixa declarada (30%).",
+    "Acima de 100%: a primeira venda não paga a mídia. A margem é aproximada.",
+    "Todos os cálculos usam o período de 2026-08-01 a 2026-09-30."
+  ],
+  "evidence_references": [
+    {
+      "id": "resp.b_termos_pesquisa",
+      "kind": "resposta",
+      "label": "Termos de pesquisa (o que as pessoas digitaram)",
+      "value": "Revisados de vez em quando"
+    },
+    {
+      "id": "resp.b_negativas",
+      "kind": "resposta",
+      "label": "Lista de palavras negativas",
+      "value": "Sim"
+    },
+    {
+      "id": "resp.regiao",
+      "kind": "resposta",
+      "label": "Região atendida",
+      "value": "Região ou estado"
+    },
+    {
+      "id": "resp.qualificacao",
+      "kind": "resposta",
+      "label": "Qualificação dos contatos",
+      "value": "Avaliamos caso a caso, sem registro"
+    },
+    {
+      "id": "resp.dor",
+      "kind": "resposta",
+      "label": "Principal problema",
+      "value": "Contatos desqualificados"
+    },
+    {
+      "id": "resp.b_criterios_qualificacao",
+      "kind": "resposta",
+      "label": "Critérios para um contato ser qualificado",
+      "value": "Imóvel próprio e conta de luz acima de R$ 400"
+    },
+    {
+      "id": "resp.vendas_origem",
+      "kind": "resposta",
+      "label": "Identificação das vendas",
+      "value": "Tenho uma estimativa"
+    },
+    {
+      "id": "resp.tempo_primeiro_contato",
+      "kind": "resposta",
+      "label": "Tempo até o primeiro contato",
+      "value": "No mesmo dia"
+    },
+    {
+      "id": "resp.rotina_analise",
+      "kind": "resposta",
+      "label": "Revisão dos resultados",
+      "value": "Toda semana"
+    },
+    {
+      "id": "resp.rotina_testes",
+      "kind": "resposta",
+      "label": "Testes de anúncios e abordagens",
+      "value": "De vez em quando"
+    },
+    {
+      "id": "resp.ticket_faixa",
+      "kind": "resposta",
+      "label": "Valor médio de uma venda (ticket)",
+      "value": "Acima de R$ 10.000"
+    },
+    {
+      "id": "resp.margem_faixa",
+      "kind": "resposta",
+      "label": "Quanto sobra de cada venda, em média",
+      "value": "De 21% a 40%"
+    },
+    {
+      "id": "resp.oferta",
+      "kind": "resposta",
+      "label": "Mensagem principal",
+      "value": "Benefício claro e uma condição para agir (avaliação, bônus, prazo)"
+    },
+    {
+      "id": "calc.cpl",
+      "kind": "calculo",
+      "label": "Custo por contato (CPL)",
+      "value": "R$ 56,19"
+    },
+    {
+      "id": "calc.custo_midia_cliente",
+      "kind": "calculo",
+      "label": "Custo de mídia por cliente",
+      "value": "R$ 1.685,71"
+    },
+    {
+      "id": "calc.conversao_contato_venda",
+      "kind": "calculo",
+      "label": "Conversão de contato em venda",
+      "value": "3,3%"
+    },
+    {
+      "id": "calc.taxa_qualificacao",
+      "kind": "calculo",
+      "label": "Contatos qualificados",
+      "value": "30,5% (estimado)"
+    },
+    {
+      "id": "calc.fechamento_propostas",
+      "kind": "calculo",
+      "label": "Fechamento de propostas",
+      "value": "18,4%"
+    },
+    {
+      "id": "calc.receita_estimada",
+      "kind": "calculo",
+      "label": "Receita atribuída (estimada)",
+      "value": "R$ 168.000,00 (estimado)"
+    },
+    {
+      "id": "calc.roas",
+      "kind": "calculo",
+      "label": "ROAS",
+      "value": "14,2x (estimado)"
+    },
+    {
+      "id": "calc.roas_equilibrio",
+      "kind": "calculo",
+      "label": "ROAS de equilíbrio (aproximado)",
+      "value": "3,3x (estimado)"
+    },
+    {
+      "id": "calc.margem_por_venda",
+      "kind": "calculo",
+      "label": "Margem por venda (aproximada)",
+      "value": "R$ 7.200,00 (estimado)"
+    },
+    {
+      "id": "calc.custo_sobre_margem",
+      "kind": "calculo",
+      "label": "Custo de mídia por cliente ÷ margem por venda",
+      "value": "23,4% (estimado)"
+    }
+  ]
+}

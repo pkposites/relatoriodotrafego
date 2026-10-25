@@ -1,37 +1,38 @@
 import { Check, FileText, Lightbulb, Loader2, Target } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
-import { TOTAL_QUESTIONS } from '../data/questions';
+/** Total de telas do diagnóstico para quem já anuncia. */
+const TOTAL_SCREENS = 12;
 
 /**
- * Demonstração animada (≈10 s, em loop) do produto: parte do quiz sendo
+ * Demonstração animada (≈10 s, em loop): parte do diagnóstico sendo
  * respondida e o resultado aparecendo. Todos os valores são ilustrativos.
  */
 
 const DEMO_QUESTIONS = [
   {
-    n: 11,
-    title: 'Você sabe quantas vendas vieram dos anúncios no último mês?',
-    options: ['Sim, com números confiáveis', 'Tenho uma estimativa', 'Acompanho leads, não vendas'],
+    n: 3,
+    title: 'Como a venda acontece, na maioria das vezes?',
+    options: ['Compra direto no site', 'Conversa no WhatsApp ou Direct', 'Agendamento'],
+    pick: 1,
+  },
+  {
+    n: 8,
+    title: 'Como você identifica as vendas geradas pelos anúncios?',
+    options: ['Registro a origem de cada venda', 'Tenho uma estimativa', 'Acompanho apenas os contatos'],
     pick: 2,
   },
   {
-    n: 15,
-    title: 'Para qual resultado as campanhas são otimizadas?',
-    options: ['Vendas no site', 'Mensagens no WhatsApp', 'Cliques ou engajamento'],
-    pick: 2,
-  },
-  {
-    n: 22,
-    title: 'Quanto tempo leva para responder um novo contato?',
+    n: 10,
+    title: 'Tempo da primeira resposta no WhatsApp',
     options: ['Até 5 minutos', 'Até 1 hora', 'No mesmo dia'],
     pick: 2,
   },
 ];
 
 const BARS = [
-  { label: 'Mensuração', value: 42, color: 'bg-warn' },
-  { label: 'Criativos', value: 68, color: 'bg-brand' },
-  { label: 'Conversão', value: 31, color: 'bg-bad' },
+  { label: 'Medição de resultados', value: 30, color: 'bg-bad' },
+  { label: 'Atendimento e conversão', value: 44, color: 'bg-warn' },
+  { label: 'Rotina de gestão', value: 68, color: 'bg-brand' },
 ];
 
 const SCORE = 54;
@@ -171,19 +172,19 @@ export default function HeroDemo() {
             <div className="mt-4 grid gap-2 sm:grid-cols-2">
               <div className="anim-rise rounded-xl bg-bad-50 p-3 [animation-delay:700ms]">
                 <p className="flex items-center gap-1.5 text-xs font-bold text-bad-700">
-                  <Target className="h-3.5 w-3.5" aria-hidden /> Principal ponto de atenção
+                  <Target className="h-3.5 w-3.5" aria-hidden /> Principal hipótese
                 </p>
-                <p className="mt-0.5 text-sm text-ink">Acompanhamento do contato até a venda</p>
+                <p className="mt-0.5 text-sm text-ink">Decisões sem saber quais anúncios vendem</p>
               </div>
               <div className="anim-rise rounded-xl bg-brand-50 p-3 [animation-delay:1100ms]">
                 <p className="flex items-center gap-1.5 text-xs font-bold text-brand-700">
-                  <Lightbulb className="h-3.5 w-3.5" aria-hidden /> Primeiro passo
+                  <Lightbulb className="h-3.5 w-3.5" aria-hidden /> Ação rápida
                 </p>
-                <p className="mt-0.5 text-sm text-ink">Registrar o status de cada contato</p>
+                <p className="mt-0.5 text-sm text-ink">Reduzir a demora na primeira resposta</p>
               </div>
             </div>
             <p className="anim-rise mt-3 flex items-center gap-1.5 text-xs text-ink-mute [animation-delay:1500ms]">
-              <FileText className="h-3.5 w-3.5" aria-hidden /> + plano de ação completo em PDF (opcional)
+              <FileText className="h-3.5 w-3.5" aria-hidden /> + Plano de Ação do Tráfego em PDF (opcional, pago)
             </p>
           </div>
         )}
@@ -196,7 +197,7 @@ function QuizFrame({ q, picked }: { q: number; picked: boolean }) {
   const d = DEMO_QUESTIONS[q];
   return (
     <div className="anim-rise">
-      <p className="tabular text-xs font-semibold text-ink-mute">Pergunta {d.n} de {TOTAL_QUESTIONS}</p>
+      <p className="tabular text-xs font-semibold text-ink-mute">Pergunta {d.n} de {TOTAL_SCREENS}</p>
       <p className="mt-1 text-lg font-bold leading-snug">{d.title}</p>
       <ul className="mt-4 space-y-2">
         {d.options.map((o, i) => {

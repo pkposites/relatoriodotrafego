@@ -1,0 +1,474 @@
+{
+  "name": "plano_de_acao_do_trafego",
+  "strict": true,
+  "schema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "executive_summary": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "scenario": {
+            "type": "string"
+          },
+          "main_hypothesis": {
+            "type": "string"
+          },
+          "structural_priority": {
+            "type": "string"
+          },
+          "quick_win": {
+            "type": "string"
+          },
+          "main_limitation": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "scenario",
+          "main_hypothesis",
+          "structural_priority",
+          "quick_win",
+          "main_limitation"
+        ]
+      },
+      "evidence_coverage": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operational": {
+            "type": "string",
+            "enum": [
+              "boa",
+              "parcial",
+              "limitada"
+            ]
+          },
+          "financial": {
+            "type": "string"
+          },
+          "statement": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "operational",
+          "financial",
+          "statement"
+        ]
+      },
+      "limitations": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "conversion_map": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "stage": {
+              "type": "string"
+            },
+            "status": {
+              "type": "string",
+              "enum": [
+                "medido",
+                "estimado",
+                "desconhecido",
+                "nao_se_aplica"
+              ]
+            },
+            "note": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "stage",
+            "status",
+            "note"
+          ]
+        }
+      },
+      "indicators": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "evidence_ref": {
+              "type": "string"
+            },
+            "label": {
+              "type": "string"
+            },
+            "value": {
+              "type": "string"
+            },
+            "formula": {
+              "type": "string"
+            },
+            "caveat": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "evidence_ref",
+            "label",
+            "value",
+            "formula",
+            "caveat"
+          ]
+        }
+      },
+      "pillar_assessments": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "pillar": {
+              "type": "string"
+            },
+            "score": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "evidence_refs": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "interpretation": {
+              "type": "string"
+            },
+            "to_confirm": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "pillar",
+            "score",
+            "evidence_refs",
+            "interpretation",
+            "to_confirm"
+          ]
+        }
+      },
+      "priorities": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "title": {
+              "type": "string"
+            },
+            "kind": {
+              "type": "string",
+              "enum": [
+                "estrutural",
+                "rapida",
+                "investigacao"
+              ]
+            },
+            "fact": {
+              "type": "string"
+            },
+            "hypothesis": {
+              "type": "string"
+            },
+            "possible_consequence": {
+              "type": "string"
+            },
+            "how_to_confirm": {
+              "type": "string"
+            },
+            "evidence_refs": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "action": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "what": {
+                  "type": "string"
+                },
+                "why": {
+                  "type": "string"
+                },
+                "how": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "owner": {
+                  "type": "string"
+                },
+                "effort": {
+                  "type": "string",
+                  "enum": [
+                    "baixo",
+                    "medio",
+                    "alto"
+                  ]
+                },
+                "effort_estimate": {
+                  "type": "string"
+                },
+                "dependencies": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "done_criteria": {
+                  "type": "string"
+                },
+                "indicator": {
+                  "type": "string"
+                },
+                "review_when": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "what",
+                "why",
+                "how",
+                "owner",
+                "effort",
+                "effort_estimate",
+                "dependencies",
+                "done_criteria",
+                "indicator",
+                "review_when"
+              ]
+            }
+          },
+          "required": [
+            "id",
+            "title",
+            "kind",
+            "fact",
+            "hypothesis",
+            "possible_consequence",
+            "how_to_confirm",
+            "evidence_refs",
+            "action"
+          ]
+        }
+      },
+      "quick_win": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "priority_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "rationale": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "priority_id",
+          "rationale"
+        ]
+      },
+      "action_plan": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "day": {
+              "type": "string"
+            },
+            "task": {
+              "type": "string"
+            },
+            "owner": {
+              "type": "string"
+            },
+            "minutes": {
+              "type": "integer"
+            },
+            "priority_id": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "day",
+            "task",
+            "owner",
+            "minutes",
+            "priority_id"
+          ]
+        }
+      },
+      "selected_templates": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "template_id": {
+              "type": "string",
+              "enum": [
+                "registro_origem",
+                "controle_contatos",
+                "roteiro_atendimento",
+                "follow_up",
+                "briefing_teste",
+                "checklist_gestor",
+                "rotina_semanal",
+                "levantamento_margem"
+              ]
+            },
+            "reason": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "template_id",
+            "reason"
+          ]
+        }
+      },
+      "avoid_now": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "decision": {
+              "type": "string"
+            },
+            "why": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "decision",
+            "why"
+          ]
+        }
+      },
+      "measurement_plan": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "review_in_days": {
+            "type": "integer"
+          },
+          "metrics": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "how": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name",
+                "how"
+              ]
+            }
+          },
+          "continue_if": {
+            "type": "string"
+          },
+          "adjust_if": {
+            "type": "string"
+          },
+          "execution_vs_results_note": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "review_in_days",
+          "metrics",
+          "continue_if",
+          "adjust_if",
+          "execution_vs_results_note"
+        ]
+      },
+      "assumptions": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "evidence_references": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "kind": {
+              "type": "string"
+            },
+            "label": {
+              "type": "string"
+            },
+            "value": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "id",
+            "kind",
+            "label",
+            "value"
+          ]
+        }
+      }
+    },
+    "required": [
+      "executive_summary",
+      "evidence_coverage",
+      "limitations",
+      "conversion_map",
+      "indicators",
+      "pillar_assessments",
+      "priorities",
+      "quick_win",
+      "action_plan",
+      "selected_templates",
+      "avoid_now",
+      "measurement_plan",
+      "assumptions",
+      "evidence_references"
+    ]
+  }
+}

@@ -1,0 +1,416 @@
+{
+  "executive_summary": {
+    "scenario": "Loja (varejo / e-commerce), com campanhas ativas, venda direto no site. Produto principal: Cafés especiais em grãos com assinatura mensal. Investimento: R$ 10.001 a R$ 30.000; canais: Instagram / Facebook, Google — YouTube, Display ou Performance Max. Prioridade declarada: reduzir o custo por cliente. Maturidade declarada: 73/100 (operação em desenvolvimento).",
+    "main_hypothesis": "Sem o evento de compra com valor registrado por origem, não dá para saber quais campanhas geram receita nem em que etapa o comprador desiste.",
+    "structural_priority": "Medir compras e etapas do checkout por origem",
+    "quick_win": "Nenhuma ação rápida identificada com segurança.",
+    "main_limitation": "Boa cobertura operacional; números financeiros informados com precisão."
+  },
+  "evidence_coverage": {
+    "operational": "boa",
+    "financial": "4 indicadores informados com precisão.",
+    "statement": "Boa cobertura operacional; números financeiros informados com precisão."
+  },
+  "limitations": [
+    "Análise baseada nas respostas e nos números informados; as contas de anúncio, o site e os criativos não foram acessados.",
+    "Boa cobertura operacional; números financeiros informados com precisão.",
+    "Informações não disponíveis: 2 campo(s) com “não sei” ou sem resposta."
+  ],
+  "conversion_map": [
+    {
+      "stage": "Anúncio",
+      "status": "medido",
+      "note": "Impressões e cliques são registrados pelas plataformas."
+    },
+    {
+      "stage": "Site e checkout",
+      "status": "estimado",
+      "note": "Só o total de compras"
+    },
+    {
+      "stage": "Venda",
+      "status": "medido",
+      "note": "Tenho uma estimativa"
+    }
+  ],
+  "indicators": [
+    {
+      "evidence_ref": "calc.custo_midia_cliente",
+      "label": "Custo de mídia por cliente",
+      "value": "R$ 45,81",
+      "formula": "investimento em mídia ÷ vendas atribuídas",
+      "caveat": "Considera só a mídia. Não é o CAC completo: salários, comissões, ferramentas e agência ficam fora."
+    },
+    {
+      "evidence_ref": "calc.roas",
+      "label": "ROAS",
+      "value": "3,5x",
+      "formula": "receita atribuída ÷ investimento em mídia",
+      "caveat": "ROAS compara receita e mídia; não é lucro."
+    },
+    {
+      "evidence_ref": "calc.roas_equilibrio",
+      "label": "ROAS de equilíbrio (aproximado)",
+      "value": "3,1x (estimado)",
+      "formula": "1 ÷ margem",
+      "caveat": "Usa margem de contribuição (já desconta custos variáveis informados). Custos fixos não entram."
+    },
+    {
+      "evidence_ref": "calc.margem_por_venda",
+      "label": "Margem por venda (aproximada)",
+      "value": "R$ 51,20 (estimado)",
+      "formula": "ticket × margem",
+      "caveat": "Usa margem de contribuição (já desconta custos variáveis informados). Custos fixos não entram."
+    },
+    {
+      "evidence_ref": "calc.custo_sobre_margem",
+      "label": "Custo de mídia por cliente ÷ margem por venda",
+      "value": "89,5% (estimado)",
+      "formula": "custo de mídia por cliente ÷ margem por venda",
+      "caveat": "Acima de 100%: a primeira venda não paga a mídia. A margem é aproximada."
+    }
+  ],
+  "pillar_assessments": [
+    {
+      "pillar": "Medição de resultados",
+      "score": 57,
+      "evidence_refs": [
+        "resp.vendas_origem",
+        "resp.acompanhamento_compras"
+      ],
+      "interpretation": "Prática parcial: funciona em parte, sem registro ou rotina consistentes.",
+      "to_confirm": "Faça uma compra de teste e verifique se ela aparece, com valor correto e uma única vez, no gerenciador de eventos de cada plataforma."
+    },
+    {
+      "pillar": "Atendimento e conversão",
+      "score": 60,
+      "evidence_refs": [
+        "resp.acompanhamento_compras"
+      ],
+      "interpretation": "Há base, com pontos a consolidar.",
+      "to_confirm": "Compare quantos iniciam o checkout e quantos concluem; verifique se a desistência se concentra na etapa do frete."
+    },
+    {
+      "pillar": "Rotina de gestão",
+      "score": 78,
+      "evidence_refs": [
+        "resp.rotina_analise",
+        "resp.rotina_testes"
+      ],
+      "interpretation": "Há base, com pontos a consolidar.",
+      "to_confirm": "Nada específico a confirmar com as informações atuais."
+    },
+    {
+      "pillar": "Clareza financeira",
+      "score": 100,
+      "evidence_refs": [
+        "resp.ticket_faixa",
+        "resp.margem_faixa",
+        "resp.margem_tipo"
+      ],
+      "interpretation": "As respostas indicam uma prática estruturada.",
+      "to_confirm": "Separe o custo de mídia por cliente por campanha e veja quais ficam acima da margem."
+    },
+    {
+      "pillar": "Oferta",
+      "score": 100,
+      "evidence_refs": [
+        "resp.oferta"
+      ],
+      "interpretation": "As respostas indicam uma prática estruturada.",
+      "to_confirm": "Nada específico a confirmar com as informações atuais."
+    }
+  ],
+  "priorities": [
+    {
+      "id": "evento_compra",
+      "title": "Medir compras e etapas do checkout por origem",
+      "kind": "estrutural",
+      "fact": "Você informou — O que você consegue ver das compras: “Só o total de compras”; Medição configurada: “Pixel / tag das plataformas, UTMs nos links”; Plataforma da loja: “Nuvemshop”.",
+      "hypothesis": "Sem o evento de compra com valor registrado por origem, não dá para saber quais campanhas geram receita nem em que etapa o comprador desiste.",
+      "possible_consequence": "As plataformas otimizam com menos informação e as decisões de verba ficam sem base.",
+      "how_to_confirm": "Faça uma compra de teste e verifique se ela aparece, com valor correto e uma única vez, no gerenciador de eventos de cada plataforma.",
+      "evidence_refs": [
+        "resp.acompanhamento_compras",
+        "resp.b_rastreamento",
+        "resp.b_plataforma_loja"
+      ],
+      "action": {
+        "what": "Registrar o evento de compra (com valor) e as etapas do checkout",
+        "why": "Liga cada compra à campanha de origem e mostra onde o comprador desiste.",
+        "how": [
+          "Confirme na plataforma Nuvemshop quais eventos já são enviados: visualização de produto, adição ao carrinho, início do checkout e compra (com valor e moeda).",
+          "Use a integração oficial da loja com cada plataforma de anúncio, em vez de instalar códigos soltos.",
+          "Se a integração da loja oferecer envio pelo servidor (API de Conversões), ative-o para o evento de compra, usando o identificador do pedido para evitar contagem dupla com o pixel.",
+          "Use UTMs nos links dos anúncios para conferir a origem também no relatório da loja.",
+          "Faça uma compra de teste e confira os eventos."
+        ],
+        "owner": "Quem administra a loja (ou o desenvolvedor)",
+        "effort": "medio",
+        "effort_estimate": "2 a 6 horas, conforme a plataforma da loja",
+        "dependencies": [],
+        "done_criteria": "Compra de teste registrada uma única vez, com valor correto, em cada plataforma; total semanal de compras da plataforma próximo ao do sistema da loja, com diferença explicada.",
+        "indicator": "Compras registradas pela plataforma ÷ pedidos do sistema da loja; abandono por etapa do checkout.",
+        "review_when": "Uma semana depois da configuração, comparando com os pedidos da loja."
+      }
+    },
+    {
+      "id": "margem_apertada",
+      "title": "Custo de mídia consome grande parte da margem",
+      "kind": "estrutural",
+      "fact": "Com os números informados, o custo de mídia por cliente equivale a 89,5% (estimado) da margem aproximada por venda.",
+      "hypothesis": "A primeira venda deixa pouca sobra; a recompra pode compensar, mas ainda não foi medida.",
+      "possible_consequence": "Pouca margem de segurança para investir mais.",
+      "how_to_confirm": "Separe o custo de mídia por cliente por campanha e veja quais ficam acima da margem.",
+      "evidence_refs": [
+        "calc.custo_midia_cliente",
+        "calc.margem_por_venda",
+        "calc.custo_sobre_margem",
+        "resp.b_recompra"
+      ],
+      "action": {
+        "what": "Separar o custo de mídia por cliente por campanha",
+        "why": "Mostra quais campanhas sustentam a margem e quais a consomem.",
+        "how": [
+          "Monte uma tabela por campanha: investimento, vendas atribuídas, custo de mídia por cliente.",
+          "Compare cada linha com a margem por venda.",
+          "Ajuste primeiro as campanhas acima da margem, sem aumentar a verba total."
+        ],
+        "owner": "Agência",
+        "effort": "medio",
+        "effort_estimate": "2 horas",
+        "dependencies": [],
+        "done_criteria": "Tabela por campanha preenchida e decisão registrada para cada uma.",
+        "indicator": "Custo de mídia por cliente ÷ margem por venda, por campanha.",
+        "review_when": "A cada fechamento mensal."
+      }
+    },
+    {
+      "id": "frete",
+      "title": "Verificar o peso do frete no abandono",
+      "kind": "investigacao",
+      "fact": "Você informou — Frete: “Pago, e clientes reclamam”.",
+      "hypothesis": "O valor do frete pode estar levando compradores a desistir no checkout.",
+      "possible_consequence": "Investimento em mídia que chega ao checkout e não vira compra.",
+      "how_to_confirm": "Compare quantos iniciam o checkout e quantos concluem; verifique se a desistência se concentra na etapa do frete.",
+      "evidence_refs": [
+        "resp.b_frete"
+      ],
+      "action": {
+        "what": "Medir o abandono na etapa do frete antes de mudar a política",
+        "why": "Evita mudar o frete sem saber se ele é o problema.",
+        "how": [
+          "Veja no relatório da loja a taxa de checkouts iniciados e concluídos.",
+          "Se a loja mostrar etapas, confira em qual a desistência se concentra."
+        ],
+        "owner": "Quem administra a loja",
+        "effort": "baixo",
+        "effort_estimate": "1 hora",
+        "dependencies": [
+          "Etapas do checkout registradas"
+        ],
+        "done_criteria": "Taxa de conclusão do checkout anotada e etapa com mais desistência identificada.",
+        "indicator": "Checkouts concluídos ÷ iniciados.",
+        "review_when": "Depois de medir; só então avaliar mudança na política de frete."
+      }
+    }
+  ],
+  "quick_win": {
+    "priority_id": null,
+    "rationale": "Sem ação rápida identificada."
+  },
+  "action_plan": [
+    {
+      "day": "Dia 1",
+      "task": "Registrar o evento de compra (com valor) e as etapas do checkout: Confirme na plataforma Nuvemshop quais eventos já são enviados: visualização de produto, adição ao carrinho, início do checkout e compra (com valor e moeda).",
+      "owner": "Quem administra a loja (ou o desenvolvedor)",
+      "minutes": 90,
+      "priority_id": "evento_compra"
+    },
+    {
+      "day": "Dia 2",
+      "task": "Use a integração oficial da loja com cada plataforma de anúncio, em vez de instalar códigos soltos; Se a integração da loja oferecer envio pelo servidor (API de Conversões), ative-o para o evento de compra, usando o identificador do pedido para evitar contagem dupla com o pixel.",
+      "owner": "Quem administra a loja (ou o desenvolvedor)",
+      "minutes": 30,
+      "priority_id": "evento_compra"
+    },
+    {
+      "day": "Dia 3",
+      "task": "Separar o custo de mídia por cliente por campanha: Monte uma tabela por campanha: investimento, vendas atribuídas, custo de mídia por cliente.",
+      "owner": "Agência",
+      "minutes": 90,
+      "priority_id": "margem_apertada"
+    },
+    {
+      "day": "Dia 4",
+      "task": "Compare cada linha com a margem por venda; Ajuste primeiro as campanhas acima da margem, sem aumentar a verba total.",
+      "owner": "Agência",
+      "minutes": 30,
+      "priority_id": "margem_apertada"
+    },
+    {
+      "day": "Dia 5",
+      "task": "Medir o abandono na etapa do frete antes de mudar a política: Veja no relatório da loja a taxa de checkouts iniciados e concluídos.",
+      "owner": "Quem administra a loja",
+      "minutes": 45,
+      "priority_id": "frete"
+    },
+    {
+      "day": "Dia 6",
+      "task": "Se a loja mostrar etapas, confira em qual a desistência se concentra.",
+      "owner": "Quem administra a loja",
+      "minutes": 20,
+      "priority_id": "frete"
+    },
+    {
+      "day": "Dia 7",
+      "task": "Revisão da semana: o que foi concluído pelos critérios de conclusão e o que ficou pendente. Anote a decisão para a próxima semana.",
+      "owner": "Você",
+      "minutes": 30,
+      "priority_id": null
+    }
+  ],
+  "selected_templates": [
+    {
+      "template_id": "rotina_semanal",
+      "reason": "Apoia a prioridade “Medir compras e etapas do checkout por origem”."
+    }
+  ],
+  "avoid_now": [
+    {
+      "decision": "Aumentar o orçamento antes de saber quais vendas vieram da mídia",
+      "why": "Sem essa informação, não há como saber se mais verba trará mais vendas."
+    }
+  ],
+  "measurement_plan": {
+    "review_in_days": 14,
+    "metrics": [
+      {
+        "name": "Compras registradas pela plataforma ÷ pedidos do sistema da loja",
+        "how": "Uma semana depois da configuração, comparando com os pedidos da loja."
+      },
+      {
+        "name": "Custo de mídia por cliente ÷ margem por venda, por campanha.",
+        "how": "A cada fechamento mensal."
+      },
+      {
+        "name": "Checkouts concluídos ÷ iniciados.",
+        "how": "Depois de medir; só então avaliar mudança na política de frete."
+      }
+    ],
+    "continue_if": "As tarefas foram concluídas pelos critérios de conclusão e os indicadores passaram a ser registrados toda semana.",
+    "adjust_if": "Uma tarefa não puder ser concluída com o tempo e a equipe disponíveis, ou os registros mostrarem que o problema está em outra etapa. Use o ROAS de equilíbrio aproximado (3,1x (estimado)) como referência mínima, não como meta.",
+    "execution_vs_results_note": "Executar as tarefas leva dias; ver efeito nos resultados pode levar semanas, conforme o volume de contatos e o ciclo de venda. Não avalie o plano só pelos números da primeira semana."
+  },
+  "assumptions": [
+    "Considera só a mídia. Não é o CAC completo: salários, comissões, ferramentas e agência ficam fora.",
+    "ROAS compara receita e mídia; não é lucro.",
+    "Usa margem de contribuição (já desconta custos variáveis informados). Custos fixos não entram.",
+    "Acima de 100%: a primeira venda não paga a mídia. A margem é aproximada.",
+    "Todos os cálculos usam o período de 2026-09-01 a 2026-09-30."
+  ],
+  "evidence_references": [
+    {
+      "id": "resp.acompanhamento_compras",
+      "kind": "resposta",
+      "label": "O que você consegue ver das compras",
+      "value": "Só o total de compras"
+    },
+    {
+      "id": "resp.b_rastreamento",
+      "kind": "resposta",
+      "label": "Medição configurada",
+      "value": "Pixel / tag das plataformas, UTMs nos links"
+    },
+    {
+      "id": "resp.b_plataforma_loja",
+      "kind": "resposta",
+      "label": "Plataforma da loja",
+      "value": "Nuvemshop"
+    },
+    {
+      "id": "calc.custo_midia_cliente",
+      "kind": "calculo",
+      "label": "Custo de mídia por cliente",
+      "value": "R$ 45,81"
+    },
+    {
+      "id": "calc.margem_por_venda",
+      "kind": "calculo",
+      "label": "Margem por venda (aproximada)",
+      "value": "R$ 51,20 (estimado)"
+    },
+    {
+      "id": "calc.custo_sobre_margem",
+      "kind": "calculo",
+      "label": "Custo de mídia por cliente ÷ margem por venda",
+      "value": "89,5% (estimado)"
+    },
+    {
+      "id": "resp.b_recompra",
+      "kind": "resposta",
+      "label": "O cliente costuma comprar de novo?",
+      "value": "Sim, com frequência"
+    },
+    {
+      "id": "resp.b_frete",
+      "kind": "resposta",
+      "label": "Frete",
+      "value": "Pago, e clientes reclamam"
+    },
+    {
+      "id": "resp.vendas_origem",
+      "kind": "resposta",
+      "label": "Identificação das vendas",
+      "value": "Tenho uma estimativa"
+    },
+    {
+      "id": "resp.rotina_analise",
+      "kind": "resposta",
+      "label": "Revisão dos resultados",
+      "value": "Uma vez por mês"
+    },
+    {
+      "id": "resp.rotina_testes",
+      "kind": "resposta",
+      "label": "Testes de anúncios e abordagens",
+      "value": "Testes regulares, com registro do que funcionou"
+    },
+    {
+      "id": "resp.ticket_faixa",
+      "kind": "resposta",
+      "label": "Valor médio de uma venda (ticket)",
+      "value": "R$ 101 a R$ 500"
+    },
+    {
+      "id": "resp.margem_faixa",
+      "kind": "resposta",
+      "label": "Quanto sobra de cada venda, em média",
+      "value": "De 21% a 40%"
+    },
+    {
+      "id": "resp.margem_tipo",
+      "kind": "resposta",
+      "label": "Essa margem considera…",
+      "value": "Custo do produto + impostos, taxas e comissões"
+    },
+    {
+      "id": "resp.oferta",
+      "kind": "resposta",
+      "label": "Mensagem principal",
+      "value": "Benefício claro e uma condição para agir (avaliação, bônus, prazo)"
+    },
+    {
+      "id": "calc.roas",
+      "kind": "calculo",
+      "label": "ROAS",
+      "value": "3,5x"
+    },
+    {
+      "id": "calc.roas_equilibrio",
+      "kind": "calculo",
+      "label": "ROAS de equilíbrio (aproximado)",
+      "value": "3,1x (estimado)"
+    }
+  ]
+}

@@ -4,6 +4,16 @@
 
 [build.environment]
   NODE_VERSION = "20"
+  # Enquanto as integrações não forem configuradas, o site roda em demonstração.
+  # Para produção: VITE_APP_MODE=production e APP_MODE=production + variáveis de docs/pendencias-externas.md.
+  VITE_APP_MODE = "demo"
+  APP_MODE = "demo"
+
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+  # pdfmake é carregado com require dinâmico (fontes embutidas); precisa ir junto.
+  external_node_modules = ["pdfmake"]
 
 [[redirects]]
   from = "/*"

@@ -1,112 +1,91 @@
-import type { Answers, FreeContext, LeadRecord, OptionalMetricsInput } from '../types';
-import type { MetricField } from './metrics';
+import type { Answers, LinkEvidence, MetricsInput } from '../domain/types';
 
 /**
- * Persistência APENAS local (localStorage) para demonstração.
- * Nada é enviado a servidores. Todas as leituras/escritas toleram falhas
- * (modo privado, armazenamento bloqueado) e o app funciona sem elas.
+ * Persistência local (demo e progresso do quiz). Tolerante a falhas:
+ * o app funciona sem armazenamento disponível. v3 = questionário fase A 3.0.
  */
-// v2: novo questionário (23 perguntas). Dados v1 são ignorados.
-const QUIZ_KEY = 'rdt:quiz:v2';
-const LEADS_KEY = 'rdt:local-leads:v2';
+const QUIZ_KEY = 'rdt:quiz:v3';
+const ORDERS_KEY = 'rdt:orders:v1';
+const CONSULT_KEY = 'rdt:consultoria:v1';
 
 export interface QuizState {
   sessionId: string;
   answers: Answers;
-  /** 0..N-1 perguntas; N = dados opcionais. */
-  step: number;
-  metricsRaw: Record<MetricField, string>;
-  metrics?: OptionalMetricsInput;
-  metricsSkipped?: boolean;
-  context?: FreeContext;
-  completedAt?: string;
+  screen: number;
   startedAt: string;
+  completedAt?: string;
 }
 
-export const EMPTY_METRICS_RAW: Record<MetricField, string> = { investment: '', leads: '', sales: '', avgTicket: '' };
+/** Pedido no navegador. Em demo, simula todo o ciclo localmente; em produção guarda só id e token de acesso. */
+export interface LocalOrder {
+  id: string;
+  accessToken?: string;
+  product: 'plano' | 'especialista';
+  environment: 'demo' | 'test' | 'production';
+  diagnosticId: string;
+  answers: Answers;
+  deepening?: Answers;
+  metrics?: MetricsInput;
+  links?: LinkEvidence[];
+  status: 'aguardando_pagamento' | 'aguardando_informacoes' | 'gerando' | 'concluido' | 'falha';
+  createdAt: string;
+  feedback?: { clarity?: string; specificity?: string };
+}
 
-function read<T>(key: string): T | undefined {
+function read<T>(k: string): T | undefined {
   try {
-    const raw = window.localStorage.getItem(key);
+    const raw = localStorage.getItem(k);
     return raw ? (JSON.parse(raw) as T) : undefined;
   } catch {
     return undefined;
   }
 }
-
-function write(key: string, value: unknown) {
+function write(k: string, v: unknown) {
   try {
-    window.localStorage.setItem(key, JSON.stringify(value));
+    localStorage.setItem(k, JSON.stringify(v));
   } catch {
-    /* armazenamento indisponível — segue apenas em memória */
+    /* ignorado */
   }
 }
-
-function remove(key: string) {
+function remove(k: string) {
   try {
-    window.localStorage.removeItem(key);
+    localStorage.removeItem(k);
   } catch {
     /* ignorado */
   }
 }
 
-export function newId(prefix = 'loc'): string {
-  return `${prefix}-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 7)}`;
+export const newId = (prefix: string) => `${prefix}-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
+
+export const newQuiz = (): QuizState => ({ sessionId: newId('dx'), answers: {}, screen: 0, startedAt: new Date().toISOString() });
+export const loadQuiz = (): QuizState | undefined => {
+  const q = read<QuizState>(QUIZ_KEY);
+  return q && typeof q === 'object' && q.answers ? q : undefined;
+};
+export const saveQuiz = (q: QuizState) => write(QUIZ_KEY, q);
+export const clearQuiz = () => remove(QUIZ_KEY);
+
+export const loadOrders = (): LocalOrder[] => read<LocalOrder[]>(ORDERS_KEY) ?? [];
+export const getOrder = (id: string) => loadOrders().find((o) => o.id === id);
+export function saveOrder(o: LocalOrder) {
+  const list = loadOrders().filter((x) => x.id !== o.id);
+  write(ORDERS_KEY, [o, ...list].slice(0, 20));
 }
 
-export function newQuizState(): QuizState {
-  return {
-    sessionId: newId('sim'),
-    answers: {},
-    step: 0,
-    metricsRaw: { ...EMPTY_METRICS_RAW },
-    startedAt: new Date().toISOString(),
-  };
+export interface ConsultingRequest {
+  id: string;
+  createdAt: string;
+  diagnosticId?: string;
+  /** Dados de contato: separados do diagnóstico e nunca enviados à IA. */
+  contact: { name: string; company: string; channel: 'whatsapp' | 'email' | 'ligacao'; phone?: string; email?: string };
+  budget: string;
+  difficulty: string;
+  message?: string;
+  marketingOptIn: boolean;
 }
+export const loadConsulting = (): ConsultingRequest[] => read<ConsultingRequest[]>(CONSULT_KEY) ?? [];
+export const saveConsulting = (r: ConsultingRequest) => write(CONSULT_KEY, [r, ...loadConsulting()].slice(0, 20));
 
-export function loadQuiz(): QuizState | undefined {
-  const s = read<QuizState>(QUIZ_KEY);
-  if (!s || typeof s !== 'object' || !s.answers) return undefined;
-  return { ...newQuizState(), ...s, metricsRaw: { ...EMPTY_METRICS_RAW, ...s.metricsRaw } };
-}
-
-export function saveQuiz(state: QuizState) {
-  write(QUIZ_KEY, state);
-}
-
-export function clearQuiz() {
-  remove(QUIZ_KEY);
-}
-
-export function loadLocalLeads(): LeadRecord[] {
-  const list = read<LeadRecord[]>(LEADS_KEY);
-  return Array.isArray(list) ? list : [];
-}
-
-/** Cria ou atualiza o registro local de uma simulação (mesmo id = mesma simulação). */
-export function upsertLocalLead(patch: Partial<LeadRecord> & { id: string }): LeadRecord {
-  const list = loadLocalLeads();
-  const idx = list.findIndex((l) => l.id === patch.id);
-  const base: LeadRecord =
-    idx >= 0
-      ? list[idx]
-      : {
-          id: patch.id,
-          source: 'local',
-          createdAt: new Date().toISOString(),
-          company: 'Simulação neste navegador',
-          answers: {},
-          status: 'Novo',
-        };
-  const next: LeadRecord = { ...base, ...patch, source: 'local' };
-  if (idx >= 0) list[idx] = next;
-  else list.unshift(next);
-  write(LEADS_KEY, list.slice(0, 20));
-  return next;
-}
-
-/** Limpa toda a demonstração: progresso do quiz e simulações locais. */
-export function clearDemo() {
-  remove(QUIZ_KEY);
-  remove(LEADS_KEY);
+export function clearAllLocal() {
+  [QUIZ_KEY, ORDERS_KEY, CONSULT_KEY, 'rdt:events:v1', 'rdt:quiz:v1', 'rdt:quiz:v2', 'rdt:local-leads:v1', 'rdt:local-leads:v2'].forEach(remove);
 }

@@ -1,0 +1,509 @@
+{
+  "diagnostic_id": "exemplo-ecommerce_metrics",
+  "environment": "demo",
+  "created_at": "2026-10-25T12:00:00.000Z",
+  "contract_version": "diagnostico/1.0.0",
+  "questionnaire_version": "fase-a/3.0.0",
+  "deepening_version": "fase-b/1.0.0",
+  "scoring_version": "pontuacao/3.0.0",
+  "methodology_version": "metodologia/1.0.0",
+  "prompt_version": "analise/1.0.0",
+  "report_version": "plano/1.0.0",
+  "business_profile": {
+    "campaign_status": "ativas",
+    "business_type": "varejo_ecommerce",
+    "product": "Cafés especiais em grãos com assinatura mensal",
+    "customer_type": "consumidor",
+    "region": "nacional",
+    "budget_range": "10k_30k",
+    "platforms": [
+      "meta",
+      "google_outros"
+    ],
+    "manager": "agencia",
+    "ticket_range": "100_500",
+    "ticket_exact": null,
+    "margin_range": "20_40",
+    "margin_definition": "contribuicao",
+    "main_problem": "custo_alto",
+    "priority": "reduzir_custo",
+    "offer": "beneficio_condicao"
+  },
+  "conversion_path": "site",
+  "answers": [
+    {
+      "field": "campanhas_status",
+      "status": "answered",
+      "value": "ativas",
+      "label": "Sim, tenho campanhas ativas"
+    },
+    {
+      "field": "tipo_negocio",
+      "status": "answered",
+      "value": "varejo_ecommerce",
+      "label": "Loja física ou virtual (varejo / e-commerce)"
+    },
+    {
+      "field": "produto",
+      "status": "answered",
+      "value": "Cafés especiais em grãos com assinatura mensal",
+      "label": "Cafés especiais em grãos com assinatura mensal"
+    },
+    {
+      "field": "tipo_cliente",
+      "status": "answered",
+      "value": "consumidor",
+      "label": "Consumidor final"
+    },
+    {
+      "field": "regiao",
+      "status": "answered",
+      "value": "nacional",
+      "label": "Brasil todo"
+    },
+    {
+      "field": "caminho_venda",
+      "status": "answered",
+      "value": "site",
+      "label": "Compra direto no site ou loja virtual"
+    },
+    {
+      "field": "orcamento",
+      "status": "answered",
+      "value": "10k_30k",
+      "label": "R$ 10.001 a R$ 30.000"
+    },
+    {
+      "field": "plataformas",
+      "status": "answered",
+      "value": [
+        "meta",
+        "google_outros"
+      ],
+      "label": "Instagram / Facebook, Google — YouTube, Display ou Performance Max"
+    },
+    {
+      "field": "gestor",
+      "status": "answered",
+      "value": "agencia",
+      "label": "Agência"
+    },
+    {
+      "field": "ticket_faixa",
+      "status": "answered",
+      "value": "100_500",
+      "label": "R$ 101 a R$ 500"
+    },
+    {
+      "field": "ticket_exato",
+      "status": "missing",
+      "value": null,
+      "label": null
+    },
+    {
+      "field": "margem_faixa",
+      "status": "answered",
+      "value": "20_40",
+      "label": "De 21% a 40%"
+    },
+    {
+      "field": "margem_tipo",
+      "status": "answered",
+      "value": "contribuicao",
+      "label": "Custo do produto + impostos, taxas e comissões"
+    },
+    {
+      "field": "dor",
+      "status": "answered",
+      "value": "custo_alto",
+      "label": "Custo alto por resultado"
+    },
+    {
+      "field": "prioridade",
+      "status": "answered",
+      "value": "reduzir_custo",
+      "label": "Reduzir o custo por cliente"
+    },
+    {
+      "field": "vendas_origem",
+      "status": "answered",
+      "value": "estimativa",
+      "label": "Tenho uma estimativa"
+    },
+    {
+      "field": "rotina_analise",
+      "status": "answered",
+      "value": "mensal",
+      "label": "Uma vez por mês"
+    },
+    {
+      "field": "rotina_testes",
+      "status": "answered",
+      "value": "regular",
+      "label": "Testes regulares, com registro do que funcionou"
+    },
+    {
+      "field": "tempo_resposta",
+      "status": "not_applicable",
+      "value": null,
+      "label": null
+    },
+    {
+      "field": "acompanhamento_contatos",
+      "status": "not_applicable",
+      "value": null,
+      "label": null
+    },
+    {
+      "field": "acompanhamento_compras",
+      "status": "answered",
+      "value": "so_compras",
+      "label": "Só o total de compras"
+    },
+    {
+      "field": "acompanhamento_agenda",
+      "status": "not_applicable",
+      "value": null,
+      "label": null
+    },
+    {
+      "field": "lembretes",
+      "status": "not_applicable",
+      "value": null,
+      "label": null
+    },
+    {
+      "field": "qualificacao",
+      "status": "not_applicable",
+      "value": null,
+      "label": null
+    },
+    {
+      "field": "tempo_primeiro_contato",
+      "status": "not_applicable",
+      "value": null,
+      "label": null
+    },
+    {
+      "field": "oferta",
+      "status": "answered",
+      "value": "beneficio_condicao",
+      "label": "Benefício claro e uma condição para agir (avaliação, bônus, prazo)"
+    },
+    {
+      "field": "restricoes",
+      "status": "answered",
+      "value": [
+        "nenhuma"
+      ],
+      "label": "Nenhuma restrição a informar"
+    },
+    {
+      "field": "link",
+      "status": "missing",
+      "value": null,
+      "label": null
+    },
+    {
+      "field": "b_recompra",
+      "status": "answered",
+      "value": "frequente",
+      "label": "Sim, com frequência"
+    },
+    {
+      "field": "b_plataforma_loja",
+      "status": "answered",
+      "value": "Nuvemshop",
+      "label": "Nuvemshop"
+    },
+    {
+      "field": "b_frete",
+      "status": "answered",
+      "value": "caro",
+      "label": "Pago, e clientes reclamam"
+    },
+    {
+      "field": "b_objetivo_campanha",
+      "status": "answered",
+      "value": "vendas",
+      "label": "Vendas / compras"
+    },
+    {
+      "field": "b_rastreamento",
+      "status": "answered",
+      "value": [
+        "pixel",
+        "utm"
+      ],
+      "label": "Pixel / tag das plataformas, UTMs nos links"
+    },
+    {
+      "field": "b_executor",
+      "status": "answered",
+      "value": "agencia",
+      "label": "Agência"
+    },
+    {
+      "field": "b_tempo_semanal",
+      "status": "answered",
+      "value": "3_6h",
+      "label": "3 a 6 horas"
+    },
+    {
+      "field": "b_orcamento_adicional",
+      "status": "answered",
+      "value": "500_2k",
+      "label": "R$ 500 a R$ 2.000"
+    },
+    {
+      "field": "b_nivel",
+      "status": "answered",
+      "value": "tecnico",
+      "label": "Mais técnico e direto"
+    }
+  ],
+  "metrics": {
+    "period": {
+      "start": "2026-09-01",
+      "end": "2026-09-30"
+    },
+    "margin_definition": "contribuicao",
+    "values": {
+      "investimento": {
+        "value": 14200,
+        "precision": "exato",
+        "source": "plataforma"
+      },
+      "vendas": {
+        "value": 310,
+        "precision": "exato",
+        "source": "sistema_vendas"
+      },
+      "receita": {
+        "value": 49600,
+        "precision": "exato",
+        "source": "sistema_vendas"
+      },
+      "ticket_medio": {
+        "value": 160,
+        "precision": "exato",
+        "source": "sistema_vendas"
+      },
+      "margem_percentual": {
+        "value": 32,
+        "precision": "estimado",
+        "source": "planilha"
+      }
+    }
+  },
+  "evidence": {
+    "links": [],
+    "files": []
+  },
+  "constraints": [],
+  "missing_fields": [
+    "ticket_exato",
+    "link"
+  ],
+  "contradictions": [],
+  "calculated_metrics": [
+    {
+      "id": "custo_midia_cliente",
+      "label": "Custo de mídia por cliente",
+      "value": 45.806451612903224,
+      "unit": "BRL",
+      "formula": "investimento em mídia ÷ vendas atribuídas",
+      "inputs": [
+        "investimento",
+        "vendas"
+      ],
+      "precision": "exato",
+      "caveats": [
+        "Considera só a mídia. Não é o CAC completo: salários, comissões, ferramentas e agência ficam fora."
+      ]
+    },
+    {
+      "id": "roas",
+      "label": "ROAS",
+      "value": 3.492957746478873,
+      "unit": "razao",
+      "formula": "receita atribuída ÷ investimento em mídia",
+      "inputs": [
+        "receita",
+        "investimento"
+      ],
+      "precision": "exato",
+      "caveats": [
+        "ROAS compara receita e mídia; não é lucro."
+      ]
+    },
+    {
+      "id": "roas_equilibrio",
+      "label": "ROAS de equilíbrio (aproximado)",
+      "value": 3.125,
+      "unit": "razao",
+      "formula": "1 ÷ margem",
+      "inputs": [
+        "margem_percentual"
+      ],
+      "precision": "estimado",
+      "caveats": [
+        "Usa margem de contribuição (já desconta custos variáveis informados). Custos fixos não entram."
+      ]
+    },
+    {
+      "id": "margem_por_venda",
+      "label": "Margem por venda (aproximada)",
+      "value": 51.2,
+      "unit": "BRL",
+      "formula": "ticket × margem",
+      "inputs": [
+        "ticket_medio"
+      ],
+      "precision": "estimado",
+      "caveats": [
+        "Usa margem de contribuição (já desconta custos variáveis informados). Custos fixos não entram."
+      ]
+    },
+    {
+      "id": "custo_sobre_margem",
+      "label": "Custo de mídia por cliente ÷ margem por venda",
+      "value": 0.894657258064516,
+      "unit": "razao",
+      "formula": "custo de mídia por cliente ÷ margem por venda",
+      "inputs": [
+        "investimento",
+        "vendas",
+        "ticket_medio"
+      ],
+      "precision": "estimado",
+      "caveats": [
+        "Acima de 100%: a primeira venda não paga a mídia. A margem é aproximada."
+      ]
+    }
+  ],
+  "assessment": {
+    "mode": "maturidade",
+    "scoringVersion": "pontuacao/3.0.0",
+    "maturity": 73,
+    "band": {
+      "id": "desenvolvimento",
+      "min": 60,
+      "max": 79,
+      "label": "Operação em desenvolvimento",
+      "tone": "brand"
+    },
+    "pillars": [
+      {
+        "id": "mensuracao",
+        "name": "Medição de resultados",
+        "weight": 30,
+        "score": 57,
+        "coverage": 1,
+        "evidence": [
+          {
+            "id": "resp.vendas_origem",
+            "kind": "resposta",
+            "label": "Identificação das vendas",
+            "value": "Tenho uma estimativa"
+          },
+          {
+            "id": "resp.acompanhamento_compras",
+            "kind": "resposta",
+            "label": "O que você consegue ver das compras",
+            "value": "Só o total de compras"
+          }
+        ]
+      },
+      {
+        "id": "conversao",
+        "name": "Atendimento e conversão",
+        "weight": 25,
+        "score": 60,
+        "coverage": 1,
+        "evidence": [
+          {
+            "id": "resp.acompanhamento_compras",
+            "kind": "resposta",
+            "label": "O que você consegue ver das compras",
+            "value": "Só o total de compras"
+          }
+        ]
+      },
+      {
+        "id": "gestao",
+        "name": "Rotina de gestão",
+        "weight": 20,
+        "score": 78,
+        "coverage": 1,
+        "evidence": [
+          {
+            "id": "resp.rotina_analise",
+            "kind": "resposta",
+            "label": "Revisão dos resultados",
+            "value": "Uma vez por mês"
+          },
+          {
+            "id": "resp.rotina_testes",
+            "kind": "resposta",
+            "label": "Testes de anúncios e abordagens",
+            "value": "Testes regulares, com registro do que funcionou"
+          }
+        ]
+      },
+      {
+        "id": "economia",
+        "name": "Clareza financeira",
+        "weight": 15,
+        "score": 100,
+        "coverage": 1,
+        "evidence": [
+          {
+            "id": "resp.ticket_faixa",
+            "kind": "resposta",
+            "label": "Valor médio de uma venda (ticket)",
+            "value": "R$ 101 a R$ 500"
+          },
+          {
+            "id": "resp.margem_faixa",
+            "kind": "resposta",
+            "label": "Quanto sobra de cada venda, em média",
+            "value": "De 21% a 40%"
+          },
+          {
+            "id": "resp.margem_tipo",
+            "kind": "resposta",
+            "label": "Essa margem considera…",
+            "value": "Custo do produto + impostos, taxas e comissões"
+          }
+        ]
+      },
+      {
+        "id": "oferta",
+        "name": "Oferta",
+        "weight": 10,
+        "score": 100,
+        "coverage": 1,
+        "evidence": [
+          {
+            "id": "resp.oferta",
+            "kind": "resposta",
+            "label": "Mensagem principal",
+            "value": "Benefício claro e uma condição para agir (avaliação, bônus, prazo)"
+          }
+        ]
+      }
+    ],
+    "adjustments": [],
+    "coverage": {
+      "ratio": 1,
+      "level": "boa",
+      "unknownFields": []
+    },
+    "metricReliability": {
+      "level": "precisas",
+      "detail": "4 indicadores informados com precisão."
+    },
+    "confidenceStatement": "Boa cobertura operacional; números financeiros informados com precisão."
+  }
+}

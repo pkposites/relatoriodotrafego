@@ -1,0 +1,466 @@
+{
+  "executive_summary": {
+    "scenario": "Negócio de serviços locais, com campanhas ativas, venda pelo WhatsApp ou Direct. Produto principal: Limpeza de pele e tratamentos faciais para mulheres de 25 a 45 anos. Investimento: R$ 1.001 a R$ 3.000; canais: Instagram / Facebook. Prioridade declarada: vender mais com o mesmo investimento. Maturidade declarada: 44/100 (alto potencial de melhoria).",
+    "main_hypothesis": "É provável que as decisões sobre campanhas estejam sendo tomadas sem saber quais delas geram vendas.",
+    "structural_priority": "Registrar a origem de cada venda",
+    "quick_win": "Reduzir a demora na primeira resposta. A ação rápida (“Reduzir a demora na primeira resposta”) pode começar antes da prioridade estrutural porque leva 1 hora para configurar, não depende de “registrar a origem de cada venda” e reduz uma perda que acontece agora, enquanto a estrutura é montada.",
+    "main_limitation": "Boa cobertura operacional; números financeiros parcialmente estimados."
+  },
+  "evidence_coverage": {
+    "operational": "boa",
+    "financial": "2 de 4 indicadores informados com precisão; os demais são estimativas.",
+    "statement": "Boa cobertura operacional; números financeiros parcialmente estimados."
+  },
+  "limitations": [
+    "Análise baseada nas respostas e nos números informados; as contas de anúncio, o site e os criativos não foram acessados.",
+    "Boa cobertura operacional; números financeiros parcialmente estimados.",
+    "Informações não disponíveis: 1 campo(s) com “não sei” ou sem resposta."
+  ],
+  "conversion_map": [
+    {
+      "stage": "Anúncio",
+      "status": "medido",
+      "note": "Impressões e cliques são registrados pelas plataformas."
+    },
+    {
+      "stage": "Contato",
+      "status": "estimado",
+      "note": "140 contatos informados no período."
+    },
+    {
+      "stage": "Atendimento",
+      "status": "estimado",
+      "note": "Tempo de resposta declarado: no mesmo dia."
+    },
+    {
+      "stage": "Venda",
+      "status": "estimado",
+      "note": "Acompanho apenas os contatos, não as vendas"
+    }
+  ],
+  "indicators": [
+    {
+      "evidence_ref": "calc.cpl",
+      "label": "Custo por contato (CPL)",
+      "value": "R$ 12,86 (estimado)",
+      "formula": "investimento ÷ contatos",
+      "caveat": null
+    },
+    {
+      "evidence_ref": "calc.custo_midia_cliente",
+      "label": "Custo de mídia por cliente",
+      "value": "R$ 128,57 (estimado)",
+      "formula": "investimento em mídia ÷ vendas atribuídas",
+      "caveat": "Considera só a mídia. Não é o CAC completo: salários, comissões, ferramentas e agência ficam fora."
+    },
+    {
+      "evidence_ref": "calc.conversao_contato_venda",
+      "label": "Conversão de contato em venda",
+      "value": "10,0% (estimado)",
+      "formula": "vendas ÷ contatos",
+      "caveat": null
+    },
+    {
+      "evidence_ref": "calc.receita_estimada",
+      "label": "Receita atribuída (estimada)",
+      "value": "R$ 2.520,00 (estimado)",
+      "formula": "vendas × ticket médio",
+      "caveat": "Estimada a partir das vendas e do ticket médio, não informada diretamente."
+    },
+    {
+      "evidence_ref": "calc.roas",
+      "label": "ROAS",
+      "value": "1,4x (estimado)",
+      "formula": "receita atribuída ÷ investimento em mídia",
+      "caveat": "ROAS compara receita e mídia; não é lucro. Receita estimada."
+    },
+    {
+      "evidence_ref": "calc.roas_equilibrio",
+      "label": "ROAS de equilíbrio (aproximado)",
+      "value": "2,0x (estimado)",
+      "formula": "1 ÷ margem",
+      "caveat": "Usa margem bruta: impostos, taxas, comissões e outros custos variáveis ficaram fora, então o equilíbrio real tende a ser mais alto. Margem estimada pelo ponto médio da faixa declarada (50%)."
+    },
+    {
+      "evidence_ref": "calc.margem_por_venda",
+      "label": "Margem por venda (aproximada)",
+      "value": "R$ 90,00 (estimado)",
+      "formula": "ticket × margem",
+      "caveat": "Usa margem bruta: impostos, taxas, comissões e outros custos variáveis ficaram fora, então o equilíbrio real tende a ser mais alto."
+    },
+    {
+      "evidence_ref": "calc.custo_sobre_margem",
+      "label": "Custo de mídia por cliente ÷ margem por venda",
+      "value": "142,9% (estimado)",
+      "formula": "custo de mídia por cliente ÷ margem por venda",
+      "caveat": "Acima de 100%: a primeira venda não paga a mídia. A margem é aproximada."
+    }
+  ],
+  "pillar_assessments": [
+    {
+      "pillar": "Medição de resultados",
+      "score": 27,
+      "evidence_refs": [
+        "resp.vendas_origem",
+        "resp.acompanhamento_contatos"
+      ],
+      "interpretation": "Prática ausente ou muito frágil, segundo as respostas.",
+      "to_confirm": "Registre a origem de todas as vendas por duas semanas e compare com o que as plataformas reportam."
+    },
+    {
+      "pillar": "Atendimento e conversão",
+      "score": 33,
+      "evidence_refs": [
+        "resp.tempo_resposta",
+        "resp.acompanhamento_contatos"
+      ],
+      "interpretation": "Prática ausente ou muito frágil, segundo as respostas.",
+      "to_confirm": "Durante uma semana, anote o horário de chegada e o da primeira resposta de cada contato e compare quem respondeu rápido com quem esperou."
+    },
+    {
+      "pillar": "Rotina de gestão",
+      "score": 38,
+      "evidence_refs": [
+        "resp.rotina_analise",
+        "resp.rotina_testes"
+      ],
+      "interpretation": "Prática ausente ou muito frágil, segundo as respostas.",
+      "to_confirm": "Veja quando foi a última mudança nas campanhas e qual número a motivou."
+    },
+    {
+      "pillar": "Clareza financeira",
+      "score": 95,
+      "evidence_refs": [
+        "resp.ticket_faixa",
+        "resp.margem_faixa",
+        "resp.margem_tipo"
+      ],
+      "interpretation": "As respostas indicam uma prática estruturada.",
+      "to_confirm": "Confira se todas as vendas dos anúncios foram contadas e se a margem considera os custos certos; se houver recompra, levante quanto um cliente compra em 6 meses."
+    },
+    {
+      "pillar": "Oferta",
+      "score": 55,
+      "evidence_refs": [
+        "resp.oferta"
+      ],
+      "interpretation": "Prática parcial: funciona em parte, sem registro ou rotina consistentes.",
+      "to_confirm": "Mostre o anúncio a três clientes e pergunte o que entenderam e o que fariam em seguida."
+    }
+  ],
+  "priorities": [
+    {
+      "id": "registrar_origem",
+      "title": "Registrar a origem de cada venda",
+      "kind": "estrutural",
+      "fact": "Você informou — Identificação das vendas: “Acompanho apenas os contatos, não as vendas”.",
+      "hypothesis": "É provável que as decisões sobre campanhas estejam sendo tomadas sem saber quais delas geram vendas.",
+      "possible_consequence": "Campanhas que vendem e campanhas que não vendem podem receber o mesmo tratamento; aumentar a verba nessas condições é uma aposta.",
+      "how_to_confirm": "Registre a origem de todas as vendas por duas semanas e compare com o que as plataformas reportam.",
+      "evidence_refs": [
+        "resp.vendas_origem"
+      ],
+      "action": {
+        "what": "Registrar a origem de cada venda",
+        "why": "É a base para saber se o anúncio vende e para decidir onde investir.",
+        "how": [
+          "Copie o modelo “Registro de origem das vendas”.",
+          "Em toda venda, pergunte “como você nos conheceu?” e anote na hora.",
+          "No WhatsApp Business, crie a etiqueta “anúncio” e marque cada conversa vinda de anúncio.",
+          "No fim da semana, some as vendas e o valor por origem."
+        ],
+        "owner": "Você",
+        "effort": "baixo",
+        "effort_estimate": "30 minutos para montar + 1 a 2 minutos por venda",
+        "dependencies": [],
+        "done_criteria": "Duas semanas seguidas com a origem registrada em todas as vendas.",
+        "indicator": "Percentual de vendas com origem registrada; vendas vindas de anúncios por semana.",
+        "review_when": "Depois de duas semanas de registro, ou antes de qualquer mudança grande de investimento."
+      }
+    },
+    {
+      "id": "custo_acima_margem",
+      "title": "Custo de mídia por cliente acima da margem por venda",
+      "kind": "estrutural",
+      "fact": "Com os números informados: custo de mídia por cliente R$ 128,57 (estimado); margem aproximada por venda R$ 90,00 (estimado).",
+      "hypothesis": "Com os números informados, a primeira venda não paga o custo de mídia para conquistar o cliente.",
+      "possible_consequence": "Aumentar o investimento nessas condições tende a aumentar o prejuízo.",
+      "how_to_confirm": "Confira se todas as vendas dos anúncios foram contadas e se a margem considera os custos certos; se houver recompra, levante quanto um cliente compra em 6 meses.",
+      "evidence_refs": [
+        "calc.custo_midia_cliente",
+        "calc.margem_por_venda"
+      ],
+      "action": {
+        "what": "Rever os números e as campanhas antes de qualquer aumento de verba",
+        "why": "Evita ampliar uma operação que, pelos dados informados, não se paga na primeira venda.",
+        "how": [
+          "Confirme a contagem de vendas por origem (pode haver vendas não registradas).",
+          "Separe o resultado por campanha e identifique as que concentram as vendas.",
+          "Reavalie oferta, ticket ou condições antes de aumentar o investimento."
+        ],
+        "owner": "Você",
+        "effort": "medio",
+        "effort_estimate": "2 a 4 horas",
+        "dependencies": [],
+        "done_criteria": "Números revisados e decisão registrada por campanha (manter, ajustar ou pausar).",
+        "indicator": "Custo de mídia por cliente ÷ margem por venda.",
+        "review_when": "A cada fechamento mensal."
+      }
+    },
+    {
+      "id": "resposta_lenta",
+      "title": "Reduzir a demora na primeira resposta",
+      "kind": "rapida",
+      "fact": "Você informou — Tempo da primeira resposta, em horário comercial: “No mesmo dia”; Contatos fora do horário: “Ficam sem resposta até alguém ver”; Quem responde os contatos: “Eu mesmo(a)”.",
+      "hypothesis": "Parte dos contatos pode esfriar ou procurar outra empresa antes da primeira resposta.",
+      "possible_consequence": "Contatos pagos com mídia podem se perder antes de qualquer conversa.",
+      "how_to_confirm": "Durante uma semana, anote o horário de chegada e o da primeira resposta de cada contato e compare quem respondeu rápido com quem esperou.",
+      "evidence_refs": [
+        "resp.tempo_resposta",
+        "resp.b_fora_horario",
+        "resp.b_responsavel_atendimento"
+      ],
+      "action": {
+        "what": "Organizar a primeira resposta dentro da capacidade atual",
+        "why": "É uma mudança barata que reduz perdas enquanto melhorias estruturais são feitas.",
+        "how": [
+          "Ative a mensagem de saudação automática do WhatsApp Business informando quando a pessoa será atendida.",
+          "Reserve duas ou três janelas fixas por dia só para responder contatos novos.",
+          "Salve as primeiras mensagens do roteiro como respostas rápidas."
+        ],
+        "owner": "Você",
+        "effort": "baixo",
+        "effort_estimate": "1 hora para configurar",
+        "dependencies": [],
+        "done_criteria": "Uma semana com todos os contatos novos respondidos dentro da meta combinada (ou com a mensagem automática).",
+        "indicator": "Tempo médio até a primeira resposta; contatos sem resposta no dia.",
+        "review_when": "Após uma semana. Se a equipe não der conta, reduza o volume de anúncios em vez de deixar contatos sem resposta."
+      }
+    }
+  ],
+  "quick_win": {
+    "priority_id": "resposta_lenta",
+    "rationale": "A ação rápida (“Reduzir a demora na primeira resposta”) pode começar antes da prioridade estrutural porque leva 1 hora para configurar, não depende de “registrar a origem de cada venda” e reduz uma perda que acontece agora, enquanto a estrutura é montada."
+  },
+  "action_plan": [
+    {
+      "day": "Dia 1",
+      "task": "Registrar a origem de cada venda: Copie o modelo “Registro de origem das vendas”.",
+      "owner": "Você",
+      "minutes": 45,
+      "priority_id": "registrar_origem"
+    },
+    {
+      "day": "Dia 2",
+      "task": "Em toda venda, pergunte “como você nos conheceu?” e anote na hora; No WhatsApp Business, crie a etiqueta “anúncio” e marque cada conversa vinda de anúncio.",
+      "owner": "Você",
+      "minutes": 20,
+      "priority_id": "registrar_origem"
+    },
+    {
+      "day": "Dia 3",
+      "task": "Rever os números e as campanhas antes de qualquer aumento de verba: Confirme a contagem de vendas por origem (pode haver vendas não registradas).",
+      "owner": "Você",
+      "minutes": 90,
+      "priority_id": "custo_acima_margem"
+    },
+    {
+      "day": "Dia 4",
+      "task": "Separe o resultado por campanha e identifique as que concentram as vendas; Reavalie oferta, ticket ou condições antes de aumentar o investimento.",
+      "owner": "Você",
+      "minutes": 30,
+      "priority_id": "custo_acima_margem"
+    },
+    {
+      "day": "Dia 5",
+      "task": "Organizar a primeira resposta dentro da capacidade atual: Ative a mensagem de saudação automática do WhatsApp Business informando quando a pessoa será atendida.",
+      "owner": "Você",
+      "minutes": 45,
+      "priority_id": "resposta_lenta"
+    },
+    {
+      "day": "Dia 6",
+      "task": "Reserve duas ou três janelas fixas por dia só para responder contatos novos; Salve as primeiras mensagens do roteiro como respostas rápidas.",
+      "owner": "Você",
+      "minutes": 20,
+      "priority_id": "resposta_lenta"
+    },
+    {
+      "day": "Dia 7",
+      "task": "Revisão da semana: o que foi concluído pelos critérios de conclusão e o que ficou pendente. Anote a decisão para a próxima semana.",
+      "owner": "Você",
+      "minutes": 30,
+      "priority_id": null
+    }
+  ],
+  "selected_templates": [
+    {
+      "template_id": "registro_origem",
+      "reason": "Apoia a prioridade “Registrar a origem de cada venda”."
+    },
+    {
+      "template_id": "rotina_semanal",
+      "reason": "Apoia a prioridade “Registrar a origem de cada venda”."
+    },
+    {
+      "template_id": "roteiro_atendimento",
+      "reason": "Apoia a prioridade “Reduzir a demora na primeira resposta”."
+    }
+  ],
+  "avoid_now": [
+    {
+      "decision": "Aumentar o investimento nas campanhas atuais",
+      "why": "Pelos números informados, o custo de mídia por cliente supera a margem por venda."
+    },
+    {
+      "decision": "Mudar público, oferta e orçamento ao mesmo tempo",
+      "why": "Com várias mudanças juntas não dá para saber qual delas funcionou."
+    }
+  ],
+  "measurement_plan": {
+    "review_in_days": 14,
+    "metrics": [
+      {
+        "name": "Percentual de vendas com origem registrada",
+        "how": "Depois de duas semanas de registro, ou antes de qualquer mudança grande de investimento."
+      },
+      {
+        "name": "Custo de mídia por cliente ÷ margem por venda.",
+        "how": "A cada fechamento mensal."
+      },
+      {
+        "name": "Tempo médio até a primeira resposta",
+        "how": "Após uma semana. Se a equipe não der conta, reduza o volume de anúncios em vez de deixar contatos sem resposta."
+      }
+    ],
+    "continue_if": "As tarefas foram concluídas pelos critérios de conclusão e os indicadores passaram a ser registrados toda semana.",
+    "adjust_if": "Uma tarefa não puder ser concluída com o tempo e a equipe disponíveis, ou os registros mostrarem que o problema está em outra etapa. Use o ROAS de equilíbrio aproximado (2,0x (estimado)) como referência mínima, não como meta.",
+    "execution_vs_results_note": "Executar as tarefas leva dias; ver efeito nos resultados pode levar semanas, conforme o volume de contatos e o ciclo de venda. Não avalie o plano só pelos números da primeira semana."
+  },
+  "assumptions": [
+    "Considera só a mídia. Não é o CAC completo: salários, comissões, ferramentas e agência ficam fora.",
+    "Estimada a partir das vendas e do ticket médio, não informada diretamente.",
+    "ROAS compara receita e mídia; não é lucro.",
+    "Receita estimada.",
+    "Usa margem bruta: impostos, taxas, comissões e outros custos variáveis ficaram fora, então o equilíbrio real tende a ser mais alto.",
+    "Margem estimada pelo ponto médio da faixa declarada (50%).",
+    "Acima de 100%: a primeira venda não paga a mídia. A margem é aproximada.",
+    "Todos os cálculos usam o período de 2026-09-01 a 2026-09-30."
+  ],
+  "evidence_references": [
+    {
+      "id": "resp.vendas_origem",
+      "kind": "resposta",
+      "label": "Identificação das vendas",
+      "value": "Acompanho apenas os contatos, não as vendas"
+    },
+    {
+      "id": "calc.custo_midia_cliente",
+      "kind": "calculo",
+      "label": "Custo de mídia por cliente",
+      "value": "R$ 128,57 (estimado)"
+    },
+    {
+      "id": "calc.margem_por_venda",
+      "kind": "calculo",
+      "label": "Margem por venda (aproximada)",
+      "value": "R$ 90,00 (estimado)"
+    },
+    {
+      "id": "resp.tempo_resposta",
+      "kind": "resposta",
+      "label": "Tempo da primeira resposta, em horário comercial",
+      "value": "No mesmo dia"
+    },
+    {
+      "id": "resp.b_fora_horario",
+      "kind": "resposta",
+      "label": "Contatos fora do horário",
+      "value": "Ficam sem resposta até alguém ver"
+    },
+    {
+      "id": "resp.b_responsavel_atendimento",
+      "kind": "resposta",
+      "label": "Quem responde os contatos",
+      "value": "Eu mesmo(a)"
+    },
+    {
+      "id": "resp.acompanhamento_contatos",
+      "kind": "resposta",
+      "label": "Registro dos contatos até a venda",
+      "value": "Só pelas conversas, sem registro"
+    },
+    {
+      "id": "resp.rotina_analise",
+      "kind": "resposta",
+      "label": "Revisão dos resultados",
+      "value": "Só quando algo dá errado"
+    },
+    {
+      "id": "resp.rotina_testes",
+      "kind": "resposta",
+      "label": "Testes de anúncios e abordagens",
+      "value": "De vez em quando"
+    },
+    {
+      "id": "resp.ticket_faixa",
+      "kind": "resposta",
+      "label": "Valor médio de uma venda (ticket)",
+      "value": "R$ 101 a R$ 500"
+    },
+    {
+      "id": "resp.margem_faixa",
+      "kind": "resposta",
+      "label": "Quanto sobra de cada venda, em média",
+      "value": "De 41% a 60%"
+    },
+    {
+      "id": "resp.margem_tipo",
+      "kind": "resposta",
+      "label": "Essa margem considera…",
+      "value": "Só o custo do produto ou serviço"
+    },
+    {
+      "id": "resp.oferta",
+      "kind": "resposta",
+      "label": "Mensagem principal",
+      "value": "Apresenta o produto ou serviço"
+    },
+    {
+      "id": "calc.cpl",
+      "kind": "calculo",
+      "label": "Custo por contato (CPL)",
+      "value": "R$ 12,86 (estimado)"
+    },
+    {
+      "id": "calc.conversao_contato_venda",
+      "kind": "calculo",
+      "label": "Conversão de contato em venda",
+      "value": "10,0% (estimado)"
+    },
+    {
+      "id": "calc.receita_estimada",
+      "kind": "calculo",
+      "label": "Receita atribuída (estimada)",
+      "value": "R$ 2.520,00 (estimado)"
+    },
+    {
+      "id": "calc.roas",
+      "kind": "calculo",
+      "label": "ROAS",
+      "value": "1,4x (estimado)"
+    },
+    {
+      "id": "calc.roas_equilibrio",
+      "kind": "calculo",
+      "label": "ROAS de equilíbrio (aproximado)",
+      "value": "2,0x (estimado)"
+    },
+    {
+      "id": "calc.custo_sobre_margem",
+      "kind": "calculo",
+      "label": "Custo de mídia por cliente ÷ margem por venda",
+      "value": "142,9% (estimado)"
+    }
+  ]
+}

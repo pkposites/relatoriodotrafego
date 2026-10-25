@@ -1,0 +1,583 @@
+{
+  "diagnostic_id": "exemplo-b2b_long",
+  "environment": "demo",
+  "created_at": "2026-10-25T12:00:00.000Z",
+  "contract_version": "diagnostico/1.0.0",
+  "questionnaire_version": "fase-a/3.0.0",
+  "deepening_version": "fase-b/1.0.0",
+  "scoring_version": "pontuacao/3.0.0",
+  "methodology_version": "metodologia/1.0.0",
+  "prompt_version": "analise/1.0.0",
+  "report_version": "plano/1.0.0",
+  "business_profile": {
+    "campaign_status": "ativas",
+    "business_type": "alto_valor",
+    "product": "Instalação de energia solar para proprietários de imóveis na região de Campinas",
+    "customer_type": "ambos",
+    "region": "regional",
+    "budget_range": "3k_10k",
+    "platforms": [
+      "meta",
+      "google_pesquisa"
+    ],
+    "manager": "freelancer",
+    "ticket_range": "acima_10k",
+    "ticket_exact": 24000,
+    "margin_range": "20_40",
+    "margin_definition": "nao_especificada",
+    "main_problem": "contatos_desqualificados",
+    "priority": "mais_contatos",
+    "offer": "beneficio_condicao"
+  },
+  "conversion_path": "formulario",
+  "answers": [
+    {
+      "field": "campanhas_status",
+      "status": "answered",
+      "value": "ativas",
+      "label": "Sim, tenho campanhas ativas"
+    },
+    {
+      "field": "tipo_negocio",
+      "status": "answered",
+      "value": "alto_valor",
+      "label": "Imóveis, veículos, energia solar ou outro bem de alto valor"
+    },
+    {
+      "field": "produto",
+      "status": "answered",
+      "value": "Instalação de energia solar para proprietários de imóveis na região de Campinas",
+      "label": "Instalação de energia solar para proprietários de imóveis na região de Campinas"
+    },
+    {
+      "field": "tipo_cliente",
+      "status": "answered",
+      "value": "ambos",
+      "label": "Ambos"
+    },
+    {
+      "field": "regiao",
+      "status": "answered",
+      "value": "regional",
+      "label": "Região ou estado"
+    },
+    {
+      "field": "caminho_venda",
+      "status": "answered",
+      "value": "formulario",
+      "label": "Formulário, seguido de atendimento"
+    },
+    {
+      "field": "orcamento",
+      "status": "answered",
+      "value": "3k_10k",
+      "label": "R$ 3.001 a R$ 10.000"
+    },
+    {
+      "field": "plataformas",
+      "status": "answered",
+      "value": [
+        "meta",
+        "google_pesquisa"
+      ],
+      "label": "Instagram / Facebook, Google — Pesquisa"
+    },
+    {
+      "field": "gestor",
+      "status": "answered",
+      "value": "freelancer",
+      "label": "Gestor de tráfego / freelancer"
+    },
+    {
+      "field": "ticket_faixa",
+      "status": "answered",
+      "value": "acima_10k",
+      "label": "Acima de R$ 10.000"
+    },
+    {
+      "field": "ticket_exato",
+      "status": "answered",
+      "value": 24000,
+      "label": "24.000"
+    },
+    {
+      "field": "margem_faixa",
+      "status": "answered",
+      "value": "20_40",
+      "label": "De 21% a 40%"
+    },
+    {
+      "field": "margem_tipo",
+      "status": "unknown",
+      "value": "nao_especificada",
+      "label": "Não sei dizer"
+    },
+    {
+      "field": "dor",
+      "status": "answered",
+      "value": "contatos_desqualificados",
+      "label": "Contatos desqualificados"
+    },
+    {
+      "field": "prioridade",
+      "status": "answered",
+      "value": "mais_contatos",
+      "label": "Mais contatos qualificados"
+    },
+    {
+      "field": "vendas_origem",
+      "status": "answered",
+      "value": "estimativa",
+      "label": "Tenho uma estimativa"
+    },
+    {
+      "field": "rotina_analise",
+      "status": "answered",
+      "value": "semanal",
+      "label": "Toda semana"
+    },
+    {
+      "field": "rotina_testes",
+      "status": "answered",
+      "value": "eventual",
+      "label": "De vez em quando"
+    },
+    {
+      "field": "tempo_resposta",
+      "status": "not_applicable",
+      "value": null,
+      "label": null
+    },
+    {
+      "field": "acompanhamento_contatos",
+      "status": "not_applicable",
+      "value": null,
+      "label": null
+    },
+    {
+      "field": "acompanhamento_compras",
+      "status": "not_applicable",
+      "value": null,
+      "label": null
+    },
+    {
+      "field": "acompanhamento_agenda",
+      "status": "not_applicable",
+      "value": null,
+      "label": null
+    },
+    {
+      "field": "lembretes",
+      "status": "not_applicable",
+      "value": null,
+      "label": null
+    },
+    {
+      "field": "qualificacao",
+      "status": "answered",
+      "value": "informal",
+      "label": "Avaliamos caso a caso, sem registro"
+    },
+    {
+      "field": "tempo_primeiro_contato",
+      "status": "answered",
+      "value": "mesmo_dia",
+      "label": "No mesmo dia"
+    },
+    {
+      "field": "oferta",
+      "status": "answered",
+      "value": "beneficio_condicao",
+      "label": "Benefício claro e uma condição para agir (avaliação, bônus, prazo)"
+    },
+    {
+      "field": "restricoes",
+      "status": "answered",
+      "value": [
+        "capacidade"
+      ],
+      "label": "Capacidade de atender novos clientes limitada"
+    },
+    {
+      "field": "link",
+      "status": "missing",
+      "value": null,
+      "label": null
+    },
+    {
+      "field": "b_ciclo",
+      "status": "answered",
+      "value": "meses",
+      "label": "Meses"
+    },
+    {
+      "field": "b_criterios_qualificacao",
+      "status": "answered",
+      "value": "Imóvel próprio e conta de luz acima de R$ 400",
+      "label": "Imóvel próprio e conta de luz acima de R$ 400"
+    },
+    {
+      "field": "b_motivos_perda",
+      "status": "answered",
+      "value": "Preço; sem urgência",
+      "label": "Preço; sem urgência"
+    },
+    {
+      "field": "b_termos_pesquisa",
+      "status": "answered",
+      "value": "eventual",
+      "label": "Revisados de vez em quando"
+    },
+    {
+      "field": "b_negativas",
+      "status": "answered",
+      "value": "sim",
+      "label": "Sim"
+    },
+    {
+      "field": "b_executor",
+      "status": "answered",
+      "value": "gestor",
+      "label": "Gestor de tráfego"
+    },
+    {
+      "field": "b_tempo_semanal",
+      "status": "answered",
+      "value": "1_3h",
+      "label": "1 a 3 horas"
+    },
+    {
+      "field": "b_orcamento_adicional",
+      "status": "answered",
+      "value": "zero",
+      "label": "Nenhuma"
+    }
+  ],
+  "metrics": {
+    "period": {
+      "start": "2026-08-01",
+      "end": "2026-09-30"
+    },
+    "margin_definition": null,
+    "values": {
+      "investimento": {
+        "value": 11800,
+        "precision": "exato",
+        "source": "plataforma"
+      },
+      "contatos": {
+        "value": 210,
+        "precision": "exato",
+        "source": "crm"
+      },
+      "contatos_qualificados": {
+        "value": 64,
+        "precision": "estimado",
+        "source": "crm"
+      },
+      "propostas": {
+        "value": 38,
+        "precision": "exato",
+        "source": "crm"
+      },
+      "vendas": {
+        "value": 7,
+        "precision": "exato",
+        "source": "crm"
+      },
+      "ticket_medio": {
+        "value": 24000,
+        "precision": "exato",
+        "source": "crm"
+      }
+    }
+  },
+  "evidence": {
+    "links": [],
+    "files": []
+  },
+  "constraints": [
+    "capacidade"
+  ],
+  "missing_fields": [
+    "margem_tipo",
+    "link"
+  ],
+  "contradictions": [],
+  "calculated_metrics": [
+    {
+      "id": "cpl",
+      "label": "Custo por contato (CPL)",
+      "value": 56.19047619047619,
+      "unit": "BRL",
+      "formula": "investimento ÷ contatos",
+      "inputs": [
+        "investimento",
+        "contatos"
+      ],
+      "precision": "exato",
+      "caveats": []
+    },
+    {
+      "id": "custo_midia_cliente",
+      "label": "Custo de mídia por cliente",
+      "value": 1685.7142857142858,
+      "unit": "BRL",
+      "formula": "investimento em mídia ÷ vendas atribuídas",
+      "inputs": [
+        "investimento",
+        "vendas"
+      ],
+      "precision": "exato",
+      "caveats": [
+        "Considera só a mídia. Não é o CAC completo: salários, comissões, ferramentas e agência ficam fora.",
+        "Venda de ciclo longo: contatos e vendas do mesmo período podem pertencer a grupos diferentes; trate a taxa como aproximação."
+      ]
+    },
+    {
+      "id": "conversao_contato_venda",
+      "label": "Conversão de contato em venda",
+      "value": 0.03333333333333333,
+      "unit": "razao",
+      "formula": "vendas ÷ contatos",
+      "inputs": [
+        "contatos",
+        "vendas"
+      ],
+      "precision": "exato",
+      "caveats": [
+        "Venda de ciclo longo: contatos e vendas do mesmo período podem pertencer a grupos diferentes; trate a taxa como aproximação."
+      ]
+    },
+    {
+      "id": "taxa_qualificacao",
+      "label": "Contatos qualificados",
+      "value": 0.3047619047619048,
+      "unit": "razao",
+      "formula": "qualificados ÷ contatos",
+      "inputs": [
+        "contatos",
+        "contatos_qualificados"
+      ],
+      "precision": "estimado",
+      "caveats": []
+    },
+    {
+      "id": "fechamento_propostas",
+      "label": "Fechamento de propostas",
+      "value": 0.18421052631578946,
+      "unit": "razao",
+      "formula": "vendas ÷ propostas",
+      "inputs": [
+        "propostas",
+        "vendas"
+      ],
+      "precision": "exato",
+      "caveats": [
+        "Venda de ciclo longo: contatos e vendas do mesmo período podem pertencer a grupos diferentes; trate a taxa como aproximação."
+      ]
+    },
+    {
+      "id": "receita_estimada",
+      "label": "Receita atribuída (estimada)",
+      "value": 168000,
+      "unit": "BRL",
+      "formula": "vendas × ticket médio",
+      "inputs": [
+        "vendas",
+        "ticket_medio"
+      ],
+      "precision": "estimado",
+      "caveats": [
+        "Estimada a partir das vendas e do ticket médio, não informada diretamente."
+      ]
+    },
+    {
+      "id": "roas",
+      "label": "ROAS",
+      "value": 14.23728813559322,
+      "unit": "razao",
+      "formula": "receita atribuída ÷ investimento em mídia",
+      "inputs": [
+        "vendas",
+        "ticket_medio",
+        "investimento"
+      ],
+      "precision": "estimado",
+      "caveats": [
+        "ROAS compara receita e mídia; não é lucro.",
+        "Receita estimada.",
+        "Venda de ciclo longo: contatos e vendas do mesmo período podem pertencer a grupos diferentes; trate a taxa como aproximação."
+      ]
+    },
+    {
+      "id": "roas_equilibrio",
+      "label": "ROAS de equilíbrio (aproximado)",
+      "value": 3.3333333333333335,
+      "unit": "razao",
+      "formula": "1 ÷ margem",
+      "inputs": [],
+      "precision": "estimado",
+      "caveats": [
+        "A definição da margem não foi informada; trate como aproximação.",
+        "Margem estimada pelo ponto médio da faixa declarada (30%)."
+      ]
+    },
+    {
+      "id": "margem_por_venda",
+      "label": "Margem por venda (aproximada)",
+      "value": 7200,
+      "unit": "BRL",
+      "formula": "ticket × margem",
+      "inputs": [
+        "ticket_medio"
+      ],
+      "precision": "estimado",
+      "caveats": [
+        "A definição da margem não foi informada; trate como aproximação."
+      ]
+    },
+    {
+      "id": "custo_sobre_margem",
+      "label": "Custo de mídia por cliente ÷ margem por venda",
+      "value": 0.23412698412698413,
+      "unit": "razao",
+      "formula": "custo de mídia por cliente ÷ margem por venda",
+      "inputs": [
+        "investimento",
+        "vendas",
+        "ticket_medio"
+      ],
+      "precision": "estimado",
+      "caveats": [
+        "Acima de 100%: a primeira venda não paga a mídia. A margem é aproximada."
+      ]
+    }
+  ],
+  "assessment": {
+    "mode": "maturidade",
+    "scoringVersion": "pontuacao/3.0.0",
+    "maturity": 69,
+    "band": {
+      "id": "desenvolvimento",
+      "min": 60,
+      "max": 79,
+      "label": "Operação em desenvolvimento",
+      "tone": "brand"
+    },
+    "pillars": [
+      {
+        "id": "mensuracao",
+        "name": "Medição de resultados",
+        "weight": 30,
+        "score": 52,
+        "coverage": 1,
+        "evidence": [
+          {
+            "id": "resp.vendas_origem",
+            "kind": "resposta",
+            "label": "Identificação das vendas",
+            "value": "Tenho uma estimativa"
+          },
+          {
+            "id": "resp.qualificacao",
+            "kind": "resposta",
+            "label": "Qualificação dos contatos",
+            "value": "Avaliamos caso a caso, sem registro"
+          }
+        ]
+      },
+      {
+        "id": "conversao",
+        "name": "Atendimento e conversão",
+        "weight": 25,
+        "score": 52,
+        "coverage": 1,
+        "evidence": [
+          {
+            "id": "resp.qualificacao",
+            "kind": "resposta",
+            "label": "Qualificação dos contatos",
+            "value": "Avaliamos caso a caso, sem registro"
+          },
+          {
+            "id": "resp.tempo_primeiro_contato",
+            "kind": "resposta",
+            "label": "Tempo até o primeiro contato",
+            "value": "No mesmo dia"
+          }
+        ]
+      },
+      {
+        "id": "gestao",
+        "name": "Rotina de gestão",
+        "weight": 20,
+        "score": 80,
+        "coverage": 1,
+        "evidence": [
+          {
+            "id": "resp.rotina_analise",
+            "kind": "resposta",
+            "label": "Revisão dos resultados",
+            "value": "Toda semana"
+          },
+          {
+            "id": "resp.rotina_testes",
+            "kind": "resposta",
+            "label": "Testes de anúncios e abordagens",
+            "value": "De vez em quando"
+          }
+        ]
+      },
+      {
+        "id": "economia",
+        "name": "Clareza financeira",
+        "weight": 15,
+        "score": 100,
+        "coverage": 0.82,
+        "evidence": [
+          {
+            "id": "resp.ticket_faixa",
+            "kind": "resposta",
+            "label": "Valor médio de uma venda (ticket)",
+            "value": "Acima de R$ 10.000"
+          },
+          {
+            "id": "resp.margem_faixa",
+            "kind": "resposta",
+            "label": "Quanto sobra de cada venda, em média",
+            "value": "De 21% a 40%"
+          }
+        ]
+      },
+      {
+        "id": "oferta",
+        "name": "Oferta",
+        "weight": 10,
+        "score": 100,
+        "coverage": 1,
+        "evidence": [
+          {
+            "id": "resp.oferta",
+            "kind": "resposta",
+            "label": "Mensagem principal",
+            "value": "Benefício claro e uma condição para agir (avaliação, bônus, prazo)"
+          }
+        ]
+      }
+    ],
+    "adjustments": [],
+    "coverage": {
+      "ratio": 0.89,
+      "level": "boa",
+      "unknownFields": [
+        "margem_tipo"
+      ]
+    },
+    "metricReliability": {
+      "level": "precisas",
+      "detail": "4 indicadores informados com precisão."
+    },
+    "confidenceStatement": "Boa cobertura operacional; números financeiros informados com precisão."
+  }
+}

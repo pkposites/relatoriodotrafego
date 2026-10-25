@@ -1,34 +1,38 @@
 import { useEffect } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import Layout from './components/Layout';
+import AdminDemo from './pages/AdminDemo';
+import Checkout from './pages/Checkout';
+import Consulting from './pages/Consulting';
 import Landing from './pages/Landing';
+import NotFound from './pages/NotFound';
+import Order from './pages/Order';
+import Plans from './pages/Plans';
+import Privacy from './pages/Privacy';
 import Quiz from './pages/Quiz';
 import Result from './pages/Result';
-import Plans from './pages/Plans';
+import Sample from './pages/Sample';
 import SpecialistPlan from './pages/SpecialistPlan';
-import CheckoutDemo from './pages/CheckoutDemo';
-import Consulting from './pages/Consulting';
-import AdminDemo from './pages/AdminDemo';
-import Privacy from './pages/Privacy';
-import NotFound from './pages/NotFound';
 
 const TITLES: Record<string, string> = {
-  '/': 'Relatório do Tráfego — Diagnóstico de anúncios',
+  '/': 'Relatório do Tráfego — Diagnóstico de tráfego pago',
   '/diagnostico': 'Diagnóstico — Relatório do Tráfego',
   '/resultado': 'Seu resultado — Relatório do Tráfego',
-  '/planos': 'Planos — Relatório do Tráfego',
+  '/planos': 'Plano de Ação do Tráfego — Relatório do Tráfego',
+  '/amostra': 'Plano de exemplo — Relatório do Tráfego',
+  '/checkout': 'Pedido — Relatório do Tráfego',
   '/diagnostico-especialista': 'Diagnóstico com Especialista — Relatório do Tráfego',
-  '/checkout-demo': 'Checkout (demonstração) — Relatório do Tráfego',
-  '/solicitar-consultoria': 'Solicitar consultoria — Relatório do Tráfego',
+  '/solicitar-consultoria': 'Consultoria — Relatório do Tráfego',
   '/admin-demo': 'Painel (demonstração) — Relatório do Tráfego',
   '/privacidade': 'Privacidade — Relatório do Tráfego',
+  '/termos': 'Termos — Relatório do Tráfego',
 };
 
 function RouteEffects() {
   const { pathname } = useLocation();
   useEffect(() => {
     window.scrollTo(0, 0);
-    document.title = TITLES[pathname] ?? 'Relatório do Tráfego';
+    document.title = TITLES[pathname] ?? (pathname.startsWith('/pedido/') ? 'Seu pedido — Relatório do Tráfego' : 'Relatório do Tráfego');
   }, [pathname]);
   return null;
 }
@@ -43,8 +47,10 @@ export default function App() {
           <Route path="diagnostico" element={<Quiz />} />
           <Route path="resultado" element={<Result />} />
           <Route path="planos" element={<Plans />} />
+          <Route path="amostra" element={<Sample />} />
+          <Route path="checkout" element={<Checkout />} />
+          <Route path="pedido/:id" element={<Order />} />
           <Route path="diagnostico-especialista" element={<SpecialistPlan />} />
-          <Route path="checkout-demo" element={<CheckoutDemo />} />
           <Route path="solicitar-consultoria" element={<Consulting />} />
           <Route path="admin-demo" element={<AdminDemo />} />
           <Route path="privacidade" element={<Privacy />} />

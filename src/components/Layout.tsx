@@ -1,6 +1,7 @@
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
 import { Logo } from './Logo';
 import { btnClass } from './ui';
+import { IS_DEMO } from '../config/env';
 
 function Header() {
   const { pathname } = useLocation();
@@ -47,11 +48,12 @@ function Footer() {
           <Link to="/planos" className="hover:text-ink">Planos</Link>
           <Link to="/privacidade" className="hover:text-ink">Privacidade</Link>
           <Link to="/termos" className="hover:text-ink">Termos</Link>
-          <Link to="/admin-demo" className="hover:text-ink">Painel (demo)</Link>
+          <Link to="/amostra" className="hover:text-ink">Plano de exemplo</Link>
+          {IS_DEMO && <Link to="/admin-demo" className="hover:text-ink">Painel (demo)</Link>}
         </nav>
       </div>
       <p className="border-t border-line px-4 py-3 text-center text-xs text-ink-mute">
-        Protótipo de demonstração · Seus dados são usados neste protótipo apenas localmente.
+        {IS_DEMO ? 'Versão de demonstração · seus dados ficam apenas neste navegador.' : 'Relatório do Tráfego · Relatório RDA'}
       </p>
     </footer>
   );

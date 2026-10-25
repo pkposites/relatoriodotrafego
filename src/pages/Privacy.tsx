@@ -1,58 +1,83 @@
+import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Card, DemoBanner } from '../components/ui';
-import { clearDemo } from '../lib/storage';
-import { useState } from 'react';
+import { IS_DEMO, SUPPORT_CONTACT } from '../config/env';
+import { clearAllLocal } from '../lib/storage';
 
+/**
+ * Privacidade e termos. O texto descreve o que de fato acontece em cada
+ * ambiente. A versão de produção é um rascunho operacional e precisa de
+ * revisão final antes do lançamento (pendência "politicas_finais").
+ */
 export default function Privacy() {
   const { pathname } = useLocation();
-  const isTerms = pathname === '/termos';
+  const terms = pathname === '/termos';
   const [cleared, setCleared] = useState(false);
 
   return (
     <div className="mx-auto max-w-2xl px-4 pt-8 sm:px-6 sm:pt-12">
-      <h1 className="text-3xl font-extrabold tracking-tight">{isTerms ? 'Termos de uso' : 'Aviso de privacidade'}</h1>
+      <h1 className="text-3xl font-extrabold tracking-tight">{terms ? 'Termos de uso' : 'Aviso de privacidade'}</h1>
       <div className="mt-4">
-        <DemoBanner>Rascunho para o protótipo. A versão final será publicada antes do lançamento.</DemoBanner>
+        <DemoBanner>
+          {IS_DEMO ? 'Esta é a versão de demonstração. O texto abaixo descreve o que acontece nela.' : 'Rascunho operacional — versão final em revisão antes do lançamento.'}
+        </DemoBanner>
       </div>
 
-      {isTerms ? (
+      {terms ? (
         <Card className="mt-6 space-y-3 p-6 text-sm text-ink-soft">
           <p>O Relatório do Tráfego é uma ferramenta independente, sem vínculo com Meta ou Google.</p>
-          <p>O pré-diagnóstico é gerado a partir das respostas fornecidas e não substitui auditoria técnica das contas de anúncio.</p>
-          <p>Não há garantia de aumento de vendas, ROAS ou lucro. Planos pagos têm escopo descrito na página de planos.</p>
+          <p>A avaliação gratuita e o Plano de Ação do Tráfego partem das informações que você fornece. Não acessamos contas de anúncio, site ou criativos, e não se trata de auditoria técnica.</p>
+          <p>Não há promessa de aumento de vendas, ROAS, lucro ou economia.</p>
+          <p>O plano pago é entregue depois da confirmação do pagamento pela plataforma de pagamento e das informações necessárias. Se a geração falhar, avisamos e o pedido é tratado pelo suporte.</p>
+          {IS_DEMO && <p><strong>Na demonstração não há cobrança</strong>: pagamentos e entregas são simulados e rotulados como tal.</p>}
+        </Card>
+      ) : IS_DEMO ? (
+        <Card className="mt-6 space-y-4 p-6 text-sm text-ink-soft">
+          <section>
+            <h2 className="font-bold text-ink">Nesta demonstração</h2>
+            <p className="mt-1">Respostas, números e formulários ficam salvos apenas no armazenamento local do seu navegador. Nada é enviado a servidores ou à IA, e não usamos cookies de rastreamento. Eventos de uso (como “resultado visto”) também ficam só no navegador e não incluem suas respostas.</p>
+          </section>
+          <ClearLocal cleared={cleared} onClear={() => { clearAllLocal(); setCleared(true); }} />
         </Card>
       ) : (
         <Card className="mt-6 space-y-4 p-6 text-sm text-ink-soft">
           <section>
-            <h2 className="font-bold text-ink">Neste protótipo</h2>
-            <p className="mt-1">Respostas, números e formulários ficam salvos apenas no armazenamento local do seu navegador. Nada é enviado a servidores, e não usamos cookies de rastreamento.</p>
-          </section>
-          <section>
-            <h2 className="font-bold text-ink">Na versão final (prevista)</h2>
+            <h2 className="font-bold text-ink">O que coletamos e para quê</h2>
             <ul className="mt-1 list-disc space-y-1 pl-5">
-              <li>Finalidade: gerar seu diagnóstico e, se você solicitar, entregar relatórios ou responder a pedidos de contato.</li>
-              <li>Coleta mínima: o quiz não pede nome, telefone ou e-mail.</li>
-              <li>Comunicações comerciais apenas com seu consentimento, que pode ser retirado a qualquer momento.</li>
-              <li>Canal para dúvidas, correção ou exclusão de dados será informado aqui.</li>
+              <li>Respostas do diagnóstico: para gerar a avaliação gratuita e, se você comprar, o plano. O diagnóstico não pede nome, telefone ou e-mail.</li>
+              <li>E-mail na compra: para entrega e suporte. Fica separado das respostas e não é enviado à IA.</li>
+              <li>Dados de contato da consultoria: só para responder à solicitação. Comunicações comerciais apenas com seu consentimento, que pode ser retirado a qualquer momento.</li>
+              <li>Eventos de uso sem respostas nem dados pessoais (ex.: “diagnóstico concluído”), para melhorar o produto.</li>
             </ul>
           </section>
-          <section className="border-t border-line pt-4">
-            <h2 className="font-bold text-ink">Limpar dados desta demonstração</h2>
-            <p className="mt-1">Remove o progresso do quiz e as simulações salvas neste navegador.</p>
-            <button
-              type="button"
-              onClick={() => {
-                clearDemo();
-                setCleared(true);
-              }}
-              className="mt-3 rounded-xl border border-line px-4 py-2 font-semibold text-ink hover:bg-canvas"
-            >
-              Limpar dados locais
-            </button>
-            {cleared && <p role="status" className="mt-2 font-semibold text-[#067647]">Dados locais removidos.</p>}
+          <section>
+            <h2 className="font-bold text-ink">Onde os dados são tratados</h2>
+            <ul className="mt-1 list-disc space-y-1 pl-5">
+              <li>Servidor e armazenamento da hospedagem do site, para pedidos e arquivos do plano.</li>
+              <li>Provedor de IA (OpenAI), apenas com as respostas e números do diagnóstico, sem dados de contato, para redigir o plano.</li>
+              <li>Plataforma de pagamento, que processa o pagamento e confirma a compra.</li>
+            </ul>
           </section>
+          <section>
+            <h2 className="font-bold text-ink">Seus direitos</h2>
+            <p className="mt-1">Você pode pedir acesso, correção ou exclusão dos seus dados{SUPPORT_CONTACT ? ` pelo contato ${SUPPORT_CONTACT}` : ' pelo canal de suporte informado na compra'}.</p>
+          </section>
+          <ClearLocal cleared={cleared} onClear={() => { clearAllLocal(); setCleared(true); }} />
         </Card>
       )}
     </div>
+  );
+}
+
+function ClearLocal({ cleared, onClear }: { cleared: boolean; onClear: () => void }) {
+  return (
+    <section className="border-t border-line pt-4">
+      <h2 className="font-bold text-ink">Limpar dados deste navegador</h2>
+      <p className="mt-1">Remove o progresso do diagnóstico, pedidos de demonstração e eventos guardados aqui.</p>
+      <button type="button" onClick={onClear} className="mt-3 rounded-xl border border-line px-4 py-2 font-semibold text-ink hover:bg-canvas">
+        Limpar dados locais
+      </button>
+      {cleared && <p role="status" className="mt-2 font-semibold text-[#067647]">Dados locais removidos.</p>}
+    </section>
   );
 }

@@ -1,7 +1,9 @@
 import { ArrowLeft, ArrowRight, Check, ClipboardList, FileText, KeyRound, MessageCircle, Search, Send, UserRound, VideoOff } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Card, LinkButton } from '../components/ui';
-import { getPlan } from '../data/plans';
+import { PRODUCTS } from '../data/plans';
+import { SPECIALIST_DEADLINE } from '../config/env';
+import { confirmed } from '../content/pending';
 
 const STEPS = [
   {
@@ -42,7 +44,7 @@ const FAQ = [
   },
   {
     q: 'Quem faz a análise?',
-    a: 'O próprio Robson, gestor de tráfego e fundador da Qvn Ads. A IA organiza a base do relatório; a leitura do caso e as recomendações são dele.',
+    a: 'O próprio Robson, gestor de tráfego e fundador da Qvn Ads: ele lê suas respostas e o material que você enviar e escreve as recomendações. É um serviço diferente do Plano de Ação do Tráfego, que é gerado automaticamente.',
   },
   {
     q: 'É uma auditoria da conta?',
@@ -50,12 +52,13 @@ const FAQ = [
   },
   {
     q: 'Em quanto tempo recebo?',
-    a: 'O prazo de entrega será informado antes da contratação.',
+    a: SPECIALIST_DEADLINE ? `Prazo: ${SPECIALIST_DEADLINE}, contado a partir do envio dos materiais.` : 'O prazo é informado antes do pagamento.',
   },
 ];
 
 export default function SpecialistPlan() {
-  const plan = getPlan('especialista')!;
+  const plan = PRODUCTS.especialista;
+  const authority = confirmed('contas_ativas');
   return (
     <div className="mx-auto max-w-5xl px-4 pt-8 sm:px-6 sm:pt-12">
       <Link to="/planos" className="mb-6 inline-flex items-center gap-1.5 text-sm font-semibold text-ink-soft hover:text-ink">
@@ -97,11 +100,11 @@ export default function SpecialistPlan() {
               </li>
             ))}
           </ul>
-          <LinkButton to="/checkout-demo?plano=especialista" size="lg" className="mt-6 w-full">
+          <LinkButton to="/checkout?produto=especialista" size="lg" className="mt-6 w-full">
             Quero minha análise <ArrowRight className="h-4 w-4" aria-hidden />
           </LinkButton>
-          <Link to="/checkout-demo?plano=express" className="mt-3 block text-center text-sm font-semibold text-brand hover:underline">
-            Prefiro o Express com IA (R$ 67,90)
+          <Link to="/planos" className="mt-3 block text-center text-sm font-semibold text-brand hover:underline">
+            Prefiro o Plano de Ação do Tráfego (R$ 67,90)
           </Link>
         </Card>
       </div>
@@ -161,7 +164,7 @@ export default function SpecialistPlan() {
             <p className="text-xs font-bold uppercase tracking-wider text-brand">Quem analisa</p>
             <h2 className="mt-1 text-lg font-bold">Robson, gestor de tráfego e fundador da Qvn Ads</h2>
             <p className="mt-1 text-sm text-ink-soft">
-              Gerencia mais de 45 contas de anúncio ativas e trabalha com estratégia e análise de campanhas para empresas de diferentes perfis.
+              {authority ? `${authority}. ` : ''}Trabalha com estratégia e análise de campanhas para empresas de diferentes perfis.
             </p>
           </div>
         </Card>
@@ -188,7 +191,7 @@ export default function SpecialistPlan() {
           <h2 className="text-lg font-bold">Pronto para ter o seu caso analisado?</h2>
           <p className="text-sm text-ink-soft">{plan.price} · pagamento único · tudo pelo WhatsApp</p>
         </div>
-        <LinkButton to="/checkout-demo?plano=especialista" size="lg" className="w-full sm:w-auto">
+        <LinkButton to="/checkout?produto=especialista" size="lg" className="w-full sm:w-auto">
           Quero análise com especialista <ArrowRight className="h-4 w-4" aria-hidden />
         </LinkButton>
       </div>

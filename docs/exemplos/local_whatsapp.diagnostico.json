@@ -1,0 +1,556 @@
+{
+  "diagnostic_id": "exemplo-local_whatsapp",
+  "environment": "demo",
+  "created_at": "2026-10-25T12:00:00.000Z",
+  "contract_version": "diagnostico/1.0.0",
+  "questionnaire_version": "fase-a/3.0.0",
+  "deepening_version": "fase-b/1.0.0",
+  "scoring_version": "pontuacao/3.0.0",
+  "methodology_version": "metodologia/1.0.0",
+  "prompt_version": "analise/1.0.0",
+  "report_version": "plano/1.0.0",
+  "business_profile": {
+    "campaign_status": "ativas",
+    "business_type": "servicos_locais",
+    "product": "Limpeza de pele e tratamentos faciais para mulheres de 25 a 45 anos",
+    "customer_type": "consumidor",
+    "region": "local",
+    "budget_range": "1k_3k",
+    "platforms": [
+      "meta"
+    ],
+    "manager": "eu",
+    "ticket_range": "100_500",
+    "ticket_exact": 180,
+    "margin_range": "40_60",
+    "margin_definition": "bruta",
+    "main_problem": "contatos_nao_compram",
+    "priority": "vender_mais",
+    "offer": "apresentacao"
+  },
+  "conversion_path": "whatsapp_direct",
+  "answers": [
+    {
+      "field": "campanhas_status",
+      "status": "answered",
+      "value": "ativas",
+      "label": "Sim, tenho campanhas ativas"
+    },
+    {
+      "field": "tipo_negocio",
+      "status": "answered",
+      "value": "servicos_locais",
+      "label": "Serviços locais (saúde, estética, beleza, academia, reformas…)"
+    },
+    {
+      "field": "produto",
+      "status": "answered",
+      "value": "Limpeza de pele e tratamentos faciais para mulheres de 25 a 45 anos",
+      "label": "Limpeza de pele e tratamentos faciais para mulheres de 25 a 45 anos"
+    },
+    {
+      "field": "tipo_cliente",
+      "status": "answered",
+      "value": "consumidor",
+      "label": "Consumidor final"
+    },
+    {
+      "field": "regiao",
+      "status": "answered",
+      "value": "local",
+      "label": "Bairro ou cidade"
+    },
+    {
+      "field": "caminho_venda",
+      "status": "answered",
+      "value": "whatsapp_direct",
+      "label": "Conversa no WhatsApp ou Direct"
+    },
+    {
+      "field": "orcamento",
+      "status": "answered",
+      "value": "1k_3k",
+      "label": "R$ 1.001 a R$ 3.000"
+    },
+    {
+      "field": "plataformas",
+      "status": "answered",
+      "value": [
+        "meta"
+      ],
+      "label": "Instagram / Facebook"
+    },
+    {
+      "field": "gestor",
+      "status": "answered",
+      "value": "eu",
+      "label": "Eu mesmo(a)"
+    },
+    {
+      "field": "ticket_faixa",
+      "status": "answered",
+      "value": "100_500",
+      "label": "R$ 101 a R$ 500"
+    },
+    {
+      "field": "ticket_exato",
+      "status": "answered",
+      "value": 180,
+      "label": "180"
+    },
+    {
+      "field": "margem_faixa",
+      "status": "answered",
+      "value": "40_60",
+      "label": "De 41% a 60%"
+    },
+    {
+      "field": "margem_tipo",
+      "status": "answered",
+      "value": "bruta",
+      "label": "Só o custo do produto ou serviço"
+    },
+    {
+      "field": "dor",
+      "status": "answered",
+      "value": "contatos_nao_compram",
+      "label": "Contatos que não compram"
+    },
+    {
+      "field": "prioridade",
+      "status": "answered",
+      "value": "vender_mais",
+      "label": "Vender mais com o mesmo investimento"
+    },
+    {
+      "field": "vendas_origem",
+      "status": "answered",
+      "value": "so_contatos",
+      "label": "Acompanho apenas os contatos, não as vendas"
+    },
+    {
+      "field": "rotina_analise",
+      "status": "answered",
+      "value": "quando_problema",
+      "label": "Só quando algo dá errado"
+    },
+    {
+      "field": "rotina_testes",
+      "status": "answered",
+      "value": "eventual",
+      "label": "De vez em quando"
+    },
+    {
+      "field": "tempo_resposta",
+      "status": "answered",
+      "value": "mesmo_dia",
+      "label": "No mesmo dia"
+    },
+    {
+      "field": "acompanhamento_contatos",
+      "status": "answered",
+      "value": "so_conversa",
+      "label": "Só pelas conversas, sem registro"
+    },
+    {
+      "field": "acompanhamento_compras",
+      "status": "not_applicable",
+      "value": null,
+      "label": null
+    },
+    {
+      "field": "acompanhamento_agenda",
+      "status": "not_applicable",
+      "value": null,
+      "label": null
+    },
+    {
+      "field": "lembretes",
+      "status": "not_applicable",
+      "value": null,
+      "label": null
+    },
+    {
+      "field": "qualificacao",
+      "status": "not_applicable",
+      "value": null,
+      "label": null
+    },
+    {
+      "field": "tempo_primeiro_contato",
+      "status": "not_applicable",
+      "value": null,
+      "label": null
+    },
+    {
+      "field": "oferta",
+      "status": "answered",
+      "value": "apresentacao",
+      "label": "Apresenta o produto ou serviço"
+    },
+    {
+      "field": "restricoes",
+      "status": "answered",
+      "value": [
+        "verba",
+        "equipe"
+      ],
+      "label": "Sem verba adicional, Equipe pequena ou sem ninguém para executar"
+    },
+    {
+      "field": "link",
+      "status": "missing",
+      "value": null,
+      "label": null
+    },
+    {
+      "field": "b_beneficio",
+      "status": "answered",
+      "value": "Pele limpa e sem oleosidade já na primeira sessão",
+      "label": "Pele limpa e sem oleosidade já na primeira sessão"
+    },
+    {
+      "field": "b_objecao",
+      "status": "answered",
+      "value": "Acham caro antes de entender o tratamento",
+      "label": "Acham caro antes de entender o tratamento"
+    },
+    {
+      "field": "b_responsavel_atendimento",
+      "status": "answered",
+      "value": "dono",
+      "label": "Eu mesmo(a)"
+    },
+    {
+      "field": "b_fora_horario",
+      "status": "answered",
+      "value": "nao_responde",
+      "label": "Ficam sem resposta até alguém ver"
+    },
+    {
+      "field": "b_follow_up",
+      "status": "answered",
+      "value": "nao",
+      "label": "Não fazemos"
+    },
+    {
+      "field": "b_onde_perde",
+      "status": "answered",
+      "value": "preco",
+      "label": "Quando fala de preço"
+    },
+    {
+      "field": "b_executor",
+      "status": "answered",
+      "value": "dono",
+      "label": "Eu mesmo(a)"
+    },
+    {
+      "field": "b_tempo_semanal",
+      "status": "answered",
+      "value": "1_3h",
+      "label": "1 a 3 horas"
+    },
+    {
+      "field": "b_orcamento_adicional",
+      "status": "answered",
+      "value": "zero",
+      "label": "Nenhuma"
+    },
+    {
+      "field": "b_nivel",
+      "status": "answered",
+      "value": "iniciante",
+      "label": "Passo a passo, linguagem simples"
+    }
+  ],
+  "metrics": {
+    "period": {
+      "start": "2026-09-01",
+      "end": "2026-09-30"
+    },
+    "margin_definition": null,
+    "values": {
+      "investimento": {
+        "value": 1800,
+        "precision": "exato",
+        "source": "plataforma"
+      },
+      "contatos": {
+        "value": 140,
+        "precision": "estimado",
+        "source": "estimativa_pessoal"
+      },
+      "vendas": {
+        "value": 14,
+        "precision": "estimado",
+        "source": "estimativa_pessoal"
+      },
+      "ticket_medio": {
+        "value": 180,
+        "precision": "exato",
+        "source": "sistema_vendas"
+      }
+    }
+  },
+  "evidence": {
+    "links": [],
+    "files": []
+  },
+  "constraints": [
+    "verba",
+    "equipe"
+  ],
+  "missing_fields": [
+    "link"
+  ],
+  "contradictions": [],
+  "calculated_metrics": [
+    {
+      "id": "cpl",
+      "label": "Custo por contato (CPL)",
+      "value": 12.857142857142858,
+      "unit": "BRL",
+      "formula": "investimento ÷ contatos",
+      "inputs": [
+        "investimento",
+        "contatos"
+      ],
+      "precision": "estimado",
+      "caveats": []
+    },
+    {
+      "id": "custo_midia_cliente",
+      "label": "Custo de mídia por cliente",
+      "value": 128.57142857142858,
+      "unit": "BRL",
+      "formula": "investimento em mídia ÷ vendas atribuídas",
+      "inputs": [
+        "investimento",
+        "vendas"
+      ],
+      "precision": "estimado",
+      "caveats": [
+        "Considera só a mídia. Não é o CAC completo: salários, comissões, ferramentas e agência ficam fora."
+      ]
+    },
+    {
+      "id": "conversao_contato_venda",
+      "label": "Conversão de contato em venda",
+      "value": 0.1,
+      "unit": "razao",
+      "formula": "vendas ÷ contatos",
+      "inputs": [
+        "contatos",
+        "vendas"
+      ],
+      "precision": "estimado",
+      "caveats": []
+    },
+    {
+      "id": "receita_estimada",
+      "label": "Receita atribuída (estimada)",
+      "value": 2520,
+      "unit": "BRL",
+      "formula": "vendas × ticket médio",
+      "inputs": [
+        "vendas",
+        "ticket_medio"
+      ],
+      "precision": "estimado",
+      "caveats": [
+        "Estimada a partir das vendas e do ticket médio, não informada diretamente."
+      ]
+    },
+    {
+      "id": "roas",
+      "label": "ROAS",
+      "value": 1.4,
+      "unit": "razao",
+      "formula": "receita atribuída ÷ investimento em mídia",
+      "inputs": [
+        "vendas",
+        "ticket_medio",
+        "investimento"
+      ],
+      "precision": "estimado",
+      "caveats": [
+        "ROAS compara receita e mídia; não é lucro.",
+        "Receita estimada."
+      ]
+    },
+    {
+      "id": "roas_equilibrio",
+      "label": "ROAS de equilíbrio (aproximado)",
+      "value": 2,
+      "unit": "razao",
+      "formula": "1 ÷ margem",
+      "inputs": [],
+      "precision": "estimado",
+      "caveats": [
+        "Usa margem bruta: impostos, taxas, comissões e outros custos variáveis ficaram fora, então o equilíbrio real tende a ser mais alto.",
+        "Margem estimada pelo ponto médio da faixa declarada (50%)."
+      ]
+    },
+    {
+      "id": "margem_por_venda",
+      "label": "Margem por venda (aproximada)",
+      "value": 90,
+      "unit": "BRL",
+      "formula": "ticket × margem",
+      "inputs": [
+        "ticket_medio"
+      ],
+      "precision": "estimado",
+      "caveats": [
+        "Usa margem bruta: impostos, taxas, comissões e outros custos variáveis ficaram fora, então o equilíbrio real tende a ser mais alto."
+      ]
+    },
+    {
+      "id": "custo_sobre_margem",
+      "label": "Custo de mídia por cliente ÷ margem por venda",
+      "value": 1.4285714285714286,
+      "unit": "razao",
+      "formula": "custo de mídia por cliente ÷ margem por venda",
+      "inputs": [
+        "investimento",
+        "vendas",
+        "ticket_medio"
+      ],
+      "precision": "estimado",
+      "caveats": [
+        "Acima de 100%: a primeira venda não paga a mídia. A margem é aproximada."
+      ]
+    }
+  ],
+  "assessment": {
+    "mode": "maturidade",
+    "scoringVersion": "pontuacao/3.0.0",
+    "maturity": 44,
+    "band": {
+      "id": "potencial",
+      "min": 40,
+      "max": 59,
+      "label": "Alto potencial de melhoria",
+      "tone": "warn"
+    },
+    "pillars": [
+      {
+        "id": "mensuracao",
+        "name": "Medição de resultados",
+        "weight": 30,
+        "score": 27,
+        "coverage": 1,
+        "evidence": [
+          {
+            "id": "resp.vendas_origem",
+            "kind": "resposta",
+            "label": "Identificação das vendas",
+            "value": "Acompanho apenas os contatos, não as vendas"
+          },
+          {
+            "id": "resp.acompanhamento_contatos",
+            "kind": "resposta",
+            "label": "Registro dos contatos até a venda",
+            "value": "Só pelas conversas, sem registro"
+          }
+        ]
+      },
+      {
+        "id": "conversao",
+        "name": "Atendimento e conversão",
+        "weight": 25,
+        "score": 33,
+        "coverage": 1,
+        "evidence": [
+          {
+            "id": "resp.tempo_resposta",
+            "kind": "resposta",
+            "label": "Tempo da primeira resposta, em horário comercial",
+            "value": "No mesmo dia"
+          },
+          {
+            "id": "resp.acompanhamento_contatos",
+            "kind": "resposta",
+            "label": "Registro dos contatos até a venda",
+            "value": "Só pelas conversas, sem registro"
+          }
+        ]
+      },
+      {
+        "id": "gestao",
+        "name": "Rotina de gestão",
+        "weight": 20,
+        "score": 38,
+        "coverage": 1,
+        "evidence": [
+          {
+            "id": "resp.rotina_analise",
+            "kind": "resposta",
+            "label": "Revisão dos resultados",
+            "value": "Só quando algo dá errado"
+          },
+          {
+            "id": "resp.rotina_testes",
+            "kind": "resposta",
+            "label": "Testes de anúncios e abordagens",
+            "value": "De vez em quando"
+          }
+        ]
+      },
+      {
+        "id": "economia",
+        "name": "Clareza financeira",
+        "weight": 15,
+        "score": 95,
+        "coverage": 1,
+        "evidence": [
+          {
+            "id": "resp.ticket_faixa",
+            "kind": "resposta",
+            "label": "Valor médio de uma venda (ticket)",
+            "value": "R$ 101 a R$ 500"
+          },
+          {
+            "id": "resp.margem_faixa",
+            "kind": "resposta",
+            "label": "Quanto sobra de cada venda, em média",
+            "value": "De 41% a 60%"
+          },
+          {
+            "id": "resp.margem_tipo",
+            "kind": "resposta",
+            "label": "Essa margem considera…",
+            "value": "Só o custo do produto ou serviço"
+          }
+        ]
+      },
+      {
+        "id": "oferta",
+        "name": "Oferta",
+        "weight": 10,
+        "score": 55,
+        "coverage": 1,
+        "evidence": [
+          {
+            "id": "resp.oferta",
+            "kind": "resposta",
+            "label": "Mensagem principal",
+            "value": "Apresenta o produto ou serviço"
+          }
+        ]
+      }
+    ],
+    "adjustments": [],
+    "coverage": {
+      "ratio": 1,
+      "level": "boa",
+      "unknownFields": []
+    },
+    "metricReliability": {
+      "level": "mistas",
+      "detail": "2 de 4 indicadores informados com precisão; os demais são estimativas."
+    },
+    "confidenceStatement": "Boa cobertura operacional; números financeiros parcialmente estimados."
+  }
+}

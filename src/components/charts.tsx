@@ -1,4 +1,7 @@
-import type { Band, PillarResult } from '../types';
+import type { PillarScore } from '../domain/types';
+
+type Tone = 'bad' | 'warn' | 'brand' | 'ok';
+type Band = { tone: Tone };
 import { Badge } from './ui';
 
 const TONE_HEX: Record<Band['tone'], string> = { bad: '#EF4444', warn: '#F59E0B', brand: '#0866FF', ok: '#16A34A' };
@@ -44,7 +47,7 @@ export function ScoreGauge({ score, band, size = 168 }: { score: number; band: B
 
 const BAR: Record<Band['tone'], string> = { bad: 'bg-bad', warn: 'bg-warn', brand: 'bg-brand', ok: 'bg-ok' };
 
-export function PillarBars({ pillars }: { pillars: PillarResult[] }) {
+export function PillarBars({ pillars }: { pillars: PillarScore[] }) {
   return (
     <ul className="space-y-4">
       {pillars.map((p, i) => (
@@ -54,17 +57,19 @@ export function PillarBars({ pillars }: { pillars: PillarResult[] }) {
               {p.name} <span className="font-normal text-ink-mute">· peso {p.weight}</span>
             </span>
             <span className="flex items-center gap-2">
-              {p.evidenceLevel === 'limitada' && <Badge tone="neutral">Evidência limitada</Badge>}
-              {p.evidenceLevel === 'parcial' && <Badge tone="neutral">Evidência parcial</Badge>}
-              <span className="tabular text-sm font-bold">{p.score}</span>
+              {p.score !== null && p.coverage < 0.6 && <Badge tone="neutral">Pouca informação</Badge>}
+              <span className="tabular text-sm font-bold">{p.score ?? '—'}</span>
             </span>
           </div>
           <div className="h-2.5 w-full overflow-hidden rounded-full bg-[#EAECF0]">
-            <div
-              className={`anim-grow h-full rounded-full ${BAR[toneForScore(p.score)]} ${p.evidenceLevel === 'limitada' ? 'opacity-50' : ''}`}
-              style={{ width: `${Math.max(2, p.score)}%`, animationDelay: `${i * 80}ms` }}
-            />
+            {p.score !== null ? (
+              <div
+                className={`anim-grow h-full rounded-full ${BAR[toneForScore(p.score)]} ${p.coverage < 0.6 ? 'opacity-50' : ''}`}
+                style={{ width: `${Math.max(2, p.score)}%`, animationDelay: `${i * 80}ms` }}
+              />
+            ) : null}
           </div>
+          {p.score === null && <p className="mt-1 text-xs text-ink-mute">Sem respostas definidas para avaliar.</p>}
         </li>
       ))}
     </ul>
