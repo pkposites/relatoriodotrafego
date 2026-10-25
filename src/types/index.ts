@@ -118,6 +118,8 @@ export interface Plan {
   id: PlanId;
   name: string;
   price: string;
+  /** Preço praticado anteriormente, exibido riscado. */
+  oldPrice?: string;
   priceNote?: string;
   tagline: string;
   features: string[];

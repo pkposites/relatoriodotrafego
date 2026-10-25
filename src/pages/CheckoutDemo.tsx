@@ -62,6 +62,11 @@ export default function CheckoutDemo() {
 
         <Card className="flex flex-col p-6">
           <p className="text-sm text-ink-soft">Valor do plano</p>
+          {plan.oldPrice && (
+            <p className="tabular text-sm text-ink-mute">
+              de <s>{plan.oldPrice}</s> por
+            </p>
+          )}
           <p className="tabular text-3xl font-extrabold">{plan.price}</p>
           <p className="text-xs text-ink-mute">{plan.priceNote}</p>
           <div className="mt-6 flex-1" />

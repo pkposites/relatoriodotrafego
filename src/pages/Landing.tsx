@@ -12,49 +12,8 @@ import {
   UserRound,
   Wallet,
 } from 'lucide-react';
+import HeroDemo from '../components/HeroDemo';
 import { LinkButton, SectionTitle } from '../components/ui';
-
-const PREVIEW = [
-  { label: 'Mensuração', value: 42, color: 'bg-warn' },
-  { label: 'Criativos', value: 68, color: 'bg-brand' },
-  { label: 'Conversão', value: 31, color: 'bg-bad' },
-];
-
-function DashboardPreview() {
-  return (
-    <div className="card relative overflow-hidden p-5 sm:p-6" aria-label="Prévia ilustrativa do diagnóstico">
-      <div className="mb-5 flex items-start justify-between gap-3">
-        <div>
-          <p className="text-xs font-semibold uppercase tracking-wider text-ink-mute">Prévia do diagnóstico</p>
-          <p className="mt-1 text-lg font-bold">Índice de maturidade</p>
-        </div>
-        <span className="chip border border-dashed border-ink-mute/40 bg-[#F9FAFB] text-ink-mute">Dados ilustrativos</span>
-      </div>
-      <div className="mb-6 flex items-end gap-3">
-        <span className="tabular text-5xl font-extrabold tracking-tight">54</span>
-        <span className="mb-1.5 text-sm text-ink-mute">/ 100</span>
-        <span className="chip mb-2 ml-auto bg-warn-50 text-warn-700">Alto potencial de melhoria</span>
-      </div>
-      <ul className="space-y-4">
-        {PREVIEW.map((p, i) => (
-          <li key={p.label}>
-            <div className="mb-1.5 flex justify-between text-sm">
-              <span className="font-semibold">{p.label}</span>
-              <span className="tabular font-bold">{p.value}</span>
-            </div>
-            <div className="h-2.5 overflow-hidden rounded-full bg-[#EAECF0]">
-              <div className={`anim-grow h-full rounded-full ${p.color}`} style={{ width: `${p.value}%`, animationDelay: `${200 + i * 120}ms` }} />
-            </div>
-          </li>
-        ))}
-      </ul>
-      <div className="mt-6 rounded-xl bg-brand-50 p-3.5 text-sm">
-        <p className="font-semibold text-brand-700">Principal ponto de atenção</p>
-        <p className="mt-0.5 text-ink-soft">Acompanhamento do contato até a venda</p>
-      </div>
-    </div>
-  );
-}
 
 const AREAS = [
   { icon: Gauge, title: 'Mensuração', text: 'Se você consegue saber quais vendas vêm dos anúncios.' },
@@ -68,7 +27,7 @@ const RECEIVE = [
   { icon: BarChart3, title: 'Nota de maturidade', text: 'Um índice indicativo de 0 a 100, com a avaliação de cada pilar.', free: true },
   { icon: Target, title: 'Principal gargalo', text: 'A área que mais merece atenção, de acordo com as suas respostas.', free: true },
   { icon: ArrowRight, title: 'Primeiro próximo passo', text: 'Uma ação prática para começar, sem custo.', free: true },
-  { icon: FileText, title: 'Relatório aprofundado', text: 'Plano de ação completo em PDF com IA por R$ 59,90 — opcional.', free: false },
+  { icon: FileText, title: 'Relatório aprofundado', text: 'Plano de ação completo em PDF com IA por R$ 67,90 — opcional.', free: false },
 ];
 
 export default function Landing() {
@@ -99,7 +58,7 @@ export default function Landing() {
           </ul>
         </div>
         <div className="anim-rise [animation-delay:80ms]">
-          <DashboardPreview />
+          <HeroDemo />
         </div>
       </section>
 

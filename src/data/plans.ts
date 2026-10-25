@@ -4,7 +4,8 @@ export const PLANS: Plan[] = [
   {
     id: 'express',
     name: 'Diagnóstico Express com IA',
-    price: 'R$ 59,90',
+    price: 'R$ 67,90',
+    oldPrice: 'R$ 149,00',
     priceNote: 'pagamento único',
     tagline: 'IA especializada em tráfego pago, configurada com a metodologia de um gestor com mais de 45 contas ativas.',
     features: [
@@ -59,5 +60,5 @@ export function getPlan(id: string | null | undefined): Plan | undefined {
   return PLANS.find((p) => p.id === (id as PlanId));
 }
 
-/** Reservado para fase futura: upgrade Express → Especialista (R$ 197,00 − R$ 59,90). Não implementado. */
-export const FUTURE_UPGRADE_DIFF = 'R$ 137,10';
+/** Reservado para fase futura: upgrade Express → Especialista (R$ 197,00 − R$ 67,90). Não implementado. */
+export const FUTURE_UPGRADE_DIFF = 'R$ 129,10';

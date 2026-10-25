@@ -99,6 +99,11 @@ export default function Plans() {
 
             <div className="mt-7 flex flex-col gap-5 rounded-2xl bg-canvas p-5 sm:flex-row sm:items-center sm:justify-between">
               <div>
+                {express.oldPrice && (
+                  <p className="tabular text-sm text-ink-mute">
+                    de <s>{express.oldPrice}</s> por
+                  </p>
+                )}
                 <p className="tabular text-4xl font-extrabold tracking-tight">{express.price}</p>
                 <p className="text-sm text-ink-mute">pagamento único · sem mensalidade</p>
               </div>

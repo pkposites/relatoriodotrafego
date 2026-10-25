@@ -170,7 +170,8 @@ export default function Result() {
           </div>
           <div className="rounded-2xl bg-canvas p-5 text-center">
             <p className="text-sm font-semibold text-ink-soft">Diagnóstico Express com IA</p>
-            <p className="tabular mt-1 text-4xl font-extrabold tracking-tight">R$ 59,90</p>
+            <p className="tabular mt-1 text-sm text-ink-mute">de <s>R$ 149,00</s> por</p>
+            <p className="tabular text-4xl font-extrabold tracking-tight">R$ 67,90</p>
             <p className="text-xs text-ink-mute">pagamento único · entrega automática</p>
             <LinkButton to="/checkout-demo?plano=express" size="lg" className="mt-4 w-full">
               Quero meu PDF com IA <ArrowRight className="h-5 w-5" aria-hidden />

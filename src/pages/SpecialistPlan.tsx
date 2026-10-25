@@ -101,7 +101,7 @@ export default function SpecialistPlan() {
             Quero minha análise <ArrowRight className="h-4 w-4" aria-hidden />
           </LinkButton>
           <Link to="/checkout-demo?plano=express" className="mt-3 block text-center text-sm font-semibold text-brand hover:underline">
-            Prefiro o Express com IA (R$ 59,90)
+            Prefiro o Express com IA (R$ 67,90)
           </Link>
         </Card>
       </div>
