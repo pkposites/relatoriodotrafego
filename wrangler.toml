@@ -2,8 +2,9 @@
 # Segredos NÃO ficam aqui: use `npx wrangler secret put <NOME>` (ver README.md).
 # Mesmo nome do Worker criado no painel da Cloudflare (o build pelo GitHub exige).
 name = "relatoriodotrafego"
-main = "src/index.ts"
-compatibility_date = "2026-10-01"
+# Fica na raiz para o build da Cloudflare funcionar com as configurações padrão.
+main = "workers/gateway/src/index.ts"
+compatibility_date = "2025-10-01"
 workers_dev = true
 # Mantém as variáveis criadas no painel ao publicar pelo GitHub.
 keep_vars = true

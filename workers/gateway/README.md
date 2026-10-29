@@ -24,17 +24,18 @@ Segredos (`npx wrangler secret put NOME`):
 
 ## Publicar
 
+A configuração está em `wrangler.toml`, **na raiz do repositório**.
+
 Pelo GitHub (Workers Builds, já conectado): em **Settings › Builds** use
-**Root directory** `workers/gateway`, **Build command** vazio e **Deploy command** `npx wrangler deploy`.
+**Root directory** `/` (padrão), **Build command** vazio e **Deploy command** `npx wrangler deploy`.
 O nome em `wrangler.toml` é o mesmo do Worker no painel (`relatoriodotrafego`) e `keep_vars = true`
 preserva as variáveis criadas no painel. Segredos ficam em **Settings › Variables and Secrets**.
 
 Fila opcional: crie um KV no painel, coloque o id em `wrangler.toml` (bloco `kv_namespaces`) e publique.
 
-Pelo terminal (alternativa):
+Pelo terminal (alternativa), na raiz do repositório:
 
 ```bash
-cd workers/gateway
 npx wrangler login
 npx wrangler secret put CAKTO_WEBHOOK_SECRET
 npx wrangler secret put SITE_WEBHOOK_SECRET

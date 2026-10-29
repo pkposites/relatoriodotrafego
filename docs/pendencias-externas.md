@@ -42,7 +42,7 @@ Site (build): `VITE_APP_MODE=production`, `VITE_SUPPORT_CONTACT`, `VITE_SPECIALI
 
 Netlify (servidor): `PAYMENT_PROVIDER` vazio (genérico), `CHECKOUT_URL_PLANO=https://pay.cakto.com.br/4jcq93j_1257574`, `PAYMENT_REF_PARAM=callback`, `PAYMENT_WEBHOOK_SECRET` = mesmo valor de `SITE_WEBHOOK_SECRET` no Worker.
 Netlify (site): `VITE_CAPI_URL` = URL do Worker (ex.: `https://rdt-gateway.<conta>.workers.dev`).
-Worker: ver `workers/gateway/README.md` (`CAKTO_WEBHOOK_SECRET`, `SITE_WEBHOOK_SECRET`, `META_CAPI_TOKEN` como segredos).
+Worker: configuração em `wrangler.toml` (raiz); ver `workers/gateway/README.md` (`CAKTO_WEBHOOK_SECRET`, `SITE_WEBHOOK_SECRET`, `META_CAPI_TOKEN` como segredos).
 Cakto: webhook para `<Worker>/cakto/webhook` com `purchase_approved`, `purchase_refused`, `refund` e `chargeback`; pixel `2018578222100683` + token da API de Conversões no produto (InitiateCheckout e Purchase saem de lá). Opcional: pedir à Cakto o redirect pós-pagamento para `https://diagnostico.relatoriorda.com.br/pedido/{{callback}}`.
 
 ### 2.1 Mercado Pago (Checkout Pro, em espera)
