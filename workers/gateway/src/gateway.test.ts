@@ -158,6 +158,12 @@ describe('Worker', () => {
     expect((e.PENDING as ReturnType<typeof memKV>).m.size).toBe(0);
   });
 
+  it('sem fila configurada, responde erro para a Cakto registrar a falha', async () => {
+    vi.stubGlobal('fetch', async () => new Response('{}', { status: 404 }));
+    const r = await worker.fetch(await caktoRequest({ event: 'purchase_approved', data: order() }), env({ PENDING: undefined }), ctx());
+    expect(r.status).toBe(503);
+  });
+
   it('Purchase pela API só sai com META_CAPI_PURCHASE=true', async () => {
     const urls: string[] = [];
     vi.stubGlobal('fetch', async (url: string) => {

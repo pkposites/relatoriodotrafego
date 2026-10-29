@@ -11,8 +11,8 @@ interface Ctx {
   waitUntil(p: Promise<unknown>): void;
 }
 export interface Env extends CoreEnv {
-  /** Fila de repasses que falharam (site fora do ar, modo demonstração). */
-  PENDING: KV;
+  /** Fila de repasses que falharam (site fora do ar, modo demonstração). Opcional. */
+  PENDING?: KV;
 }
 
 const json = (status: number, body: unknown, headers: Record<string, string> = {}) =>
@@ -50,18 +50,24 @@ async function caktoWebhook(req: Request, env: Env, ctx: Ctx) {
   const allowed = (env.CAKTO_ALLOWED_OFFERS ?? '').split(',').map((s) => s.trim()).filter(Boolean);
   const { events, orders, ignored } = translateCakto(payload, allowed);
   const results: Record<string, string> = {};
+  let lost = false;
   for (const ev of events) {
     if (await forward(env, ev)) results[ev.event_id] = 'entregue';
-    else {
+    else if (env.PENDING) {
       // A Cakto não reenvia quando respondemos: a fila garante a entrega.
       await env.PENDING.put(`pending:${ev.event_id}`, JSON.stringify({ ev, attempts: 1 }), { expirationTtl: 3 * 86400 });
       results[ev.event_id] = 'na_fila';
+    } else {
+      results[ev.event_id] = 'falhou';
+      lost = true;
     }
   }
   if (payload.event === 'purchase_approved' && env.META_CAPI_PURCHASE === 'true') {
     const now = Math.floor(Date.now() / 1000);
     for (const o of orders) ctx.waitUntil(purchasePayload(o, now, env.META_TEST_EVENT_CODE).then((p) => sendCapi(env, p)));
   }
+  // Sem fila: devolve erro para a entrega aparecer como falha no histórico da Cakto e ser reenviada de lá.
+  if (lost) return json(503, { ok: false, results, ignored });
   return json(200, { ok: true, results, ignored });
 }
 
@@ -100,6 +106,7 @@ export default {
 
   /** Cron: reenvia ao site o que ficou na fila. */
   async scheduled(_c: unknown, env: Env): Promise<void> {
+    if (!env.PENDING) return;
     const { keys } = await env.PENDING.list({ prefix: 'pending:', limit: 50 });
     for (const { name } of keys) {
       const item = JSON.parse((await env.PENDING.get(name)) ?? 'null') as { ev: SiteEvent; attempts: number } | null;

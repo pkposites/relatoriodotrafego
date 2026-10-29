@@ -1,4 +1,4 @@
-# rdt-gateway (Cloudflare Worker)
+# Gateway `relatoriodotrafego` (Cloudflare Worker)
 
 Faz duas coisas, nenhuma delas com dados pessoais no código ou no repositório:
 
@@ -24,10 +24,18 @@ Segredos (`npx wrangler secret put NOME`):
 
 ## Publicar
 
+Pelo GitHub (Workers Builds, já conectado): em **Settings › Builds** use
+**Root directory** `workers/gateway`, **Build command** vazio e **Deploy command** `npx wrangler deploy`.
+O nome em `wrangler.toml` é o mesmo do Worker no painel (`relatoriodotrafego`) e `keep_vars = true`
+preserva as variáveis criadas no painel. Segredos ficam em **Settings › Variables and Secrets**.
+
+Fila opcional: crie um KV no painel, coloque o id em `wrangler.toml` (bloco `kv_namespaces`) e publique.
+
+Pelo terminal (alternativa):
+
 ```bash
 cd workers/gateway
 npx wrangler login
-npx wrangler kv namespace create PENDING   # cole o id no wrangler.toml
 npx wrangler secret put CAKTO_WEBHOOK_SECRET
 npx wrangler secret put SITE_WEBHOOK_SECRET
 npx wrangler secret put META_CAPI_TOKEN
