@@ -6,7 +6,7 @@ Nada abaixo foi testado contra serviços reais: este ambiente não tem acesso de
 
 | Item | Por quê |
 |---|---|
-| Provedor de pagamento e **como ele autentica webhooks** | Não encontrei documentação oficial da Kiwify sobre assinatura de webhooks. O adaptador `kiwify` recusa tudo de propósito (`ProviderNotConfigured`). É preciso confirmar cabeçalho, algoritmo, formato do evento e como passar a referência do pedido no checkout. |
+| Credenciais e webhook do **Mercado Pago** | Adaptador implementado (`netlify/functions/_lib/mercadopago.ts`), testado só com respostas simuladas. Falta configurar a aplicação no painel e as variáveis abaixo. Ver seção 2.1. |
 | Afirmação “mais de 45 contas ativas” | Fica em `src/content/pending.ts` com `confirmed: false` e não aparece no site. |
 | Foto de Robson e credenciais verificáveis | Mesma pendência; a seção mostra espaço reservado. |
 | Preço anterior de R$ 149,00 riscado | Removido até haver fundamento comercial documentado. |
@@ -25,16 +25,25 @@ Nada abaixo foi testado contra serviços reais: este ambiente não tem acesso de
 | `OPENAI_API_KEY` | Chave da OpenAI — **só no painel da Netlify, nunca no código nem no chat** |
 | `OPENAI_MODEL` | Modelo escolhido |
 | `OPENAI_MAX_OUTPUT_TOKENS`, `OPENAI_TIMEOUT_MS`, `OPENAI_MAX_ATTEMPTS` | Limites (padrões 12000, 120000 ms, 2; tentativas no máximo 3) |
-| `PAYMENT_PROVIDER` | `hmac_generico` (padrão) ou `kiwify` (pendente) |
-| `PAYMENT_WEBHOOK_SECRET`, `PAYMENT_SIGNATURE_HEADER` | Verificação do webhook |
-| `PAYMENT_REF_PARAM` | Nome do parâmetro com o id do pedido na URL do checkout (padrão `ref`) |
-| `CHECKOUT_URL_PLANO`, `CHECKOUT_URL_ESPECIALISTA` | Links de checkout do provedor |
+| `PAYMENT_PROVIDER` | `mercadopago` ou `hmac_generico` (padrão; usado nos testes) |
+| `MP_ACCESS_TOKEN` | Token de acesso da aplicação do Mercado Pago — **só no painel da Netlify** |
+| `MP_WEBHOOK_SECRET` | Assinatura secreta dos webhooks do Mercado Pago |
+| `PAYMENT_WEBHOOK_SECRET`, `PAYMENT_SIGNATURE_HEADER` | Só para `hmac_generico` |
+| `PAYMENT_REF_PARAM`, `CHECKOUT_URL_PLANO`, `CHECKOUT_URL_ESPECIALISTA` | Só para `hmac_generico` (link fixo + referência do pedido) |
 | `PRICE_CENTS_PLANO`, `PRICE_CENTS_ESPECIALISTA` | Valores esperados (padrões 6790 e 19700) |
 | `DOWNLOAD_SIGNING_SECRET` | Assinatura dos links de download |
 | `INTERNAL_TASK_SECRET` | Autoriza a chamada interna da função de geração |
 | `ALLOW_DETERMINISTIC_FALLBACK` | `true` para entregar o plano por regras se a IA falhar (padrão: não; o pedido vai para “falha” com mensagem honesta) |
 
 Site (build): `VITE_APP_MODE=production`, `VITE_SUPPORT_CONTACT`, `VITE_SPECIALIST_DEADLINE`.
+
+### 2.1 Mercado Pago (Checkout Pro)
+
+Conferido no SDK oficial `mercadopago` 3.6.1, porque a documentação do Mercado Pago não abre a partir deste ambiente.
+
+- **Criação do pagamento:** `POST /checkout/preferences` com `external_reference` = id do pedido, item com o preço esperado e retorno para `/pedido/<id>`. No modo `test` o site usa `sandbox_init_point`.
+- **Webhook:** URL `<site>/.netlify/functions/payment-webhook`, evento **Pagamentos**. O aviso só é aceito com `x-signature` válido: `v1` = HMAC-SHA256 da assinatura secreta sobre `id:<data.id>;request-id:<x-request-id>;ts:<ts>;`, com no máximo 10 minutos de diferença.
+- **Estado do pagamento:** nunca é lido do aviso. O servidor consulta `GET /v1/payments/<id>` com o token e libera só `approved`, com o valor esperado e `live_mode` igual ao ambiente (teste não libera produção). `refunded` e `charged_back` encerram o pedido.
 
 ## 3. Infraestrutura
 
@@ -44,8 +53,8 @@ Site (build): `VITE_APP_MODE=production`, `VITE_SUPPORT_CONTACT`, `VITE_SPECIALI
 
 ## 4. Antes de ligar a produção
 
-1. Rodar em `APP_MODE=test` com um checkout de teste do provedor.
-2. Enviar webhook assinado de pagamento aprovado, recusado e duplicado e conferir os estados.
+1. Rodar em `APP_MODE=test` com as credenciais e as contas de teste do Mercado Pago.
+2. Usar a simulação de webhook do painel e um pagamento de teste aprovado, recusado e repetido, e conferir os estados.
 3. Gerar planos com os 9 perfis de `profiles.ts` e o modelo escolhido; ler os PDFs e registrar custo e tempo por relatório.
 4. Conferir que o e-mail não aparece nos logs da OpenAI (`store: false` está ativo nas chamadas).
 5. Só então trocar para `production`.

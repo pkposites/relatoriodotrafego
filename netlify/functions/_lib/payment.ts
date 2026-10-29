@@ -4,9 +4,8 @@ import type { ServerConfig } from './config';
 /**
  * Notificações de pagamento. Nenhuma notificação é aceita sem verificação de
  * autenticidade. O provedor "hmac_generico" espera HMAC-SHA256 (hex) do corpo
- * bruto no cabeçalho configurado. O adaptador da Kiwify NÃO está implementado:
- * o mecanismo de assinatura precisa ser confirmado na documentação oficial
- * (pendência em docs/pendencias-externas.md).
+ * bruto no cabeçalho configurado. O Mercado Pago tem adaptador próprio em
+ * mercadopago.ts.
  */
 
 export interface PaymentEvent {
@@ -30,7 +29,7 @@ function safeEqualHex(a: string, b: string) {
 }
 
 export function verifyAndParse(rawBody: string, headers: Headers, cfg: ServerConfig['payment']): PaymentEvent {
-  if (cfg.provider === 'kiwify') throw new ProviderNotConfigured('Adaptador Kiwify pendente: confirmar esquema de assinatura e formato do evento na documentação oficial.');
+  if (cfg.provider !== 'hmac_generico') throw new ProviderNotConfigured(`Provedor ${cfg.provider} usa adaptador próprio.`);
   const sig = (headers.get(cfg.signatureHeader) ?? '').replace(/^sha256=/, '').trim();
   if (!cfg.webhookSecret || !sig || !safeEqualHex(sig, hmacHex(cfg.webhookSecret, rawBody))) throw new SignatureError('Assinatura inválida.');
   let body: Record<string, unknown>;

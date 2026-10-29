@@ -58,8 +58,8 @@ describe('webhook', () => {
     expect(() => verifyAndParse(body, new Headers({ 'x-signature': 'ab'.repeat(32) }), cfg)).toThrow(SignatureError);
     expect(() => verifyAndParse(body + ' ', new Headers({ 'x-signature': hmacHex('segredo-webhook', body) }), cfg)).toThrow(SignatureError);
   });
-  it('Kiwify não é aceito até o adaptador ser confirmado', () => {
-    expect(() => verifyAndParse(body, new Headers(), { ...cfg, provider: 'kiwify' })).toThrow(ProviderNotConfigured);
+  it('o adaptador genérico não aceita avisos do Mercado Pago', () => {
+    expect(() => verifyAndParse(body, new Headers(), { ...cfg, provider: 'mercadopago' })).toThrow(ProviderNotConfigured);
   });
 });
 

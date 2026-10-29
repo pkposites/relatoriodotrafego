@@ -41,8 +41,15 @@ export interface Deps {
   /** Geração com IA (injetada). */
   generate: (input: ModelInput) => Promise<GenerateResult>;
   renderPdf: (doc: ReturnType<typeof buildPlanDocument>) => Promise<Uint8Array>;
+  /** Cria o link de pagamento do pedido no provedor (Mercado Pago). Sem ele, usa o link fixo da configuração. */
+  createCheckout?: (input: { orderId: string; product: Product; amountCents: number; email: string }) => Promise<string>;
   now?: () => Date;
 }
+
+export const PRODUCT_TITLES: Record<Product, string> = {
+  plano: 'Plano de Ação do Tráfego',
+  especialista: 'Diagnóstico com Especialista',
+};
 
 export const MAX_GENERATION_RUNS = 3;
 const LOCK_MS = 15 * 60 * 1000;
@@ -103,7 +110,7 @@ export async function createOrder(d: Deps, input: { product: Product; diagnostic
   if (JSON.stringify(input.answers).length > MAX_PAYLOAD) throw new OrderError('dados_invalidos', 'Respostas grandes demais.');
   if (!/^\S+@\S+\.\S+$/.test(input.email ?? '') || input.email.length > 200) throw new OrderError('dados_invalidos', 'E-mail inválido.');
   const checkoutBase = d.cfg.payment.checkoutUrls[input.product];
-  if (!checkoutBase) throw new OrderError('dados_invalidos', 'Produto indisponível no momento.');
+  if (!d.createCheckout && !checkoutBase) throw new OrderError('dados_invalidos', 'Produto indisponível no momento.');
   // Links: só registrados como "informado". Nunca são acessados pelo servidor.
   const links = (input.links ?? []).slice(0, 3).filter((l) => /^https?:\/\//i.test(l.url) && l.url.length <= 300).map((l) => ({ url: l.url, status: 'informado' as const }));
   const id = `rdt_${randomBytes(9).toString('base64url')}`;
@@ -126,6 +133,10 @@ export async function createOrder(d: Deps, input: { product: Product; diagnostic
   await d.kv.setJSON(k.order(d, id), order, { onlyIfNew: true });
   // Contato separado da análise; nunca vai para a IA.
   await d.kv.setJSON(k.contact(d, id), { email: input.email, createdAt: order.createdAt });
+  if (d.createCheckout) {
+    const checkoutUrl = await d.createCheckout({ orderId: id, product: input.product, amountCents: order.expectedCents, email: input.email });
+    return { order, accessToken: token, checkoutUrl };
+  }
   const url = new URL(checkoutBase);
   url.searchParams.set(d.cfg.payment.refParam, id);
   return { order, accessToken: token, checkoutUrl: url.toString() };

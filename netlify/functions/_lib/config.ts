@@ -6,7 +6,16 @@ export interface ServerConfig {
   mode: 'demo' | 'test' | 'production';
   publicBaseUrl: string;
   openai: { apiKey: string; model: string; maxOutputTokens: number; timeoutMs: number; maxAttempts: number };
-  payment: { provider: 'hmac_generico' | 'kiwify'; webhookSecret: string; signatureHeader: string; refParam: string; checkoutUrls: { plano: string; especialista: string }; expectedCents: { plano: number; especialista: number } };
+  payment: {
+    provider: 'hmac_generico' | 'mercadopago';
+    webhookSecret: string;
+    signatureHeader: string;
+    refParam: string;
+    checkoutUrls: { plano: string; especialista: string };
+    expectedCents: { plano: number; especialista: number };
+    /** Só com provider "mercadopago". Token de acesso da aplicação (servidor). */
+    mpAccessToken: string;
+  };
   downloadSecret: string;
   internalSecret: string;
   supportContact: string | null;
@@ -27,6 +36,7 @@ export function loadConfig(env: Record<string, string | undefined> = process.env
     if (!env[k]) missing.push(k);
     return req(k);
   };
+  const mp = env.PAYMENT_PROVIDER === 'mercadopago';
   const cfg: ServerConfig = {
     mode,
     publicBaseUrl: mode === 'demo' ? '' : need('PUBLIC_BASE_URL'),
@@ -38,12 +48,14 @@ export function loadConfig(env: Record<string, string | undefined> = process.env
       maxAttempts: Math.min(3, Number(env.OPENAI_MAX_ATTEMPTS ?? 2)),
     },
     payment: {
-      provider: env.PAYMENT_PROVIDER === 'kiwify' ? 'kiwify' : 'hmac_generico',
-      webhookSecret: mode === 'demo' ? '' : need('PAYMENT_WEBHOOK_SECRET'),
+      provider: mp ? 'mercadopago' : 'hmac_generico',
+      webhookSecret: mode === 'demo' ? '' : need(mp ? 'MP_WEBHOOK_SECRET' : 'PAYMENT_WEBHOOK_SECRET'),
       signatureHeader: (env.PAYMENT_SIGNATURE_HEADER ?? 'x-signature').toLowerCase(),
       refParam: env.PAYMENT_REF_PARAM ?? 'ref',
-      checkoutUrls: { plano: mode === 'demo' ? '' : need('CHECKOUT_URL_PLANO'), especialista: req('CHECKOUT_URL_ESPECIALISTA') },
+      // Com Mercado Pago o link é criado por pedido; não há link fixo.
+      checkoutUrls: { plano: mode === 'demo' || mp ? '' : need('CHECKOUT_URL_PLANO'), especialista: req('CHECKOUT_URL_ESPECIALISTA') },
       expectedCents: { plano: Number(env.PRICE_CENTS_PLANO ?? 6790), especialista: Number(env.PRICE_CENTS_ESPECIALISTA ?? 19700) },
+      mpAccessToken: mode === 'demo' || !mp ? '' : need('MP_ACCESS_TOKEN'),
     },
     downloadSecret: mode === 'demo' ? '' : need('DOWNLOAD_SIGNING_SECRET'),
     internalSecret: mode === 'demo' ? '' : need('INTERNAL_TASK_SECRET'),
