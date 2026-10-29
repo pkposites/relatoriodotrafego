@@ -49,7 +49,7 @@ Conferido no SDK oficial `mercadopago` 3.6.1, porque a documentação do Mercado
 
 - **Netlify Blobs**: store `relatorio-do-trafego`, criada no primeiro uso. As chaves são separadas por ambiente (`test/…`, `production/…`).
 - **Funções**: `netlify/functions/*.mts`. A geração roda em segundo plano (`generate-plan-background`). O empacotamento foi verificado localmente com esbuild; a implantação real não foi testada.
-- **Domínio** (Relatório RDA): ainda não configurado.
+- **Domínio**: `diagnostico.relatoriorda.com.br` (registro CNAME `diagnostico` → `relatoriodotrafego.netlify.app`). Com o domínio ativo, usar `PUBLIC_BASE_URL=https://diagnostico.relatoriorda.com.br` e apontar os webhooks de pagamento para ele.
 
 ## 4. Antes de ligar a produção
 
