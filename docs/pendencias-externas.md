@@ -6,7 +6,8 @@ Nada abaixo foi testado contra serviços reais: este ambiente não tem acesso de
 
 | Item | Por quê |
 |---|---|
-| Credenciais e webhook do **Mercado Pago** | Adaptador implementado (`netlify/functions/_lib/mercadopago.ts`), testado só com respostas simuladas. Falta configurar a aplicação no painel e as variáveis abaixo. Ver seção 2.1. |
+| Pagamento pela **Cakto** | Checkout do Plano criado: `https://pay.cakto.com.br/4jcq93j_1257574` (R$ 67,90, mais taxa de serviço de R$ 0,99 cobrada do comprador). Falta confirmar com a Cakto como autenticar o webhook (campo `secret`) e se o checkout repassa uma referência do pedido (ex.: `sck`). Não ligar o link no site antes de a entrega automática funcionar. |
+| Credenciais e webhook do **Mercado Pago** (em espera) | Adaptador implementado (`netlify/functions/_lib/mercadopago.ts`), testado só com respostas simuladas. Falta configurar a aplicação no painel e as variáveis abaixo. Ver seção 2.1. |
 | Afirmação “mais de 45 contas ativas” | Fica em `src/content/pending.ts` com `confirmed: false` e não aparece no site. |
 | Foto de Robson e credenciais verificáveis | Mesma pendência; a seção mostra espaço reservado. |
 | Preço anterior de R$ 149,00 riscado | Removido até haver fundamento comercial documentado. |
