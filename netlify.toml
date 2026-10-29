@@ -7,6 +7,8 @@
   # Enquanto as integrações não forem configuradas, o site roda em demonstração.
   # Para produção: VITE_APP_MODE=production e APP_MODE=production + variáveis de docs/pendencias-externas.md.
   VITE_APP_MODE = "demo"
+  # Pixel da Meta "Serviços" (ID público). Só carrega após o consentimento do visitante.
+  VITE_META_PIXEL_ID = "2018578222100683"
   APP_MODE = "demo"
 
 [functions]

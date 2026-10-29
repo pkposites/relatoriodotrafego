@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
+import { loadPixel, pixelEvent } from './lib/metaPixel';
 import Layout from './components/Layout';
 import AdminDemo from './pages/AdminDemo';
 import Checkout from './pages/Checkout';
@@ -33,6 +34,8 @@ function RouteEffects() {
   useEffect(() => {
     window.scrollTo(0, 0);
     document.title = TITLES[pathname] ?? (pathname.startsWith('/pedido/') ? 'Seu pedido — Relatório do Tráfego' : 'Relatório do Tráfego');
+    loadPixel();
+    pixelEvent('PageView');
   }, [pathname]);
   return null;
 }

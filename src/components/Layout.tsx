@@ -1,4 +1,5 @@
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
+import { ConsentBanner, ConsentReset } from './ConsentBanner';
 import { Logo } from './Logo';
 import { btnClass } from './ui';
 import { IS_DEMO } from '../config/env';
@@ -49,6 +50,7 @@ function Footer() {
           <Link to="/privacidade" className="hover:text-ink">Privacidade</Link>
           <Link to="/termos" className="hover:text-ink">Termos</Link>
           <Link to="/amostra" className="hover:text-ink">Plano de exemplo</Link>
+          <ConsentReset />
           {IS_DEMO && <Link to="/admin-demo" className="hover:text-ink">Painel (demo)</Link>}
         </nav>
       </div>
@@ -70,6 +72,7 @@ export default function Layout() {
         <Outlet />
       </main>
       <Footer />
+      <ConsentBanner />
     </div>
   );
 }

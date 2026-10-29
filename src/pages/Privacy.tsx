@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Card, DemoBanner } from '../components/ui';
 import { IS_DEMO, SUPPORT_CONTACT } from '../config/env';
+import { PIXEL_ID, setConsent } from '../lib/metaPixel';
 import { clearAllLocal } from '../lib/storage';
 
 /**
@@ -35,8 +36,9 @@ export default function Privacy() {
         <Card className="mt-6 space-y-4 p-6 text-sm text-ink-soft">
           <section>
             <h2 className="font-bold text-ink">Nesta demonstração</h2>
-            <p className="mt-1">Respostas, números e formulários ficam salvos apenas no armazenamento local do seu navegador. Nada é enviado a servidores ou à IA, e não usamos cookies de rastreamento. Eventos de uso (como “resultado visto”) também ficam só no navegador e não incluem suas respostas.</p>
+            <p className="mt-1">Respostas, números e formulários ficam salvos apenas no armazenamento local do seu navegador. Nada é enviado a servidores ou à IA. Eventos de uso (como “resultado visto”) também ficam só no navegador e não incluem suas respostas.</p>
           </section>
+          <PixelSection />
           <ClearLocal cleared={cleared} onClear={() => { clearAllLocal(); setCleared(true); }} />
         </Card>
       ) : (
@@ -58,6 +60,7 @@ export default function Privacy() {
               <li>Plataforma de pagamento, que processa o pagamento e confirma a compra.</li>
             </ul>
           </section>
+          <PixelSection />
           <section>
             <h2 className="font-bold text-ink">Seus direitos</h2>
             <p className="mt-1">Você pode pedir acesso, correção ou exclusão dos seus dados{SUPPORT_CONTACT ? ` pelo contato ${SUPPORT_CONTACT}` : ' pelo canal de suporte informado na compra'}.</p>
@@ -66,6 +69,22 @@ export default function Privacy() {
         </Card>
       )}
     </div>
+  );
+}
+
+function PixelSection() {
+  if (!PIXEL_ID) return null;
+  return (
+    <section>
+      <h2 className="font-bold text-ink">Pixel da Meta (anúncios)</h2>
+      <p className="mt-1">
+        Só com a sua autorização, carregamos o pixel da Meta para medir nossos anúncios: páginas visitadas e etapas como “diagnóstico concluído” ou “início do pedido”. A Meta pode
+        usar cookies para isso. Não enviamos suas respostas, números, nome, e-mail ou telefone. Você pode mudar a escolha a qualquer momento.
+      </p>
+      <button type="button" onClick={() => setConsent(null)} className="mt-3 rounded-xl border border-line px-4 py-2 font-semibold text-ink hover:bg-canvas">
+        Rever preferências de cookies
+      </button>
+    </section>
   );
 }
 

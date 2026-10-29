@@ -1,4 +1,5 @@
 import { API_BASE, APP_ENV } from '../config/env';
+import { pixelEvent } from './metaPixel';
 
 /**
  * Instrumentação sem dados sensíveis: só nomes de eventos e propriedades da
@@ -26,9 +27,27 @@ const ALLOWED_PROPS = ['screen_id', 'screen_index', 'plan', 'duration_s', 'clari
 type Props = Partial<Record<(typeof ALLOWED_PROPS)[number], string | number>>;
 const KEY = 'rdt:events:v1';
 
+const PRICE: Record<string, number> = { plano: 67.9, especialista: 197 };
+const PRODUCT_NAME: Record<string, string> = { plano: 'Plano de Ação do Tráfego', especialista: 'Diagnóstico com Especialista' };
+
+/** Espelho no pixel da Meta (só com consentimento). Sem respostas nem dados pessoais. */
+function mirrorToPixel(name: EventName, props: Props) {
+  const plan = String(props.plan ?? '');
+  const product = PRICE[plan] ? { value: PRICE[plan], currency: 'BRL' as const, content_name: PRODUCT_NAME[plan] } : {};
+  if (name === 'diagnostico_inicio') pixelEvent('DiagnosticoIniciado');
+  else if (name === 'diagnostico_concluido') pixelEvent('Lead', { content_name: 'Diagnóstico gratuito' });
+  else if (name === 'resultado_visto') pixelEvent('ViewContent', { content_name: 'Resultado gratuito' });
+  else if (name === 'oferta_clique' && PRICE[plan]) pixelEvent('AddToCart', product);
+  else if (name === 'oferta_clique' && plan === 'consultoria') pixelEvent('Contact', { content_name: 'Consultoria' });
+  // Na demonstração o checkout é simulado: não conta como início de compra.
+  else if (name === 'checkout_inicio' && PRICE[plan] && APP_ENV !== 'demo') pixelEvent('InitiateCheckout', product);
+  else if (name === 'interesse_especialista') pixelEvent('InteresseEspecialista');
+}
+
 export function track(name: EventName, props: Props = {}) {
   const clean: Props = {};
   for (const k of ALLOWED_PROPS) if (props[k] !== undefined) clean[k] = props[k];
+  mirrorToPixel(name, clean);
   const event = { name, props: clean, env: APP_ENV, at: new Date().toISOString() };
   if (APP_ENV === 'production') {
     try {
