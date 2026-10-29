@@ -78,8 +78,9 @@ function PixelSection() {
     <section>
       <h2 className="font-bold text-ink">Pixel da Meta (anúncios)</h2>
       <p className="mt-1">
-        Só com a sua autorização, carregamos o pixel da Meta para medir nossos anúncios: páginas visitadas e etapas como “diagnóstico concluído” ou “início do pedido”. A Meta pode
-        usar cookies para isso. Não enviamos suas respostas, números, nome, e-mail ou telefone. Você pode mudar a escolha a qualquer momento.
+        Só com a sua autorização, usamos o pixel da Meta e a API de Conversões da Meta para medir nossos anúncios: páginas visitadas e etapas como “diagnóstico concluído”. Junto
+        vão o endereço IP, o navegador e os identificadores de cookie da Meta. Não enviamos suas respostas, números, nome, e-mail ou telefone. Na compra, a plataforma de
+        pagamento informa a venda à Meta conforme a política dela. Você pode mudar a escolha a qualquer momento.
       </p>
       <button type="button" onClick={() => setConsent(null)} className="mt-3 rounded-xl border border-line px-4 py-2 font-semibold text-ink hover:bg-canvas">
         Rever preferências de cookies

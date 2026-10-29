@@ -1,0 +1,30 @@
+# Gateway do Relatório do Tráfego: webhook da Cakto + API de Conversões da Meta.
+# Segredos NÃO ficam aqui: use `npx wrangler secret put <NOME>` (ver README.md).
+name = "rdt-gateway"
+main = "src/index.ts"
+compatibility_date = "2026-10-01"
+workers_dev = true
+
+# Fila de repasses ao site que falharam. Crie com:
+#   npx wrangler kv namespace create PENDING
+# e cole o id gerado abaixo.
+[[kv_namespaces]]
+binding = "PENDING"
+id = "COLE_AQUI_O_ID_DO_KV"
+
+# Reenvio da fila a cada 5 minutos.
+[triggers]
+crons = ["*/5 * * * *"]
+
+[vars]
+SITE_WEBHOOK_URL = "https://diagnostico.relatoriorda.com.br/.netlify/functions/payment-webhook"
+ALLOWED_ORIGIN = "https://diagnostico.relatoriorda.com.br"
+META_PIXEL_ID = "2018578222100683"
+META_API_VERSION = "v24.0"
+# "false": o Purchase sai pelo pixel + token da API de Conversões configurados no produto da Cakto.
+# "true": o Worker envia o Purchase (nesse caso, NÃO preencha o token na Cakto, para não contar em dobro).
+META_CAPI_PURCHASE = "false"
+# Ofertas aceitas, separadas por vírgula (id da oferta na Cakto). Vazio = todas.
+CAKTO_ALLOWED_OFFERS = ""
+# Para testar no Gerenciador de Eventos ("Testar eventos"); apague depois.
+META_TEST_EVENT_CODE = ""

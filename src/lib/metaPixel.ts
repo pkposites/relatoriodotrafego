@@ -8,6 +8,8 @@ import { APP_ENV } from '../config/env';
  *   de pagamento, que tem o próprio pixel. Evita compra contada em dobro.
  */
 export const PIXEL_ID = ((import.meta.env?.VITE_META_PIXEL_ID as string | undefined) ?? '').trim();
+/** Gateway (Cloudflare Worker) que repassa os eventos à API de Conversões. Vazio = só o pixel. */
+const CAPI_URL = ((import.meta.env?.VITE_CAPI_URL as string | undefined) ?? '').trim().replace(/\/$/, '');
 const CONSENT_KEY = 'rdt:consent:v1';
 export type Consent = 'granted' | 'denied' | null;
 
@@ -77,11 +79,40 @@ export function loadPixel() {
   window.fbq!('init', PIXEL_ID);
 }
 
-const STANDARD = new Set(['PageView', 'ViewContent', 'Lead', 'InitiateCheckout', 'AddToCart', 'Contact']);
+const STANDARD = new Set(['PageView', 'ViewContent', 'Lead', 'AddToCart', 'Contact']);
 
-/** Envia um evento ao pixel, se ele estiver ativo. Parâmetros só da lista permitida. */
+function cookie(name: string) {
+  const m = document.cookie.match(new RegExp(`(?:^|; )${name}=([^;]*)`));
+  return m ? decodeURIComponent(m[1]) : undefined;
+}
+
+function newEventId() {
+  try {
+    return crypto.randomUUID();
+  } catch {
+    return `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 12)}`;
+  }
+}
+
+/**
+ * Envia um evento ao pixel e, se configurado, à API de Conversões pelo gateway,
+ * com o mesmo event_id (a Meta deduplica). Parâmetros só da lista permitida.
+ */
 export function pixelEvent(name: string, params: { value?: number; currency?: 'BRL'; content_name?: string } = {}) {
   if (!loaded || !window.fbq) return;
-  const clean = Object.fromEntries(Object.entries({ ...params, environment: APP_ENV }).filter(([, v]) => v !== undefined));
-  window.fbq(STANDARD.has(name) ? 'track' : 'trackCustom', name, clean);
+  const custom = Object.fromEntries(Object.entries(params).filter(([, v]) => v !== undefined));
+  const eventID = newEventId();
+  window.fbq(STANDARD.has(name) ? 'track' : 'trackCustom', name, { ...custom, environment: APP_ENV }, { eventID });
+  if (!CAPI_URL) return;
+  const body = JSON.stringify({
+    event_name: name,
+    event_id: eventID,
+    event_source_url: `${location.origin}${location.pathname}`,
+    custom_data: custom,
+    fbp: cookie('_fbp'),
+    fbc: cookie('_fbc'),
+  });
+  fetch(`${CAPI_URL}/capi/event`, { method: 'POST', headers: { 'content-type': 'application/json' }, body, keepalive: true }).catch(() => {
+    /* a API de Conversões é complementar ao pixel */
+  });
 }

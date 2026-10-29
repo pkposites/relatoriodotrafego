@@ -6,7 +6,7 @@ Nada abaixo foi testado contra serviços reais: este ambiente não tem acesso de
 
 | Item | Por quê |
 |---|---|
-| Pagamento pela **Cakto** | Checkout do Plano criado: `https://pay.cakto.com.br/4jcq93j_1257574` (R$ 67,90, mais taxa de serviço de R$ 0,99 cobrada do comprador). Falta confirmar com a Cakto como autenticar o webhook (campo `secret`) e se o checkout repassa uma referência do pedido (ex.: `sck`). Não ligar o link no site antes de a entrega automática funcionar. |
+| Pagamento pela **Cakto** | Checkout do Plano: `https://pay.cakto.com.br/4jcq93j_1257574` (R$ 67,90 + taxa de serviço de R$ 0,99 do comprador, a decidir). Webhook recebido pelo gateway `workers/gateway` (Cloudflare Worker), que confere `X-Cakto-Signature` conforme docs.cakto.com.br e repassa ao site. Falta publicar o Worker e configurar as variáveis da seção 2.2. |
 | Credenciais e webhook do **Mercado Pago** (em espera) | Adaptador implementado (`netlify/functions/_lib/mercadopago.ts`), testado só com respostas simuladas. Falta configurar a aplicação no painel e as variáveis abaixo. Ver seção 2.1. |
 | Afirmação “mais de 45 contas ativas” | Fica em `src/content/pending.ts` com `confirmed: false` e não aparece no site. |
 | Foto de Robson e credenciais verificáveis | Mesma pendência; a seção mostra espaço reservado. |
@@ -38,7 +38,14 @@ Nada abaixo foi testado contra serviços reais: este ambiente não tem acesso de
 
 Site (build): `VITE_APP_MODE=production`, `VITE_SUPPORT_CONTACT`, `VITE_SPECIALIST_DEADLINE`.
 
-### 2.1 Mercado Pago (Checkout Pro)
+### 2.2 Cakto + Meta (gateway em `workers/gateway`)
+
+Netlify (servidor): `PAYMENT_PROVIDER` vazio (genérico), `CHECKOUT_URL_PLANO=https://pay.cakto.com.br/4jcq93j_1257574`, `PAYMENT_REF_PARAM=callback`, `PAYMENT_WEBHOOK_SECRET` = mesmo valor de `SITE_WEBHOOK_SECRET` no Worker.
+Netlify (site): `VITE_CAPI_URL` = URL do Worker (ex.: `https://rdt-gateway.<conta>.workers.dev`).
+Worker: ver `workers/gateway/README.md` (`CAKTO_WEBHOOK_SECRET`, `SITE_WEBHOOK_SECRET`, `META_CAPI_TOKEN` como segredos).
+Cakto: webhook para `<Worker>/cakto/webhook` com `purchase_approved`, `purchase_refused`, `refund` e `chargeback`; pixel `2018578222100683` + token da API de Conversões no produto (InitiateCheckout e Purchase saem de lá). Opcional: pedir à Cakto o redirect pós-pagamento para `https://diagnostico.relatoriorda.com.br/pedido/{{callback}}`.
+
+### 2.1 Mercado Pago (Checkout Pro, em espera)
 
 Conferido no SDK oficial `mercadopago` 3.6.1, porque a documentação do Mercado Pago não abre a partir deste ambiente.
 

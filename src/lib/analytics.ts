@@ -39,8 +39,7 @@ function mirrorToPixel(name: EventName, props: Props) {
   else if (name === 'resultado_visto') pixelEvent('ViewContent', { content_name: 'Resultado gratuito' });
   else if (name === 'oferta_clique' && PRICE[plan]) pixelEvent('AddToCart', product);
   else if (name === 'oferta_clique' && plan === 'consultoria') pixelEvent('Contact', { content_name: 'Consultoria' });
-  // Na demonstração o checkout é simulado: não conta como início de compra.
-  else if (name === 'checkout_inicio' && PRICE[plan] && APP_ENV !== 'demo') pixelEvent('InitiateCheckout', product);
+  // InitiateCheckout e Purchase saem do checkout da Cakto (pixel + API de Conversões configurados lá).
   else if (name === 'interesse_especialista') pixelEvent('InteresseEspecialista');
 }
 
