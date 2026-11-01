@@ -53,6 +53,10 @@ Conferido no SDK oficial `mercadopago` 3.6.1, porque a documentação do Mercado
 - **Webhook:** URL `<site>/.netlify/functions/payment-webhook`, evento **Pagamentos**. O aviso só é aceito com `x-signature` válido: `v1` = HMAC-SHA256 da assinatura secreta sobre `id:<data.id>;request-id:<x-request-id>;ts:<ts>;`, com no máximo 10 minutos de diferença.
 - **Estado do pagamento:** nunca é lido do aviso. O servidor consulta `GET /v1/payments/<id>` com o token e libera só `approved`, com o valor esperado e `live_mode` igual ao ambiente (teste não libera produção). `refunded` e `charged_back` encerram o pedido.
 
+### 2.3 Teste da IA (sem pedido nem pagamento)
+
+`POST /.netlify/functions/ai-test-background` com o cabeçalho `x-internal-secret` (= `INTERNAL_TASK_SECRET`) e corpo `{"perfil":"local_whatsapp","run":"teste-01"}` gera um plano com a IA real para um perfil fictício de `src/domain/profiles.ts`. O resultado sai em `GET /.netlify/functions/ai-test?run=teste-01` (JSON com tempo, tentativas e uso de tokens) e `&pdf=1` (PDF). Variáveis já configuradas: `OPENAI_MODEL=gpt-5.4-mini`, `PUBLIC_BASE_URL`, `INTERNAL_TASK_SECRET`, `DOWNLOAD_SIGNING_SECRET`; `OPENAI_API_KEY` colocada pelo responsável.
+
 ## 3. Infraestrutura
 
 - **Netlify Blobs**: store `relatorio-do-trafego`, criada no primeiro uso. As chaves são separadas por ambiente (`test/…`, `production/…`).
