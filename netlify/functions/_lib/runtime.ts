@@ -1,5 +1,6 @@
 import OpenAI from 'openai';
 import { generatePlanWithAI, type ResponsesClient } from '../../../src/ai/generate';
+import { METHOD_MATERIALS } from '../../../src/ai/method';
 import { renderPdfNode } from '../../../src/pdf/renderNode';
 import { loadConfig, type ServerConfig } from './config';
 import { createPreference, type MercadoPagoConfig } from './mercadopago';
@@ -14,7 +15,7 @@ export async function runtimeDeps(cfg: ServerConfig = loadConfig()): Promise<Dep
     kv,
     cfg,
     generate: (input) =>
-      generatePlanWithAI(client, { model: cfg.openai.model, maxOutputTokens: cfg.openai.maxOutputTokens, timeoutMs: cfg.openai.timeoutMs, maxAttempts: cfg.openai.maxAttempts }, input),
+      generatePlanWithAI(client, { model: cfg.openai.model, maxOutputTokens: cfg.openai.maxOutputTokens, timeoutMs: cfg.openai.timeoutMs, maxAttempts: cfg.openai.maxAttempts, materials: METHOD_MATERIALS }, input),
     renderPdf: async (doc) => new Uint8Array(await renderPdfNode(doc)),
     createCheckout:
       cfg.payment.provider === 'mercadopago'
