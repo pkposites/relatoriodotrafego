@@ -1,6 +1,6 @@
 # Configurações externas pendentes
 
-Nada abaixo foi testado contra serviços reais: este ambiente não tem acesso de rede a OpenAI, Netlify Blobs nem provedor de pagamento, e não há credenciais. **O site está em produção com a cobrança desligada**: o Plano é gerado pela IA no servidor, grátis por tempo limitado e com limites diários (seção 2.4). A cobrança pela Cakto entra no próximo passo.
+Estado em 01/11/2026: OpenAI testada de verdade (seção 2.3); pagamento real ainda não. **O site está em produção com a cobrança desligada**: o Plano é gerado pela IA no servidor, grátis por tempo limitado e com limites diários (seção 2.4). A cobrança pela Cakto entra no próximo passo.
 
 ## 1. Decisões do responsável (bloqueiam a produção)
 
