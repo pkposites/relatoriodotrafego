@@ -177,3 +177,74 @@ describe('geração e entrega', () => {
     expect(seen).toMatch(/informado/);
   });
 });
+
+describe('acesso gratuito (PAYWALL=off) sem brecha para abuso', () => {
+  const FREE = { PAYWALL: 'off', CHECKOUT_URL_PLANO: '', PAYMENT_WEBHOOK_SECRET: '', FREE_DAILY_LIMIT: '3', FREE_PER_IP_DAY: '2', FREE_PER_EMAIL_DAY: '1' };
+  const mk = (d: Deps, email: string, ip: string) => createOrder(d, { product: 'plano', diagnosticId: 'dx', answers, links: [], email, clientIp: ip });
+
+  it('libera o plano sem pagamento e sem exigir checkout ou segredo de pagamento', async () => {
+    const d = deps({}, FREE);
+    const r = await mk(d, 'a@exemplo.com', '1.1.1.1');
+    expect(r.checkoutUrl).toBeNull();
+    expect(r.order).toMatchObject({ status: 'aguardando_informacoes', access: 'gratuito' });
+  });
+
+  it('um plano por e-mail por dia, mesmo com variações de Gmail', async () => {
+    const d = deps({}, FREE);
+    await mk(d, 'Maria.Silva@gmail.com', '1.1.1.1');
+    await expect(mk(d, 'mariasilva+teste@googlemail.com', '2.2.2.2')).rejects.toMatchObject({ code: 'limite' });
+  });
+
+  it('limite por conexão (IP) e total do dia; uma recusa não gasta as outras cotas', async () => {
+    const d = deps({}, FREE);
+    await mk(d, 'a@x.com', '9.9.9.9');
+    await mk(d, 'b@x.com', '9.9.9.9');
+    await expect(mk(d, 'c@x.com', '9.9.9.9')).rejects.toThrow(/conexão/);
+    // c@x.com foi recusado pelo IP: o e-mail dele não ficou "gasto".
+    await mk(d, 'c@x.com', '8.8.8.8');
+    await expect(mk(d, 'd@x.com', '7.7.7.7')).rejects.toThrow(/acabaram/);
+  });
+
+  it('as cotas renovam no dia seguinte (horário de Brasília)', async () => {
+    let t = new Date('2026-11-01T12:00:00Z');
+    const d = deps({ now: () => t }, FREE);
+    await mk(d, 'a@x.com', '1.1.1.1');
+    await expect(mk(d, 'a@x.com', '1.1.1.1')).rejects.toMatchObject({ code: 'limite' });
+    t = new Date('2026-11-02T03:30:00Z'); // 00:30 em Brasília
+    await expect(mk(d, 'a@x.com', '1.1.1.1')).resolves.toBeTruthy();
+  });
+
+  it('pedido inválido não consome cota', async () => {
+    const d = deps({}, { ...FREE, FREE_DAILY_LIMIT: '1' });
+    await expect(createOrder(d, { product: 'plano', diagnosticId: 'dx', answers: { campanhas_status: 'ativas' }, links: [], email: 'a@x.com', clientIp: '1.1.1.1' })).rejects.toThrow(/incompleto/);
+    await expect(mk(d, 'a@x.com', '1.1.1.1')).resolves.toBeTruthy();
+  });
+
+  it('um pedido gratuito gera no máximo uma vez: reenviar o aprofundamento não chama a IA de novo', async () => {
+    const d = deps({}, FREE);
+    const r = await mk(d, 'a@x.com', '1.1.1.1');
+    await submitDeepening(d, r.order.id, r.accessToken, {});
+    await runGeneration(d, r.order.id);
+    await expect(submitDeepening(d, r.order.id, r.accessToken, {})).rejects.toThrow();
+    await runGeneration(d, r.order.id);
+    expect(d.aiCalls).toBe(1);
+  });
+
+  it('cobrança ligada é o padrão e o Especialista nunca sai de graça', async () => {
+    expect(loadConfig(ENV).paywall).toBe(true);
+    const d = deps({}, FREE);
+    await expect(createOrder(d, { product: 'especialista', diagnosticId: 'dx', answers, links: [], email: 'a@x.com', clientIp: '1.1.1.1' })).rejects.toThrow(/indisponível/);
+  });
+});
+
+describe('Turnstile (anti-robô)', () => {
+  it('sem segredo não bloqueia; com segredo exige token válido', async () => {
+    const { verifyTurnstile } = await import('./turnstile');
+    await expect(verifyTurnstile('', undefined, '')).resolves.toBeUndefined();
+    await expect(verifyTurnstile('s', undefined, '')).rejects.toThrow(/robô/);
+    const yes = (async () => new Response(JSON.stringify({ success: true }))) as unknown as typeof fetch;
+    const no = (async () => new Response(JSON.stringify({ success: false }))) as unknown as typeof fetch;
+    await expect(verifyTurnstile('s', 'tok', '1.1.1.1', yes)).resolves.toBeUndefined();
+    await expect(verifyTurnstile('s', 'tok', '1.1.1.1', no)).rejects.toThrow(/robô/);
+  });
+});

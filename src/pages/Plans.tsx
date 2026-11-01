@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Card, LinkButton } from '../components/ui';
 import { PRODUCTS } from '../data/plans';
 import { track } from '../lib/analytics';
+import { IS_FREE } from '../config/env';
 
 const COMPARE: { label: string; free: string | boolean; paid: string | boolean }[] = [
   { label: 'Perfil e visão geral', free: true, paid: true },
@@ -59,7 +60,7 @@ export default function Plans() {
             <Link to="/amostra" className="mt-3 inline-block text-sm font-semibold text-brand hover:underline">Ver um plano de exemplo</Link>
             <ul className="mt-4 space-y-1 text-left text-xs text-ink-mute">
               {p.excludes.map((e) => <li key={e}>— {e}</li>)}
-              <li>— Entrega depois da confirmação do pagamento e das informações necessárias</li>
+              <li>— {IS_FREE ? 'Entrega depois das informações necessárias (grátis por tempo limitado, 1 por e-mail por dia)' : 'Entrega depois da confirmação do pagamento e das informações necessárias'}</li>
             </ul>
           </div>
         </div>

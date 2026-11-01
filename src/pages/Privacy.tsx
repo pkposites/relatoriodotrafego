@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Card, DemoBanner } from '../components/ui';
-import { IS_DEMO, SUPPORT_CONTACT } from '../config/env';
+import { IS_DEMO, IS_FREE, SUPPORT_CONTACT } from '../config/env';
 import { PIXEL_ID, setConsent } from '../lib/metaPixel';
 import { clearAllLocal } from '../lib/storage';
 
@@ -29,7 +29,11 @@ export default function Privacy() {
           <p>O Relatório do Tráfego é uma ferramenta independente, sem vínculo com Meta ou Google.</p>
           <p>A avaliação gratuita e o Plano de Ação do Tráfego partem das informações que você fornece. Não acessamos contas de anúncio, site ou criativos, e não se trata de auditoria técnica.</p>
           <p>Não há promessa de aumento de vendas, ROAS, lucro ou economia.</p>
-          <p>O plano pago é entregue depois da confirmação do pagamento pela plataforma de pagamento e das informações necessárias. Se a geração falhar, avisamos e o pedido é tratado pelo suporte.</p>
+          {IS_FREE ? (
+            <p>Por tempo limitado, o Plano de Ação do Tráfego é gratuito, com limite de 1 por e-mail por dia e uma quantidade máxima de planos por dia. A oferta pode terminar a qualquer momento; planos já gerados continuam disponíveis pelo link de acesso. Se a geração falhar, avisamos e o pedido é tratado pelo suporte.</p>
+          ) : (
+            <p>O plano pago é entregue depois da confirmação do pagamento pela plataforma de pagamento e das informações necessárias. Se a geração falhar, avisamos e o pedido é tratado pelo suporte.</p>
+          )}
           {IS_DEMO && <p><strong>Na demonstração não há cobrança</strong>: pagamentos e entregas são simulados e rotulados como tal.</p>}
         </Card>
       ) : IS_DEMO ? (
@@ -47,7 +51,7 @@ export default function Privacy() {
             <h2 className="font-bold text-ink">O que coletamos e para quê</h2>
             <ul className="mt-1 list-disc space-y-1 pl-5">
               <li>Respostas do diagnóstico: para gerar a avaliação gratuita e, se você comprar, o plano. O diagnóstico não pede nome, telefone ou e-mail.</li>
-              <li>E-mail na compra: para entrega e suporte. Fica separado das respostas e não é enviado à IA.</li>
+              <li>E-mail no pedido: para entrega e suporte. Fica separado das respostas e não é enviado à IA. No acesso gratuito, guardamos também um código irreversível do e-mail e da conexão (IP) só para aplicar o limite diário.</li>
               <li>Dados de contato da consultoria: só para responder à solicitação. Comunicações comerciais apenas com seu consentimento, que pode ser retirado a qualquer momento.</li>
               <li>Eventos de uso sem respostas nem dados pessoais (ex.: “diagnóstico concluído”), para melhorar o produto.</li>
             </ul>

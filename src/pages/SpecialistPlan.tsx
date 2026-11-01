@@ -104,7 +104,7 @@ export default function SpecialistPlan() {
             Quero minha análise <ArrowRight className="h-4 w-4" aria-hidden />
           </LinkButton>
           <Link to="/planos" className="mt-3 block text-center text-sm font-semibold text-brand hover:underline">
-            Prefiro o Plano de Ação do Tráfego (R$ 67,90)
+            Prefiro o Plano de Ação do Tráfego ({PRODUCTS.plano.price})
           </Link>
         </Card>
       </div>

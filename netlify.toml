@@ -4,12 +4,14 @@
 
 [build.environment]
   NODE_VERSION = "20"
-  # Enquanto as integrações não forem configuradas, o site roda em demonstração.
-  # Para produção: VITE_APP_MODE=production e APP_MODE=production + variáveis de docs/pendencias-externas.md.
-  VITE_APP_MODE = "demo"
+  # Produção: plano gerado pela IA no servidor. APP_MODE e PAYWALL das funções ficam no painel da Netlify.
+  VITE_APP_MODE = "production"
+  # Cobrança desligada por enquanto: Plano grátis com limites diários no servidor.
+  # Para voltar a cobrar: VITE_PAYWALL = "on" aqui e PAYWALL=on no painel da Netlify.
+  VITE_PAYWALL = "off"
   # Pixel da Meta "Serviços" (ID público). Só carrega após o consentimento do visitante.
   VITE_META_PIXEL_ID = "2018578222100683"
-  APP_MODE = "demo"
+  APP_MODE = "production"
 
 [functions]
   directory = "netlify/functions"

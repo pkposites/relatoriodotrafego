@@ -1,6 +1,6 @@
 # Configurações externas pendentes
 
-Nada abaixo foi testado contra serviços reais: este ambiente não tem acesso de rede a OpenAI, Netlify Blobs nem provedor de pagamento, e não há credenciais. **O site publicado continua em modo demonstração** (`VITE_APP_MODE=demo`, `APP_MODE=demo` em `netlify.toml`). Nesse modo as funções do servidor respondem “indisponível na demonstração” e nada é cobrado.
+Nada abaixo foi testado contra serviços reais: este ambiente não tem acesso de rede a OpenAI, Netlify Blobs nem provedor de pagamento, e não há credenciais. **O site está em produção com a cobrança desligada**: o Plano é gerado pela IA no servidor, grátis por tempo limitado e com limites diários (seção 2.4). A cobrança pela Cakto entra no próximo passo.
 
 ## 1. Decisões do responsável (bloqueiam a produção)
 
@@ -52,6 +52,25 @@ Conferido no SDK oficial `mercadopago` 3.6.1, porque a documentação do Mercado
 - **Criação do pagamento:** `POST /checkout/preferences` com `external_reference` = id do pedido, item com o preço esperado e retorno para `/pedido/<id>`. No modo `test` o site usa `sandbox_init_point`.
 - **Webhook:** URL `<site>/.netlify/functions/payment-webhook`, evento **Pagamentos**. O aviso só é aceito com `x-signature` válido: `v1` = HMAC-SHA256 da assinatura secreta sobre `id:<data.id>;request-id:<x-request-id>;ts:<ts>;`, com no máximo 10 minutos de diferença.
 - **Estado do pagamento:** nunca é lido do aviso. O servidor consulta `GET /v1/payments/<id>` com o token e libera só `approved`, com o valor esperado e `live_mode` igual ao ambiente (teste não libera produção). `refunded` e `charged_back` encerram o pedido.
+
+### 2.4 Plano grátis por tempo limitado (cobrança desligada)
+
+Ligado com `PAYWALL=off` (funções, painel da Netlify) e `VITE_PAYWALL = "off"` (site, `netlify.toml`). Padrão do código: cobrança **ligada**, para que um erro de configuração nunca libere o produto pago.
+
+Proteções contra abuso do uso da IA (todas no servidor):
+
+| Proteção | Valor (variável) |
+|---|---|
+| Planos por e-mail por dia (e-mail canônico: sem maiúsculas, sem `+apelido`, Gmail sem pontos) | 1 (`FREE_PER_EMAIL_DAY`) |
+| Planos por conexão (IP informado pela Netlify) por dia | 2 (`FREE_PER_IP_DAY`) |
+| Planos grátis no total por dia — teto de custo | 30 (`FREE_DAILY_LIMIT`) |
+| Gerações por pedido | 1 (no máximo 3 execuções se falhar, 2 chamadas à IA cada) |
+| Anti-robô Cloudflare Turnstile no pedido | liga com `TURNSTILE_SECRET_KEY` (funções) + `VITE_TURNSTILE_SITE_KEY` (site) |
+| Teste da IA | só com `INTERNAL_TASK_SECRET` |
+
+Contadores zeram à meia-noite de Brasília. E-mail e IP ficam só como hash com segredo. Pior caso de custo por dia: 30 pedidos × 6 chamadas ≈ US$ 4,50; o uso normal é ~US$ 0,02 por plano. Recomendado: limite de gasto mensal no painel da OpenAI (Settings › Limits).
+
+**Para voltar a cobrar:** `VITE_PAYWALL = "on"` no `netlify.toml`, `PAYWALL=on` no painel, variáveis da Cakto (seção 2.2) e novo deploy. Pedidos gratuitos já gerados continuam válidos.
 
 ### 2.3 Teste da IA (sem pedido nem pagamento)
 

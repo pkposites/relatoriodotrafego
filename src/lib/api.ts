@@ -10,8 +10,8 @@ async function call<T>(path: string, init?: RequestInit): Promise<T> {
 }
 
 export const api = {
-  createOrder: (b: { product: 'plano' | 'especialista'; diagnosticId: string; answers: Answers; links: LinkEvidence[]; contact: { email: string } }) =>
-    call<{ orderId: string; accessToken: string; checkoutUrl: string }>('orders-create', { method: 'POST', body: JSON.stringify(b) }),
+  createOrder: (b: { product: 'plano' | 'especialista'; diagnosticId: string; answers: Answers; links: LinkEvidence[]; contact: { email: string }; turnstileToken?: string }) =>
+    call<{ orderId: string; accessToken: string; checkoutUrl: string | null; status: string; access?: 'pago' | 'gratuito' }>('orders-create', { method: 'POST', body: JSON.stringify(b) }),
   status: (id: string, token: string) =>
     call<{ status: string; message?: string; downloadUrl?: string; plan?: unknown }>(`order-status?id=${encodeURIComponent(id)}&token=${encodeURIComponent(token)}`),
   deepening: (id: string, token: string, deepening: Answers, metrics?: MetricsInput) =>

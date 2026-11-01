@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import HeroDemo from '../components/HeroDemo';
 import { Card, LinkButton, SectionTitle } from '../components/ui';
 import { confirmed } from '../content/pending';
+import { IS_FREE } from '../config/env';
 import { PRODUCTS } from '../data/plans';
 import { track } from '../lib/analytics';
 
@@ -18,7 +19,7 @@ const STEPS = [
   { icon: ClipboardList, title: 'Diagnóstico gratuito', text: 'Doze perguntas sobre seu negócio, seu caminho de venda e sua rotina. Sem cadastro e sem acesso às suas contas.' },
   { icon: BarChart3, title: 'Resultado na hora', text: 'Perfil, visão geral, a principal hipótese, uma ação para começar e as limitações da análise.' },
   { icon: ListChecks, title: 'Plano de Ação (opcional)', text: 'Se quiser, o plano pago detalha prioridades, passo a passo, responsáveis e como verificar cada tarefa.' },
-  { icon: FileText, title: 'PDF para executar', text: 'Depois da confirmação do pagamento, você aprofunda o que quiser e recebe o plano em PDF.' },
+  { icon: FileText, title: 'PDF para executar', text: IS_FREE ? 'Você aprofunda o que quiser e recebe o plano em PDF, gerado e conferido pelo sistema.' : 'Depois da confirmação do pagamento, você aprofunda o que quiser e recebe o plano em PDF.' },
 ];
 
 const FOR = ['Donos de pequenas e médias empresas que anunciam no Instagram, Facebook ou Google', 'Quem anuncia, mas não sabe dizer o que funciona', 'Quem vai começar a anunciar e quer se preparar', 'Quem tem gestor ou agência e quer critérios para conversar'];
@@ -30,7 +31,7 @@ const FAQ = [
   { q: 'E se eu não souber os números?', a: '“Não sei” é uma resposta válida. Ela não vira zero nem certeza: entra como lacuna, e o plano começa por como medir.' },
   { q: 'Ainda não anuncio. Serve para mim?', a: 'Sim. Você recebe uma avaliação de preparação, sem nota de campanha, com o que deixar pronto antes de investir.' },
   { q: 'Como a IA é usada?', a: 'Regras e cálculos do sistema organizam as evidências; a IA ajuda a redigir o Plano de Ação para o seu caso; um verificador confere números, referências e promessas antes da entrega. A avaliação gratuita não usa IA.' },
-  { q: 'Como recebo o plano pago?', a: 'Depois que a plataforma de pagamento confirmar a compra, você escolhe gerar com o que já informou ou adicionar contexto. O PDF fica disponível por link de acesso.' },
+  { q: IS_FREE ? 'Como recebo o plano?' : 'Como recebo o plano pago?', a: IS_FREE ? 'Por tempo limitado, o plano é gratuito (1 por e-mail por dia). Você escolhe gerar com o que já informou ou adicionar contexto, e o PDF fica disponível para download assim que passar na conferência.' : 'Depois que a plataforma de pagamento confirmar a compra, você escolhe gerar com o que já informou ou adicionar contexto. O PDF fica disponível por link de acesso.' },
 ];
 
 export default function Landing() {

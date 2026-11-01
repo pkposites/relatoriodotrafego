@@ -33,6 +33,8 @@ export interface Order {
   pdfKey?: string;
   message?: string;
   history: { at: string; status: OrderStatus; note?: string }[];
+  /** "gratuito" = liberado sem pagamento (PAYWALL=off), dentro dos limites diários. */
+  access?: 'pago' | 'gratuito';
 }
 
 export interface Deps {
@@ -64,7 +66,7 @@ const k = {
 const sha = (s: string) => createHash('sha256').update(s).digest('hex');
 
 export class OrderError extends Error {
-  constructor(public code: 'nao_encontrado' | 'nao_autorizado' | 'estado_invalido' | 'dados_invalidos', message: string) {
+  constructor(public code: 'nao_encontrado' | 'nao_autorizado' | 'estado_invalido' | 'dados_invalidos' | 'limite', message: string) {
     super(message);
   }
 }
@@ -100,19 +102,78 @@ export function authorize(o: Order, token: string) {
   if (a.length !== b.length || !timingSafeEqual(a, b)) throw new OrderError('nao_autorizado', 'Acesso não autorizado.');
 }
 
+/* ------------------------------ limites do acesso gratuito ------------------------------ */
+
+/** Dia no horário de Brasília (UTC-3): os limites zeram à meia-noite local. */
+export const quotaDay = (t: Date) => new Date(t.getTime() - 3 * 3600_000).toISOString().slice(0, 10);
+
+/** E-mail canônico: sem maiúsculas, sem "+apelido" e, no Gmail, sem pontos. Evita driblar o limite com variações. */
+export function canonicalEmail(email: string) {
+  const [local = '', domain = ''] = email.trim().toLowerCase().split('@');
+  let l = local.split('+')[0];
+  const dom = domain === 'googlemail.com' ? 'gmail.com' : domain;
+  if (dom === 'gmail.com') l = l.replace(/\./g, '');
+  return `${l}@${dom}`;
+}
+
+/** Reserva uma unidade de um contador diário (concorrência otimista). false = limite atingido. */
+async function take(d: Deps, key: string, limit: number): Promise<boolean> {
+  for (let i = 0; i < 8; i++) {
+    const cur = await d.kv.getJSON<{ count: number }>(key);
+    const count = cur?.value.count ?? 0;
+    if (count >= limit) return false;
+    const ok = cur ? await d.kv.setJSON(key, { count: count + 1 }, { ifMatch: cur.etag }) : await d.kv.setJSON(key, { count: 1 }, { onlyIfNew: true });
+    if (ok) return true;
+  }
+  throw new Error('Conflito ao reservar o limite diário.');
+}
+
+async function release(d: Deps, key: string) {
+  for (let i = 0; i < 8; i++) {
+    const cur = await d.kv.getJSON<{ count: number }>(key);
+    if (!cur || cur.value.count <= 0) return;
+    if (await d.kv.setJSON(key, { count: cur.value.count - 1 }, { ifMatch: cur.etag })) return;
+  }
+}
+
+/**
+ * Reserva o acesso gratuito: por e-mail, por IP e o total do dia. Se uma reserva
+ * falhar, devolve as anteriores. O total do dia limita o gasto máximo com IA.
+ */
+export async function reserveFreeAccess(d: Deps, email: string, ip: string) {
+  const day = quotaDay(now(d));
+  const h = (v: string) => createHash('sha256').update(`${d.cfg.internalSecret}:${v}`).digest('hex').slice(0, 32);
+  const steps: { key: string; limit: number; message: string }[] = [
+    { key: `${env(d)}/quota/${day}/email/${h(canonicalEmail(email))}`, limit: d.cfg.free.perEmailDay, message: 'Este e-mail já usou o plano gratuito hoje. Tente novamente amanhã.' },
+    { key: `${env(d)}/quota/${day}/ip/${h(ip || 'desconhecido')}`, limit: d.cfg.free.perIpDay, message: 'Limite de planos gratuitos desta conexão atingido hoje. Tente novamente amanhã.' },
+    { key: `${env(d)}/quota/${day}/total`, limit: d.cfg.free.dailyLimit, message: 'Os planos gratuitos de hoje acabaram. Volte amanhã: as vagas renovam à meia-noite.' },
+  ];
+  const taken: string[] = [];
+  for (const s of steps) {
+    if (await take(d, s.key, s.limit)) taken.push(s.key);
+    else {
+      for (const k of taken) await release(d, k);
+      throw new OrderError('limite', s.message);
+    }
+  }
+}
+
 /* ------------------------------ criação ------------------------------ */
 
 const MAX_PAYLOAD = 60_000;
 
-export async function createOrder(d: Deps, input: { product: Product; diagnosticId: string; answers: Answers; links: LinkEvidence[]; email: string }) {
+export async function createOrder(d: Deps, input: { product: Product; diagnosticId: string; answers: Answers; links: LinkEvidence[]; email: string; clientIp?: string }) {
   if (!['plano', 'especialista'].includes(input.product)) throw new OrderError('dados_invalidos', 'Produto inválido.');
   if (!input.answers || !isComplete(input.answers)) throw new OrderError('dados_invalidos', 'Diagnóstico incompleto.');
   if (JSON.stringify(input.answers).length > MAX_PAYLOAD) throw new OrderError('dados_invalidos', 'Respostas grandes demais.');
   if (!/^\S+@\S+\.\S+$/.test(input.email ?? '') || input.email.length > 200) throw new OrderError('dados_invalidos', 'E-mail inválido.');
+  const free = !d.cfg.paywall && input.product === 'plano';
   const checkoutBase = d.cfg.payment.checkoutUrls[input.product];
-  if (!d.createCheckout && !checkoutBase) throw new OrderError('dados_invalidos', 'Produto indisponível no momento.');
+  if (!free && !d.createCheckout && !checkoutBase) throw new OrderError('dados_invalidos', 'Produto indisponível no momento.');
   // Links: só registrados como "informado". Nunca são acessados pelo servidor.
   const links = (input.links ?? []).slice(0, 3).filter((l) => /^https?:\/\//i.test(l.url) && l.url.length <= 300).map((l) => ({ url: l.url, status: 'informado' as const }));
+  // Só depois de validar tudo: o limite gratuito não é gasto com pedido inválido.
+  if (free) await reserveFreeAccess(d, input.email, input.clientIp ?? '');
   const id = `rdt_${randomBytes(9).toString('base64url')}`;
   const token = randomBytes(24).toString('base64url');
   const t = now(d);
@@ -122,24 +183,26 @@ export async function createOrder(d: Deps, input: { product: Product; diagnostic
     product: input.product,
     createdAt: t.toISOString(),
     updatedAt: t.toISOString(),
-    status: 'aguardando_pagamento',
+    status: free ? 'aguardando_informacoes' : 'aguardando_pagamento',
+    access: free ? 'gratuito' : 'pago',
     tokenHash: sha(token),
     expectedCents: d.cfg.payment.expectedCents[input.product],
     diagnostic: { id: String(input.diagnosticId).slice(0, 80), answers: input.answers, links },
     paymentEventIds: [],
     generation: { runs: 0 },
-    history: [{ at: t.toISOString(), status: 'aguardando_pagamento' }],
+    history: [free ? { at: t.toISOString(), status: 'aguardando_informacoes', note: 'Acesso gratuito (cobrança desligada), dentro dos limites diários.' } : { at: t.toISOString(), status: 'aguardando_pagamento' }],
   };
   await d.kv.setJSON(k.order(d, id), order, { onlyIfNew: true });
   // Contato separado da análise; nunca vai para a IA.
   await d.kv.setJSON(k.contact(d, id), { email: input.email, createdAt: order.createdAt });
+  if (free) return { order, accessToken: token, checkoutUrl: null as string | null };
   if (d.createCheckout) {
     const checkoutUrl = await d.createCheckout({ orderId: id, product: input.product, amountCents: order.expectedCents, email: input.email });
-    return { order, accessToken: token, checkoutUrl };
+    return { order, accessToken: token, checkoutUrl: checkoutUrl as string | null };
   }
   const url = new URL(checkoutBase);
   url.searchParams.set(d.cfg.payment.refParam, id);
-  return { order, accessToken: token, checkoutUrl: url.toString() };
+  return { order, accessToken: token, checkoutUrl: url.toString() as string | null };
 }
 
 /* ------------------------------ pagamento ------------------------------ */

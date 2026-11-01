@@ -4,7 +4,7 @@ import { Link, useParams } from 'react-router-dom';
 import { Deepening } from '../components/Deepening';
 import { PlanView } from '../components/PlanView';
 import { Button, Card, LinkButton } from '../components/ui';
-import { SUPPORT_CONTACT } from '../config/env';
+import { IS_FREE, SUPPORT_CONTACT } from '../config/env';
 import type { Answers, MetricsInput } from '../domain/types';
 import { track } from '../lib/analytics';
 import { api } from '../lib/api';
@@ -15,7 +15,7 @@ import { downloadPdf } from '../pdf/renderBrowser';
 
 const STATUS_TEXT: Record<LocalOrder['status'], string> = {
   aguardando_pagamento: 'Aguardando confirmação do pagamento',
-  aguardando_informacoes: 'Pagamento confirmado — falta escolher como gerar',
+  aguardando_informacoes: IS_FREE ? 'Plano liberado — falta escolher como gerar' : 'Pagamento confirmado — falta escolher como gerar',
   gerando: 'Gerando e conferindo seu plano',
   concluido: 'Plano pronto',
   falha: 'Não foi possível gerar o plano',
@@ -71,7 +71,10 @@ export default function Order() {
     return (
       <div className="mx-auto max-w-lg px-4 py-16 text-center sm:px-6">
         <h1 className="text-2xl font-bold">Pedido não encontrado neste navegador</h1>
-        <p className="mt-2 text-ink-soft">Use o link de acesso enviado no e-mail da compra.{SUPPORT_CONTACT ? ` Suporte: ${SUPPORT_CONTACT}.` : ''}</p>
+        <p className="mt-2 text-ink-soft">
+          O acesso ao pedido fica salvo no navegador e no aparelho em que ele foi feito. Abra por lá para acompanhar e baixar o plano.
+          {SUPPORT_CONTACT ? ` Suporte: ${SUPPORT_CONTACT}.` : ''}
+        </p>
         <LinkButton to="/" className="mt-6">Voltar ao início</LinkButton>
       </div>
     );

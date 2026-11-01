@@ -16,6 +16,14 @@ export interface ServerConfig {
     /** Só com provider "mercadopago". Token de acesso da aplicação (servidor). */
     mpAccessToken: string;
   };
+  /**
+   * Cobrança ligada? PAYWALL=off libera o Plano sem pagamento (com limites diários).
+   * Padrão: ligada, para que um erro de configuração nunca libere o produto pago.
+   */
+  paywall: boolean;
+  free: { dailyLimit: number; perIpDay: number; perEmailDay: number };
+  /** Cloudflare Turnstile (verificação anti-robô no pedido). Vazio = desligado. */
+  turnstileSecret: string;
   downloadSecret: string;
   internalSecret: string;
   supportContact: string | null;
@@ -37,6 +45,8 @@ export function loadConfig(env: Record<string, string | undefined> = process.env
     return req(k);
   };
   const mp = env.PAYMENT_PROVIDER === 'mercadopago';
+  const paywall = env.PAYWALL !== 'off';
+  const int = (v: string | undefined, def: number, max: number) => Math.max(0, Math.min(max, Number.isFinite(Number(v)) && v !== undefined && v !== '' ? Math.floor(Number(v)) : def));
   const cfg: ServerConfig = {
     mode,
     publicBaseUrl: mode === 'demo' ? '' : need('PUBLIC_BASE_URL'),
@@ -49,14 +59,18 @@ export function loadConfig(env: Record<string, string | undefined> = process.env
     },
     payment: {
       provider: mp ? 'mercadopago' : 'hmac_generico',
-      webhookSecret: mode === 'demo' ? '' : need(mp ? 'MP_WEBHOOK_SECRET' : 'PAYMENT_WEBHOOK_SECRET'),
+      webhookSecret: mode === 'demo' || !paywall ? req(mp ? 'MP_WEBHOOK_SECRET' : 'PAYMENT_WEBHOOK_SECRET') : need(mp ? 'MP_WEBHOOK_SECRET' : 'PAYMENT_WEBHOOK_SECRET'),
       signatureHeader: (env.PAYMENT_SIGNATURE_HEADER ?? 'x-signature').toLowerCase(),
       refParam: env.PAYMENT_REF_PARAM ?? 'ref',
       // Com Mercado Pago o link é criado por pedido; não há link fixo.
-      checkoutUrls: { plano: mode === 'demo' || mp ? '' : need('CHECKOUT_URL_PLANO'), especialista: req('CHECKOUT_URL_ESPECIALISTA') },
+      checkoutUrls: { plano: mode === 'demo' || mp || !paywall ? req('CHECKOUT_URL_PLANO') : need('CHECKOUT_URL_PLANO'), especialista: req('CHECKOUT_URL_ESPECIALISTA') },
       expectedCents: { plano: Number(env.PRICE_CENTS_PLANO ?? 6790), especialista: Number(env.PRICE_CENTS_ESPECIALISTA ?? 19700) },
-      mpAccessToken: mode === 'demo' || !mp ? '' : need('MP_ACCESS_TOKEN'),
+      mpAccessToken: mode === 'demo' || !mp || !paywall ? req('MP_ACCESS_TOKEN') : need('MP_ACCESS_TOKEN'),
     },
+    paywall,
+    // Limites do acesso gratuito: travam o custo máximo da IA por dia.
+    turnstileSecret: req('TURNSTILE_SECRET_KEY'),
+    free: { dailyLimit: int(env.FREE_DAILY_LIMIT, 30, 500), perIpDay: int(env.FREE_PER_IP_DAY, 2, 20), perEmailDay: int(env.FREE_PER_EMAIL_DAY, 1, 10) },
     downloadSecret: mode === 'demo' ? '' : need('DOWNLOAD_SIGNING_SECRET'),
     internalSecret: mode === 'demo' ? '' : need('INTERNAL_TASK_SECRET'),
     supportContact: env.SUPPORT_CONTACT ?? null,

@@ -19,7 +19,7 @@ export function guard(): Response | null {
 }
 
 export function handleError(e: unknown): Response {
-  if (e instanceof OrderError) return json(e.code === 'nao_encontrado' ? 404 : e.code === 'nao_autorizado' ? 403 : 400, { error: e.message });
+  if (e instanceof OrderError) return json(e.code === 'nao_encontrado' ? 404 : e.code === 'nao_autorizado' ? 403 : e.code === 'limite' ? 429 : 400, { error: e.message, code: e.code });
   console.error('[erro]', e instanceof Error ? e.message : e);
   return json(500, { error: 'Erro inesperado. Tente novamente em instantes.' });
 }

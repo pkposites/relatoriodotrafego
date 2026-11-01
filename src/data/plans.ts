@@ -2,6 +2,8 @@
  * Ofertas. Sem preço riscado e sem afirmações de autoridade não confirmadas
  * (ver src/content/pending.ts).
  */
+import { IS_FREE } from '../config/env';
+
 export type ProductId = 'plano' | 'especialista' | 'consultoria';
 
 export interface Product {
@@ -20,8 +22,9 @@ export const PRODUCTS: Record<ProductId, Product> = {
   plano: {
     id: 'plano',
     name: 'Plano de Ação do Tráfego',
-    price: 'R$ 67,90',
-    priceNote: 'pagamento único',
+    // Com a cobrança desligada, o Plano sai grátis por tempo limitado (preço normal informado).
+    price: IS_FREE ? 'Grátis' : 'R$ 67,90',
+    priceNote: IS_FREE ? 'por tempo limitado · depois R$ 67,90' : 'pagamento único',
     tagline: 'Um plano específico para a sua operação: o que corrigir primeiro, como fazer, quem executa e como saber se ficou pronto.',
     features: [
       'Até 3 prioridades, cada uma ligada às suas respostas e números',
@@ -33,7 +36,7 @@ export const PRODUCTS: Record<ProductId, Product> = {
       'Quando revisar e o que medir depois',
     ],
     excludes: ['Sem acesso às suas contas de anúncio', 'Sem revisão humana individual'],
-    cta: 'Quero meu plano de ação por R$ 67,90',
+    cta: IS_FREE ? 'Quero meu plano de ação grátis' : 'Quero meu plano de ação por R$ 67,90',
     href: '/checkout?produto=plano',
   },
   especialista: {
